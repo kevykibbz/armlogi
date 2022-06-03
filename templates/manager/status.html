@@ -33,7 +33,6 @@
                                 <thead>
                                     <tr>                                       
                                         <th>#</th>
-                                        <th>Action</th>
                                         <th>Load #</th>
                                         <th>Status</th>
                                         <th>Date</th>                                        
@@ -75,19 +74,6 @@
                                      {% for item in orders %}
                                      <tr id="id_{{item.id}}">
                                         <td>{{forloop.counter}}.</td>
-                                        <td>
-                                            {% if data.extendedauthuser.role != 'Tertiary' %}
-                                                <a href="{% url 'edit order' id=item.id %}" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-                                                {% if data.is_superuser %}
-                                                <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
-                                                {% else %}
-                                                    <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
-                                                {% endif %}
-                                            {% else %}
-                                                <a href="javascript:void(0)" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-                                                <a href="javascript:void(0)" data-toggle="tooltip" title="Delete order item"  class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
-                                            {% endif %}
-                                        </td>
                                         <td>{{item.prefix}}</td>
                                         <td>
                                             {% if item.status %}
