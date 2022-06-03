@@ -132,12 +132,14 @@
                                     <p class="mb-0">Do Incomings</p>
                                 </a>
                             </li>
+                            {% if data.is_superuser %}
                             <li>
                                 <a href="{% url 'view logs' %}">
                                     <div class="icon-circle mb-2 bg-green"><i class="zmdi zmdi-rotate-cw"></i></div>
                                     <p class="mb-0">Logs</p>
                                 </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </li>
                 </ul>
