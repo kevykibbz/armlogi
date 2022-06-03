@@ -26,7 +26,7 @@ from django.template.defaulttags import register
 import math
 from django.utils.crypto import get_random_string
 from manager.addons import send_email
-
+from django.conf import settings
 
 #save logger data
 def save_logger(action,user,role):
@@ -326,7 +326,6 @@ class UserNewOrder(View):
             order=form.cleaned_data.get('ordername')
             role=request.user.extendedauthuser.role
             save_logger(f'Placed a new order:{order}',request.user.get_full_name(),role)
-            send_email(subject,email,message,template)
             order_id=OrderFields.objects.latest('id').id
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
@@ -396,19 +395,23 @@ class EditOrder(View):
         if form.is_valid():
             t=form.save(commit=False)
             t.modified_at=now()
+            t.customer_link=generate_id()
             t.save()
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
             if data.customer_link and data.customer_email:
                 subject='Authorization link.'
+                domain=settings.BASE_URL
                 email=data.customer_email
                 link=data.customer_link
                 message={
-                            'site_name':site_data.site_name,
-                            'site_url':site_data.site_url,
-                            'link':link
-                        }
+
+                        'link':link,
+                        'domain':domain,
+                        'site_name':site_data.site_name,
+                        'site_url':site_data.site_url,
+                }
                 template='emails/auth_link.html'
                 send_email(subject,email,message,template)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
