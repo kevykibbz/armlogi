@@ -18,5 +18,6 @@ django-timezone-field==4.2.3
 Babel==2.9.1
 psycopg2==2.9.3
 djongo
-pymomgo==3.12.3
+pymomgo
 requests
+django-cleanup
