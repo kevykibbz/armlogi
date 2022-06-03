@@ -600,7 +600,8 @@ class CustomerQuote(View):
         if form.is_valid():
             form.save()
             email=request.POST['quote_email']
-            save_logger(f'Customer  placed a new quote  with quote email:{email}',email)
+            role='Customer'
+            save_logger(f'Customer  placed a new quote  with quote email:{email}',email,role)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -770,7 +771,8 @@ class AuthLink(View):
                     }
             template='emails/auth_link.html'
             send_email(subject,email,message,template)
-            save_logger(f'Customer requested for a new authorization link with quote email:{email}',email)
+            role='Customer'
+            save_logger(f'Customer requested for a new authorization link with quote email:{email}',email,role)
             return JsonResponse({'valid':True,'message':'link sent successfully'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')

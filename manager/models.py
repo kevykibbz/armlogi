@@ -188,12 +188,6 @@ class OrderFields(models.Model):
     def get_prefix(self):
         return 'A21'+str(self.id).zfill(5)
 
-@receiver(post_save, sender=OrderFields)
-def create_user_logging_data(sender, instance, created, **kwargs):
-    if created:
-        op=str(instance.ordername_id).zfill(5)
-        prefix='21A'+op
-        OrderFields.objects.create(order_id=instance.ordername_id,prefix=prefix)
 
 
 
