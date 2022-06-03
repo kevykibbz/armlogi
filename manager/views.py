@@ -319,12 +319,14 @@ class UserNewOrder(View):
             }
         return render(request,'manager/new_order.html',context=data)
     def post(self,request):
+        obj=SiteConstants.objects.all()[0]
         form=NewOderForm(request.POST or None)
         if form.is_valid():
             form.save()
             order=form.cleaned_data.get('ordername')
             role=request.user.extendedauthuser.role
             save_logger(f'Placed a new order:{order}',request.user.get_full_name(),role)
+            send_email(subject,email,message,template)
             order_id=OrderFields.objects.latest('id').id
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
@@ -389,6 +391,7 @@ class EditOrder(View):
     def post(self,request,id):
         data=OrderFields.objects.get(id=id)
         obj=Oders.objects.get(ordername_id=data.order_id)
+        site_data=SiteConstants.objects.all()[0]
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=data)
         if form.is_valid():
             t=form.save(commit=False)
@@ -397,6 +400,17 @@ class EditOrder(View):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
+            if data.customer_link and data.customer_email:
+                subject='Authorization link.'
+                email=data.customer_email
+                link=data.customer_link
+                message={
+                            'site_name':site_data.site_name,
+                            'site_url':site_data.site_url,
+                            'link':link
+                        }
+                template='emails/auth_link.html'
+                send_email(subject,email,message,template)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')

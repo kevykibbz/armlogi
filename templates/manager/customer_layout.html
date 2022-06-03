@@ -59,6 +59,14 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
+        #leftsidebar
+        {
+            background-image: url("{% static 'admino/assets/images/bg.jpg' %}");
+            background-repeat:no-repeat;
+            background-position: center;
+            background-size: cover;
+            color: #fff;
+        }
     </style>
 </head>
 <body class="theme-blush">
@@ -110,6 +118,7 @@
                 </li>
                 <li class=""><a href="{% url 'customer quote' %}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
                 <li class=""><a href="{% url 'auth link' %}"><i class="zmdi zmdi-shield-check"></i><span>Get new auth link</span></a></li>
+                <li class=""><a href="{% url 'manager dashboard' %}"><i class="zmdi zmdi-arrow-right"></i><span>Exit</span></a></li>
                 <div class="progress-container progress-primary d-md-block d-none user-pallate" style="margin-top:28%">
                     <h4>{% now "l" %}</h4>
                     <h1>{% now "H:i"  %}</h1>
