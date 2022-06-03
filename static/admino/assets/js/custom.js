@@ -25,6 +25,26 @@ function observerImages()
 $(document).ready(function()
 {
   observerImages();
+  var b=$('body').attr('class').split(' '),
+  c=$(b).get(-1);
+  if(c == 'ls-closed')
+  {
+      $('.user-pallate').addClass('user-area');
+  }
+});
+
+$(document).on('click','.ls-toggle-btn',function()
+{
+    var b=$('body').attr('class').split(' '),
+    c=$(b).get(-1);
+    if(c !== 'ls-toggle-menu')
+    {
+        $('.user-pallate').removeClass('user-area');
+    }
+    else
+    {
+        $('.user-pallate').addClass('user-area');
+    }
 });
 
 $(document).on('click','.btn-remove',function()
@@ -339,6 +359,15 @@ $(document).on('click','.del-data2',function(e)
   $('.delete-model').find('.modal-body').html('<div class="text-warning text-info text-center"><i class="zmdi zmdi-alert-triangle"></i> Confirm deleting item .</div> <div class="text-center"><button class="btn btn-secondary cancelBtn" >cancel</button><button data-host="'+el.data('host')+'" data-url="'+el.attr('href')+'" class="btn btn-danger confirmBtn2">confirm</button></div>');
 });
 
+$(document).on('click','.del-data3',function(e)
+{
+  e.preventDefault();
+  var el=$(this);
+  $('.delete-model').modal({show:true});
+  $('.delete-model').find('.modal-title').text('Confirm');
+  $('.delete-model').find('.modal-body').html('<div class="text-warning text-info text-center"><i class="zmdi zmdi-alert-triangle"></i> Confirm deleting item .</div> <div class="text-center"><button class="btn btn-secondary cancelBtn" >cancel</button><button data-host="'+el.data('host')+'" data-url="'+el.attr('href')+'" class="btn btn-danger confirmBtn3">confirm</button></div>');
+});
+
 
 $(document).on('click','.cancelBtn',function()
 {
@@ -393,6 +422,35 @@ $(document).on('click','.confirmBtn2',function()
           $('.small-model').modal('show');
           $('.small-model').find('.modal-title').text('Success');
           $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Item deleted successfully.</div>');
+          window.location=window.location;
+        },
+        error(err)
+        {
+          el.html('confirm');
+          console.log(err.status+':'+err.statusText);
+        }
+      });
+});
+
+$(document).on('click','.confirmBtn3',function()
+{
+  var el=$(this),
+  url=el.data('url');
+  $.ajax(
+      {
+        url:url,
+        dataType:'json',
+        beforeSend:function()
+        {
+          el.html('<i class="spinner-border spinner-border-sm" role="status"></i> Please wait...');
+        },
+        success:function(callback)
+        {
+          el.html('confirm');
+          $('.delete-model').modal('hide');
+          $('.small-model').modal('show');
+          $('.small-model').find('.modal-title').text('Success');
+          $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Logs deleted successfully.</div>');
           window.location=window.location;
         },
         error(err)
@@ -552,6 +610,7 @@ $(document).on('submit','.myForm',function()
   return false;
 });
 
+
 $(document).on('mouseenter','.order-wrapper',function()
 {
   $(this).find('.buttons').show();
@@ -605,7 +664,7 @@ $(document).on('submit','.spreadsheetForm',function()
         {
             $.each(callback.form_errors,function(key,value)
             {
-                el.find("input[name='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('invalid-feedback').html('<i class="fa fa-exclamation-circle"></i> '+value);
+              el.find("input[aria-label='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('invalid-feedback').html('<i class="fa fa-exclamation-circle"></i> '+value);
             });
         }
       },
@@ -620,6 +679,125 @@ $(document).on('submit','.spreadsheetForm',function()
     });
   return false;
 });
+
+/*spreadsheetForm*/
+$(document).on('submit','.CustomerForm',function()
+{
+  var el=$(this),
+  form_data=new FormData(this);
+  $('.feedback').html('');
+  el.children().find('.is-invalid').removeClass('is-invalid');
+  el.parents('.card').find('.load-overlay .loader-container').html(`<div class="innerloader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="10" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>`);
+  $.ajax(
+    {
+      url:el.attr('action'),
+      method:el.attr('method'),
+      dataType:'json',
+      data:form_data,
+      contentType:false,
+      cache:false,
+      processData:false,
+      beforeSend:function()
+      {
+        el.parents('.card').find('.load-overlay').show();
+        el.find('button:first').html('<i class="spinner-border spinner-border-sm" role="status"></i>');
+        el.find('button:last').text(' Please wait...');
+        el.find('button').attr('disabled',true);
+        el.parents('.card').find('.overlay-close').removeClass('btn-remove');
+      },
+      success:function(callback)
+      {
+        el.parents('.card').find('.overlay-close').addClass('btn-remove');
+        el.parents('.card').find('.load-overlay').hide();
+        el.find('button:first').html('');
+        el.find('button:last').text('Save changes');
+        el.find('button').attr('disabled',false);
+        if(callback.valid)
+        {
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Success');
+            $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Data saved successfully.</div>');
+           window.location='/customer/quote/';
+          }
+        else
+        {
+            $.each(callback.form_errors,function(key,value)
+            {
+              el.find("input[aria-label='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('invalid-feedback').html('<i class="fa fa-exclamation-circle"></i> '+value);
+            });
+        }
+      },
+      error:function(err)
+      {
+        el.parents('.card').find('.overlay-close').addClass('btn-remove');
+        el.find('button:first').html('');
+        el.find('button:last').text('Save changes');
+        el.find('button').attr('disabled',false);
+        el.parents('.card').find('.load-overlay .loader-container').html('<span class="text-danger font-weight-bold"> <i class="zmdi zmdi-alert-triangle"></i> '+err.status+' :'+err.statusText+'</span>.');
+      }
+    });
+  return false;
+});
+
+/*spreadsheetForm*/
+$(document).on('submit','.CustomerEditForm',function()
+{
+  var el=$(this),
+  form_data=new FormData(this);
+  $('.feedback').html('');
+  el.children().find('.is-invalid').removeClass('is-invalid');
+  el.parents('.card').find('.load-overlay .loader-container').html(`<div class="innerloader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="10" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>`);
+  $.ajax(
+    {
+      url:el.attr('action'),
+      method:el.attr('method'),
+      dataType:'json',
+      data:form_data,
+      contentType:false,
+      cache:false,
+      processData:false,
+      beforeSend:function()
+      {
+        el.parents('.card').find('.load-overlay').show();
+        el.find('button:first').html('<i class="spinner-border spinner-border-sm" role="status"></i>');
+        el.find('button:last').text(' Please wait...');
+        el.find('button').attr('disabled',true);
+        el.parents('.card').find('.overlay-close').removeClass('btn-remove');
+      },
+      success:function(callback)
+      {
+        el.parents('.card').find('.overlay-close').addClass('btn-remove');
+        el.parents('.card').find('.load-overlay').hide();
+        el.find('button:first').html('');
+        el.find('button:last').text('Save changes');
+        el.find('button').attr('disabled',false);
+        if(callback.valid)
+        {
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Success');
+            $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Data saved successfully.</div>');
+           window.location='/do/incomings/';
+          }
+        else
+        {
+            $.each(callback.form_errors,function(key,value)
+            {
+              el.find("input[aria-label='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('invalid-feedback').html('<i class="fa fa-exclamation-circle"></i> '+value);
+            });
+        }
+      },
+      error:function(err)
+      {
+        el.parents('.card').find('.overlay-close').addClass('btn-remove');
+        el.find('button:first').html('');
+        el.find('button:last').text('Save changes');
+        el.find('button').attr('disabled',false);
+        el.parents('.card').find('.load-overlay .loader-container').html('<span class="text-danger font-weight-bold"> <i class="zmdi zmdi-alert-triangle"></i> '+err.status+' :'+err.statusText+'</span>.');
+      }
+    });
+  return false;
+});
+
 
 /*submit password form*/
 $(document).on('submit','.orderForm',function()
@@ -699,4 +877,3 @@ $(document).on('change','input[type=file]',function()
 {
   $(this).removeClass('is-invalid').addClass('is-valid').parent().find('.feedback').removeClass('invalid-feedback').addClass('valid-feedback').html('Filename: '+this.files[0].name);
 });
-

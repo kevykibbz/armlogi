@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY =env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 #ALLOWED_HOSTS = ['192.168.43.253']
 ALLOWED_HOSTS = ['armlogi.herokuapp.com','127.0.0.1','localhost']
@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google', #social app
     'allauth.socialaccount.providers.twitter', #social app
     'allauth.socialaccount.providers.github', #social app
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 SITE_ID = 2
@@ -91,19 +92,19 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME":env('MONGO_DB_NAME'),
-        "ENFORCE-SCHEMA":False,
-        "CLIENT": {
-            "host":env('MONGO_DB_HOST'),
-            "port": 27017,
-            "username":env('MONGO_DB_USERNAME'),
-            "password":env('MONGO_DB_PASSWORD'),
-        },
-    },
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "djongo",
+#         "NAME":env('MONGO_DB_NAME'),
+#         "ENFORCE-SCHEMA":False,
+#         "CLIENT": {
+#             "host":env('MONGO_DB_HOST'),
+#             "port": 27017,
+#             "username":env('MONGO_DB_USERNAME'),
+#             "password":env('MONGO_DB_PASSWORD'),
+#         },
+#     },
+# }
 
 # DATABASES = {
 #     'default': {
@@ -121,15 +122,15 @@ DATABASES = {
 #  }
 #postgres://xdpajrqtvijfka:44def245e34f9569a2a293b8ca0b6c2e8fcb9c0a897c1b9a5c5d137e0b49c4a0@ec2-34-236-94-53.compute-1.amazonaws.com:5432/df2pholl515ae7
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME':env('DATABASE_NAME'),
-#        'HOST':env('DATABASE_HOST'),
-#        'USER':env('DATABASE_USER'),
-#        'PASSWORD':env('DATABASE_PASSWORD'),
-#    }
-# }
+DATABASES = {
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME':env('DATABASE_NAME'),
+       'HOST':env('DATABASE_HOST'),
+       'USER':env('DATABASE_USER'),
+       'PASSWORD':env('DATABASE_PASSWORD'),
+   }
+}
 
 # DATABASES = {
 #    'default': 

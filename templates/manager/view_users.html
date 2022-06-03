@@ -46,7 +46,7 @@
                                     {% if users %}
                                      {% for user in users %}
                                      <tr id="id_{{user.id}}">
-                                         <td>{{forloop.counter}}.</td>
+                                        <td>{{forloop.counter}}.</td>
                                         <td>
                                             {% if user.extendedauthuser.profile_pic %}
                                             <img class="img-fluid rounded avatar" style="width:45px;height:45px;object-fit:cover;border-radius:50%;overflow:hidden;" src="{% static 'admino/assets/images/loader.svg' %}" data-src="/media{{user.extendedauthuser.profile_pic.url}}" alt="">

@@ -1,0 +1,271 @@
+{% extends 'manager/customer_layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<section class="content">
+    <div class="">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Tabulate Quote Form</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="{% url 'customer quote' %}">{{site_name}}</a></li>
+                        <li class="breadcrumb-item active">Tabulate quote form</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                </div>
+                <div class=" col-lg-5 col-md-6 col-sm-12 ">                
+                    <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                    {% if data.is_authenticated%}
+                        <a href="{% url 'do incomings' %}" data-toggle="tooltip" title="go back" class="btn btn-info btn-icon float-right " type="button"><i class="zmdi zmdi-arrow-left"></i></a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card position-relative">
+                        <div class="load-overlay users-overlay" style="display:none">
+                            <span class="overlay-close btn-remove" title="close overlay"><i class="fa fa-close"></i></span>
+                            <div class="wrapper-overlay">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="loader-container">
+                                        <div class="innerloader">
+                                            <svg class="circular" viewBox="25 25 50 50">
+                                            <circle class="path" cx="50" cy="50" r="10" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                                            </svg>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header">
+                            <h2><strong>|Tabulate</strong> info</h2>
+                        </div>
+                        <div class="body">
+                            <form action="{% url 'customer quote' %}" method="post" class="CustomerForm" novalidate>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""> <span class="badge badge-primary counter-wrapper">1</span> Quote Contact <span class="text-danger">*</span></label>
+                                            {{form.quote_contact}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label for=""> <span class="badge badge-primary counter-wrapper">2</span> Applicant Quote Phone  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.quote_phone}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">3</span> Applicant Quote Email Address  <span class="text-danger">*</span></label>
+                                            {{form.quote_email}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">4</span> Applicant Quote WeChat</label>
+                                            {{form.quote_wechat}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-md-3 col-md-6 col-12">
+                                        <label for=""><span class="badge badge-primary counter-wrapper">5</span> Pickup:Please Select (Commercial/Residential)  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.pickup_select}}
+                                        </div>
+                                    </div>
+                                    <div class="mb-md-3 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">6</span> Pickup Address  <span class="text-danger">*</span></label>
+                                            {{form.pickup_address}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">7</span> zipcode  <span class="text-danger">*</span></label>
+                                            {{form.zipcode}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">8</span> Pickup Internal Order Number  <span class="text-danger">*</span></label>
+                                            {{form.internal_order_number}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">9</span> Pickup Contact  <span class="text-danger">*</span></label>
+                                            {{form.pickup_contact}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label for=""><span class="badge badge-primary counter-wrapper">10</span> Pickup Contact Phone  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.pickup_contact_phone}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-md-3 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">11</span> Pickup Contact Email  <span class="text-danger">*</span></label>
+                                            {{form.pickup_contact_email}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-md-3 col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">12</span> Shipping: Please Select(Commercial/Residential)  <span class="text-danger">*</span></label>
+                                            {{form.shipping_select}}
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">13</span> Shipping Address  <span class="text-danger">*</span></label>
+                                            {{form.shipping_address}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">14</span> Shipping Zipcode (ZipCode)  <span class="text-danger">*</span></label>
+                                            {{form.shipping_zipcode}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">15</span> Shipping Order Number  <span class="text-danger">*</span></label>
+                                            {{form.shipping_order_number}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">16</span> Shipping Contact  <span class="text-danger">*</span></label>
+                                            {{form.shipping_contact}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label for=""><span class="badge badge-primary counter-wrapper">17</span> Shipping Contact Phone  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.shipping_contact_phone}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">18</span> Shipping Contact Email <span class="text-danger">*</span></label>
+                                            {{form.shipping_contact_email}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">19</span> Item Name Or Category <span class="text-danger">*</span></label>
+                                            {{form.item_name}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">20</span> Packaging Board/Carton/Wooden Crate/Pallet/Crate  <span class="text-danger">*</span></label>
+                                            {{form.packaging_board}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">21</span> Length,Width,Height  <span class="text-danger">*</span></label>
+                                            {{form.dimensions}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">22</span> Weight:Pounds(LB)  <span class="text-danger">*</span></label>
+                                            {{form.weight}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">23</span> Payer or Paying Company Billed  <span class="text-danger">*</span></label>
+                                            {{form.payer}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="header">
+                                                <label for=""><span class="badge badge-primary counter-wrapper">24</span> Upload Files </label>
+                                            </div>
+                                            <div class="body">
+                                                <input type="file" class="dropify">
+                                            </div>
+                                        </div>
+                                    </div>
+                                  <!--  <div class="col-12" >
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">31</span> Upload Files</label>
+                                            <div class="wrapper" style="border:1px dotted #222342">
+                                                <div class="text-center">
+                                                    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#file-modal"><i class="zmdi zmdi-attachment-alt"></i> Browse Files to Upload</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="col-12 mt-3 text-center">
+                                        <button class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ <!-- File Upload Modal -->
+ <div id="file-modal" class="modal fade  bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Select item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+           <div class="wrapper">
+                <header class="upload-header">File Uploader</header>
+                <form  class="upload-form" action="{% url 'customer quote' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="file-input" name="media" type="file" hidden>
+                    <i class="zmdi zmdi-cloud-upload"></i>
+                    <p><i class="zmdi zmdi-attachment-alt"></i> Browse File to Upload</p>
+                </form>
+                <section class="sec progress-area "></section>
+                <section class="sec uploaded-area"></section>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

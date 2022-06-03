@@ -26,52 +26,226 @@
                </div>
            </div>
             <div class="row clearfix table-results">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4><strong>|File</strong> Uploads</h4>
-                        </div>
-                        <div class="body"> 
-                            <div class="table-responsive table-results">
-                                <table class="table table-bordered table-striped table-hover dataTable js-exportable  c_table theme-color ">
+                <div class="card">
+                    <ul class="nav nav-tabs pl-0 pr-0">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#list_view">List View</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#grid_view">Grid View</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#doc">Doc</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#pdf">PDF</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#xls">XLS</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#img">Images</a></li>
+                    </ul>  
+                    <div class="tab-content">
+                        {% if files %}
+                            {% for file in files %}
+                                {% if file.media and file.file_type == 'doc' %}
+                                    <div class="tab-pane file_manager" id="doc">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <div class="card">
+                                                    <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file"  class="file">
+                                                        <div class="hover">
+                                                            <button onclick="window.open('/media{{file.media.url}}','_blank')" type="button" class="btn btn-icon btn-icon-mini btn-round btn-secondary">
+                                                                <i class="zmdi zmdi-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class=" text-info zmdi zmdi-file-text"></i>
+                                                        </div>
+                                                        <div class="file-name">
+                                                            <p class="m-b-5 text-muted text-truncate"><b>Name</b>:{{file.media}}</p>
+                                                            <p class="m-b-5 text-muted"><b>Load#</b>:{{file.prefix}}</p>
+                                                            <small>Size: {{file.file_size}}<span class="date">{{file.created_at}}</span></small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif  file.media and file.file_type == 'pdf' %}
+                                  <div class="tab-pane file_manager" id="pdf">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <div class="card">
+                                                    <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file"  class="file">
+                                                        <div class="hover">
+                                                            <button onclick="window.open('/media{{file.media.url}}','_blank')" type="button" class="btn btn-icon btn-icon-mini btn-round btn-secondary">
+                                                                <i class="zmdi zmdi-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="text-success zmdi zmdi-collection-pdf"></i>
+                                                        </div>
+                                                        <div class="file-name">
+                                                            <p class="m-b-5 text-muted text-truncate"><b>Name</b>:{{file.media}}</p>
+                                                            <p class="m-b-5 text-muted"><b>Load#</b>:{{file.prefix}}</p>
+                                                            <small>Size: {{file.file_size}}<span class="date">{{file.created_at}}</span></small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% elif file.media and file.file_type == 'xls' %}
+                                <div class="tab-pane file_manager" id="xls">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <div class="card">
+                                                    <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file"  class="file">
+                                                        <div class="hover">
+                                                            <button onclick="window.open('/media{{file.media.url}}','_blank')" type="button" class="btn btn-icon btn-icon-mini btn-round btn-secondary">
+                                                                <i class="zmdi zmdi-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="text-danger zmdi zmdi-chart"></i>
+                                                        </div>
+                                                        <div class="file-name">
+                                                            <p class="m-b-5 text-muted text-truncate"><b>Name</b>:{{file.media}}</p>
+                                                            <p class="m-b-5 text-muted"><b>Load#</b>:{{file.prefix}}</p>
+                                                            <small>Size: {{file.file_size}}<span class="date">{{file.created_at}}</span></small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                 {% elif file.media and file.file_type == 'jpg' or file.file_type == 'jpeg' or file.file_type == 'png' or file.file_type == 'gif' %}
+                                  <div class="tab-pane file_manager" id="img">
+                                        <div class="row clearfix">
+                                            <div class="col-lg-3 col-md-4 col-sm-12">
+                                                <div class="card">
+                                                    <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file"  class="file">
+                                                        <div class="hover">
+                                                            <button onclick="window.open('/media{{file.media.url}}','_blank')" type="button" class="btn btn-icon btn-icon-mini btn-round btn-primary">
+                                                                <i class="zmdi zmdi-eye"></i>
+                                                            </button>
+                                                        </div>
+                                                        <div class="icon">
+                                                            <i class="zmdi zmdi-image"></i>
+                                                        </div>
+                                                        <div class="file-name">
+                                                            <p class="m-b-5 text-muted text-truncate"><b>Name</b>:{{file.media}}</p>
+                                                            <p class="m-b-5 text-muted"><b>Load#</b>:{{file.prefix}}</p>
+                                                            <small>Size: {{file.file_size}}<span class="date">{{file.created_at}}</span></small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% else %}
+                            <div class="col-lg-3 col-md-4 col-12 text-center">
+                                <div class="card">
+                                    <p>No file</p>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <div class="tab-pane active" id="list_view">
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0 c_table">
                                     <thead>
-                                        <tr>                                       
+                                        <tr>
                                             <th>#</th>
-                                            <th>Name</th>                                        
-                                            <th>load</th>                                        
-                                            <th>Created on</th>
-                                            <th>Modified on</th>
-                                            <th>Action</th>
+                                            <th>Name</th>
+                                            <th data-breakpoints="xs">Load#</th>
+                                            <th data-breakpoints="xs">File size</th>
+                                            <th data-breakpoints="xs sm md">Created On</th>
+                                            <th data-breakpoints="xs sm md">Last Modified</th>
+                                            <th data-breakpoints="xs sm md">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {% if files %}
                                             {% for file in files %}
                                                 {% if file.media %}
-                                                    <tr id="id_{{file.id}}">
-                                                    <td>{{forloop.counter}}</td>
-                                                    <td><i class="zmdi zmdi-attachment-alt"></i> {{file.media}}</td>
-                                                    <td class="text-info">{{file.prefix}}</td>
-                                                    <td>{{file.created_at}}</td>
-                                                    <td>{{file.modified_at}}</td>
-                                                    <td>
-                                                        <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
-                                                        <a  href="/media{{file.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success btn-icon" download><i class="zmdi zmdi-download"></i></a>
-                                                    </td>           
-                                                </tr>
-                                                {% endif %}
-                                            {% endfor %}
-                                        {% else %}
-                                        <tr>
-                                            <td colspan="5" class="text-center">
-                                                <p class="text-info"><i class="zmdi zmdi-alert-triangle"></i> No uploads found</p>
-                                            </td>
-                                        </tr>
-                                        {% endif %}
-                                    </tbody>
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>
+                                                        {% if file.file_type == 'jpg' or file.file_type == 'jpeg' or file.file_type == 'png' or file.file_type == 'gif' %}
+                                                            <span><i class="text-info zmdi zmdi-image w25"></i> {{file.media}}</span>
+                                                        {% elif file.file_type == 'doc' %}
+                                                        <span><i class="text-info zmdi zmdi-file-text w25"></i> {{file.media}}
+                                                        </span>
+                                                        {% elif file.file_type == 'pdf' %}
+                                                        <span><i class="text-success zmdi zmdi-collection-pdf w25"></i> {{file.media}}</span>
+                                                        {% else %}
+                                                        <span><i class="text-danger zmdi zmdi-chart w25"></i> {{file.media}}
+                                                        </span>
+                                                        {% endif %}
+                                                        </td>
+                                                        <td><span class="owner">{{file.prefix}}</span></td>
+                                                        <td><span class="size">{{file.file_size}}</span></td>
+                                                        <td><span class="date">{{file.created_at}}</span></td>
+                                                        <td><span class="date">{{file.modified_at}}</span></td>
+                                                        <td>
+                                                            <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
+                                                            <a  href="/media{{file.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success btn-icon" download><i class="zmdi zmdi-download"></i></a>
+                                                        </td> 
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% else %}
+                                            <tr>
+                                                <td colspan="7" class="text-center">
+                                                    <p class="text-info"><i class="zmdi zmdi-alert-triangle"></i> No uploads found</p>
+                                                </td>
+                                            </tr>
+                                            {% endif %}
+                                        </tbody>
                                 </table>
                             </div>
-                        </div>  
+                        </div>
+                        <div class="tab-pane file_manager" id="grid_view">
+                                <div class="row clearfix">
+                                    {% if files %}
+                                        {% for file in files %}
+                                            {% if file.media %}
+                                                <div class="col-lg-3 col-md-4 col-sm-12">
+                                                    <div class="card">
+                                                        <a href="/media{{file.media.url}}"  target="_blank" data-toggle="tooltip" title="View file"  class="file">
+                                                            <div class="hover">
+                                                                <button onclick="window.open('/media{{file.media.url}}','_blank')" type="button" class="btn btn-icon btn-icon-mini btn-round btn-secondary">
+                                                                    <i class="zmdi zmdi-eye"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="icon">
+                                                                {% if file.file_type == 'jpg' or file.file_type == 'jpeg' or file.file_type == 'png' or file.file_type == 'gif' %}
+                                                                    <i class="text-primary zmdi zmdi-image"></i>
+                                                                {% elif file.file_type == 'doc' %}
+                                                                    <i class="text-info zmdi zmdi-file-text w25"></i>
+                                                                {% elif file.file_type == 'pdf' %}
+                                                                    <i class="text-success zmdi zmdi-collection-pdf w25"></i>
+                                                                {% else %}
+                                                                    <i class="text-danger zmdi zmdi-chart"></i>
+                                                                {% endif %}
+                                                            </div>
+                                                            <div class="file-name">
+                                                                <p class="m-b-5 text-muted text-truncate"><b>Name</b>:{{file.media}}</p>
+                                                                <p class="m-b-5 text-muted"><b>Load#</b>:{{file.prefix}}</p>
+                                                                <small>Size: {{file.file_size}}<span class="date">{{file.created_at}}</span></small>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="col-md-6 col-12 text-center">
+                                            <div class="card">
+                                               <div class="body">
+                                                   <p>No media found</p>
+                                               </div>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                   
+                                </div>
+                            </div>
                     </div>
+                </div>
             </div>
         </div>
     </div>

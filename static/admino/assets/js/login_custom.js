@@ -103,3 +103,59 @@ $(document).on('submit','.myForm',function()
   });
   return false;
 });
+
+/*submit authorization form*/
+$(document).on('submit','.auth_Link_form',function()
+{
+  var el=$(this),
+  form_data=new FormData(this);
+  $('.feedback').html('');
+  el.children().find('.is-invalid').removeClass('is-invalid');
+  $.ajax(
+    {
+      url:el.attr('action'),
+      method:el.attr('method'),
+      dataType:'json',
+      data:form_data,
+      contentType:false,
+      cache:false,
+      processData:false,
+      beforeSend:function()
+      {
+        el.find('button spann:first').html('<i class="spinner-border spinner-border-sm" role="status"></i>');
+        el.find('button span:last').text(' Please wait...');
+        el.find('button').attr('disabled',true);
+      },
+      success:function(callback)
+      {
+        el.find('button span:first').html('');
+        el.find('button span:last').text('SUBMIT');
+        el.find('button').attr('disabled',false);
+        if(callback.valid)
+        {
+            el[0].reset();
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Success');
+            $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Link sent successfully.</div>');
+            window.location='/authorization/link/sent/';
+          }
+        else
+        {
+            $.each(callback.form_errors,function(key,value)
+            {
+                el.find("input[name='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('text-danger').html('<i class="fa fa-exclamation-circle"></i> '+value);
+            });
+        }
+      },
+      error:function(err)
+      {
+        el.find('button span:first').html('');
+        el.find('button span:last').text('SUBMIT');
+        el.find('button').attr('disabled',false);
+        $('.small-model').modal({show:true});
+        $('.small-model').find('.modal-title').text('Error');
+        $('.small-model').find('.modal-body').html('<div class="text-danger text-center"><i class="fa fa-exclamation-circle"></i> '+err.status+':'+err.statusText+'</div>');
+      }
+    });
+  return false;
+});

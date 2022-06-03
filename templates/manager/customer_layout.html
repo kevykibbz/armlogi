@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="copyright" content="Legit Crew, https://www.devme.com/">
+    <title>{% if obj.site_name %} {{obj.site_name}}  {% else %} {{site_name}} {% endif %} | {{title}}</title>
+    <meta name="description" content="{{obj.description}}">
+    <meta name="author" content="{{designer_name}}">
+    <meta name="theme-color" content="{{obj.theme_color}}">
+    <meta name="msapplication-navbutton-color" content="{{obj.theme_color}}">
+    <meta name="apple-mobile-web-app-status-bar-style" content="{{obj.theme_color}}">
+    <meta name="keywords" content="{{obj.key_words}}">
+    <meta property="og:site_name" content="{{obj.site_name}}">
+    <meta property="og:url" content="{{obj.site_url}}">
+    <meta http-equiv="Content-type" content="text/html;charset:utf-8">
+    <meta property="og:type" content="website"> 
+    <meta property="og:type" content="website"> 
+    <meta property="twitter:site" content="https://twitter.com/Kevin36285655">
+    <meta property="twitter:title" content="@Kevin36285655">
+    <meta property="twitter:image" content="https://twitter.com/Kevin36285655/photo">
+    <meta property="twitter:description" content="Life's Simple.">
+    <meta property="twitter:text:title" content="Life's Simple.">
+    <meta property="og:title" content="{{obj.site_name}} | {{title}}">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:description" content="{{obj.description}}">
+    <meta property="og:image" content="{% static 'admino/assets/images/logos/logo.jpg' %}">
+    <meta name="apple-mobile-web-app-title" content="{{obj.site_name}}">
+    <meta name="application-name" content="{{obj.site_name}}">
+    <meta name="msapplication-TileColor" content="{{obj.theme_color}}">
+    <meta name="msapplication-config" content="{% static 'admino/assets/images/logos/browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="icon" href="{% static 'admino/assets/images/logos/logo.jpg' %}" type="image/x-icon">
+    <link rel="mask-icon" href="{% static 'admino/assets/images/logos/safari-pinned-tab.svg' %}" color="#666666">
+    <link rel="manifest" href="{% static 'admino/assets/images/logos/site.html' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/jquery-datatable/dataTables.bootstrap4.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/css/font-awesome.min.css' %}">
+    <link href="//fonts.googleapis.com/css2?family=Kumbh+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/jvectormap/jquery-jvectormap-2.0.3.min.css' %}"/>
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/charts-c3/plugin.css' %}"/>
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/morrisjs/morris.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'admino/assets/css/style.min.css' %}"> 
+    <link rel="stylesheet" href="{% static 'admino/assets/css/custom.css' %}"> 
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/dropify/css/dropify.min.css' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/jquery-spinner/css/bootstrap-spinner.css' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/bootstrap-select/css/bootstrap-select.css' %}" />
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/nouislider/nouislider.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/select2/select2.css' %}" />
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/jquery-steps/jquery.steps.css' %}">
+    <link rel="stylesheet" href="{% static 'admino/assets/plugins/fullcalendar/fullcalendar.min.css' %}">
+    <style>
+        .bootstrap-select.form-control:not([class*="col-"])
+        {
+            width:28%;
+            text-align: left !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+</head>
+<body class="theme-blush">
+    <!-- Page Loader -->
+    <div class="page-loader-wrapper">
+        <div class="loader">
+            <div class="m-t-30"><img class="zmdi-hc-spin" src="{% static 'admino/assets/images/loader.svg' %}" width="48" height="48" alt="{{site_name}}"></div>
+            <p>Please wait...</p>
+        </div>
+    </div>
+    <!-- Overlay For Sidebars -->
+    <div class="overlay"></div>
+
+    <!-- Main Search -->
+    <div id="search">
+        <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
+        <form>
+        <input type="search" value="" placeholder="Search..." />
+        <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+    </div>
+
+    <!-- Right Icon menu Sidebar -->
+    <div class="navbar-right">
+        <ul class="navbar-nav">
+            <li><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i class="zmdi zmdi-settings"></i></a></li>
+        </ul>
+    </div>
+
+
+    <!-- Left Sidebar -->
+    <aside id="leftsidebar" class="sidebar">
+        <div class="navbar-brand">
+            <button class="btn-menu ls-toggle-btn" style="color:#fff" type="button"><i class="zmdi zmdi-menu"></i></button>
+            <a  href="{% url 'customer quote' %}">
+                <img src="{% static 'admino/assets/images/loader.gif' %}" data-src="{% static 'admino/assets/images/logos/armlogi-logo-removebg-preview.svg' %}" width="200" alt="{{site_name}}">
+            </a>
+        </div>
+        <div class="menu">
+            <ul class="list">
+                <li>
+                    <div class="user-info">
+                        <a class="image" href="{% url 'customer quote' %}"><img  style="width:45px;height:45px;object-fit:cover;border-radius:50%;overflow:hidden;" class="img-fluid" src="{% static 'admino/assets/images/loader.gif' %}" data-src="{% static 'profiles/placeholder.jpg' %}" alt="User"></a>
+                        <div class="detail fw-bolder">
+                            <h4>Customer</h4>
+                            <small><div class="badge badge-primary p-2">Anonymous</div></small> 
+                        </div>
+                    </div>
+                </li>
+                <li class=""><a href="{% url 'customer quote' %}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+                <li class=""><a href="{% url 'auth link' %}"><i class="zmdi zmdi-shield-check"></i><span>Get new auth link</span></a></li>
+                <div class="progress-container progress-primary d-md-block d-none user-pallate" style="margin-top:28%">
+                    <h4>{% now "l" %}</h4>
+                    <h1>{% now "H:i"  %}</h1>
+                    <h4>{% now "jS F Y " %}</h4>
+                </div>
+            </li>
+            </ul>
+            
+        </div>
+    </aside>
+
+    <!-- Right Sidebar -->
+    <aside id="rightsidebar" class="right-sidebar">
+        <ul class="nav nav-tabs sm">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#setting"><i class="zmdi zmdi-settings zmdi-hc-spin"></i></a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" id="setting">
+                <div class="slim_scroll">
+                    <div class="card">
+                        <h6>Theme Option</h6>
+                        <div class="light_dark">
+                            <div class="radio">
+                                <input type="radio" name="radio1" id="lighttheme" value="light" checked="">
+                                <label for="lighttheme">Light Mode</label>
+                            </div>
+                            <div class="radio mb-0">
+                                <input type="radio" name="radio1" id="darktheme" value="dark">
+                                <label for="darktheme">Dark Mode</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h6>Color Skins</h6>
+                        <ul class="choose-skin list-unstyled">
+                            <li data-theme="purple"><div class="purple"></div></li>
+                            <li data-theme="blue"><div class="blue"></div></li>
+                            <li data-theme="cyan"><div class="cyan"></div></li>
+                            <li data-theme="green"><div class="green"></div></li>
+                            <li data-theme="orange"><div class="orange"></div></li>
+                            <li data-theme="blush" class="active"><div class="blush"></div></li>
+                        </ul>                                        
+                    </div>               
+                </div>                
+            </div>       
+        </div>
+    </aside>
+    {% block body %}
+
+    {% endblock %}
+     <!-- Small Modal -->
+     <div class="modal fade small-model bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="mySmallModalLabel">Success</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                user added successfully
+            </div>
+        </div>
+        </div>
+    </div>
+    <script src="{% static 'admino/assets/js/jquery-3.5.1.min.js' %}"></script>
+    <script src="{% static 'admino/assets/js/libscripts.bundle.js' %}"></script>
+    <script src="{% static 'admino/assets/js/vendorscripts.bundle.js' %}"></script>
+    <script src="{% static 'admino/assets/bundles/mainscripts.bundle.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/momentjs/moment.js' %}"></script> <!-- Moment Plugin Js --> 
+    <script src="{% static 'admino/assets/js/pages/forms/basic-form-elements.js' %}"></script>
+    <script src="{% static 'admino/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'admino/assets/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-validation/jquery.validate.js' %}"></script> <!-- Jquery Validation Plugin Css -->
+    <script src="{% static 'admino/assets/plugins/jquery-steps/jquery.steps.js' %}"></script> <!-- JQuery Steps Plugin Js -->
+    <script src="{% static 'admino/assets/js/pages/forms/form-wizard.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/select2/select2.min.js' %}"></script> <!-- Select2 Js -->
+    <script src="{% static 'admino/assets/js/pages/forms/advanced-form-elements.js' %}"></script> 
+    <script src="{% static 'admino/assets/js/custom.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/dropify/js/dropify.min.js' %}"></script>
+    <script src="{% static 'admino/assets/js/pages/forms/dropify.js' %}"></script>
+    <script src="{% static 'admino/assets/js/fileuploader.js' %}"></script>
+    <script src="{% static 'admino/assets/bundles/datatablescripts.bundle.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.colVis.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.flash.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
+    <script src="{% static 'admino/assets/js/pages/tables/jquery-datatable.js' %}"></script>
+</body>
+</html>

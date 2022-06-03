@@ -1,0 +1,161 @@
+{% extends 'manager/account_layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<section class="content">
+    <div class="">
+        <div class="container-fluid">
+                <div class="block-header">
+                    <div class="row">
+                        <div class="col-lg-7 col-md-6 col-sm-12">
+                            <h2>All Quotes Incomings</h2>
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a  href="{% url 'home' %}"><i class="zmdi zmdi-home"></i> {{site_name}}</a></li>
+                                <li class="breadcrumb-item active">Customer Quote Summary</li>
+                            </ul>
+                            <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                        </div>
+                        <div class="col-lg-5 col-md-6 col-sm-12">                
+                            <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                            {% if data.extendedauthuser.role != 'Tertiary' %}
+                                <a href="{% url 'customer quote' %}" data-toggle="tooltip" title="New order" class="btn btn-info btn-icon float-right " type="button"><i class="zmdi zmdi-plus"></i>New</a>
+                            {% endif %}
+                           
+                        </div>
+                    </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="card project_list">
+                        <div class="table-responsive table-results">
+                            <h5><strong>|Items</strong> {{count|intcomma}}</h5>
+                            <table class="table table-bordered table-striped table-hover dataTable js-exportable  c_table theme-color ">
+                                <thead>
+                                    <tr>                                       
+                                        <th>#</th>
+                                        <th>Action</th>
+                                        <th>Code #</th>
+                                        <th>Applicant Quote contact</th>
+                                        <th>Applicant Quote Phone</th>                                        
+                                        <th>Applicant Quote Email</th>
+                                        <th>Applicant Quotation WeChat</th>
+                                        <th>Pickup Category</th>
+                                        <th>Pickup Address</th>
+                                        <th>Pickup Zipcode</th>
+                                        <th>Pickup Order Number</th>
+                                        <th>Pickup Contact</th>
+                                        <th>Pickup Contact Phone</th>
+                                        <th>Pickup Contact Email </th>
+                                        <th>Shipping Category</th>
+                                        <th>Shipping Address</th>
+                                        <th>Shipping Zipcode</th>
+                                        <th>Shipping Order Number</th>
+                                        <th>Shipping Contact</th>
+                                        <th>Shipping Contact Phone</th>
+                                        <th>Shipping Contact Email</th>
+                                        <th>Item Name/Category</th>
+                                        <th>Packaging Board/Carton/Wooden Crate/Pallet/Crate</th>
+                                        <th>Length, Width ,Height </th>
+                                        <th>Weight</th>
+                                        <th>Payer/Company Billed To</th>
+                                        <th>Media</th>
+                                        <th>Modified At</th>
+                                        <th>Created At</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if orders %}
+                                     {% for item in orders %}
+                                        <tr id="id_{{item.id}}">
+                                            <td>{{forloop.counter}}.</td>
+                                            <td>
+                                                {% if data.extendedauthuser.role != 'Tertiary' %}
+                                                    <a href="{% url 'edit quote' id=item.id %}" data-toggle="tooltip" title="Edit quote item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
+                                                    <a data-host="{% url 'do incomings' %}" href="{% url 'delete quote' id=item.id %}" data-toggle="tooltip" title="Delete quote item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                {% else %}
+                                                    <a href="javascript:void(0)" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
+                                                    <a href="javascript:void(0)" data-toggle="tooltip" title="Delete order item"  class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>{{item.prefix}}</td>
+                                            <td>{% if item.quote_contact %}{{item.quote_contact}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.quote_phone %}{{item.quote_phone}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.quote_email %}{{item.quote_email}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.quote_wechat %}{{item.quote_wechat}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.pickup_select %}{{item.pickup_select}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.pickup_address %}{{item.pickup_address}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.zipcode %}{{item.zipcode}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.internal_order_number %}{{item.internal_order_number}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.pickup_contact %}{{item.pickup_contact}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.pickup_contact_phone %}{{item.pickup_contact_phone}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.pickup_contact_email %}{{item.pickup_contact_email}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_select %}{{item.shipping_select }}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_address %}{{item.shipping_address}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_zipcode %}{{item.shipping_zipcode}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_order_number %}{{item.shipping_order_number}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_contact %}{{item.shipping_contact}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_contact_phone %}{{item.shipping_contact_phone}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.shipping_contact_email %}{{item.shipping_contact_email}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.item_name %}{{item.item_name}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.packaging_board %}{{item.packaging_board}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.dimensions %}{{item.dimensions}}{% else %} No data {% endif %}</td>
+
+                                            <td>{% if item.weight %}{{item.weight}}{% else %} No data {% endif %}</td>
+                                            <td>{% if item.payer %}{{item.payer}}{% else %} No data {% endif %}</td>
+                                            <td class="text-center">
+                                                {% if item.media %}
+                                                    <a href="/media{{item.media.url}}"  target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
+                                                    <a  href="/media{{item.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success btn-icon" download><i class="zmdi zmdi-download"></i></a>
+                                                {% else %}
+                                                    No file found
+                                                {% endif %}
+                                            </td>
+                                            <td>{% if item.modified_at %}{{item.modified_at}}{% else %} No data {% endif %}</td>
+                                            <td>{% if item.created_at %}{{item.created_at}}{% else %} No data {% endif %}</td>
+                                        </tr>
+                                     {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="35">
+                                            <p class="text-info"><i class="zmdi zmdi-alert-triangle"></i> No customer quotes item(s) found.</p>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <ul class="pagination pagination-primary mt-4">
+                            {% if users.has_previous %}
+                            <li class="page-item active"><a class="page-link" href="{% url 'view users' %}?page={{users.previous_page_number}}"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            {% endif %}
+                            {% if users.has_next %}
+                            <li class="page-item active"><a class="page-link" href="{% url 'view users' %}?page={{users.next_page_number}}"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

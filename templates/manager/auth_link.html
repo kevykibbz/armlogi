@@ -1,0 +1,45 @@
+{% extends 'manager/login_layout.html' %}
+{% load static %}
+{% block body %}
+<div class="authentication">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-10 mx-auto text-center">
+                <form action="{% url 'auth link' %}" class="card auth_form auth_Link_form" method="post">
+                    {% csrf_token %}
+                    <div class="header" style="color:#fff">
+                        <img class="logo" src="{% static 'admino/assets/images/loader.gif' %}" data-src="{% static 'admino/assets/images/logos/armlogi-logo-removebg-preview.svg' %}" alt="{{site_name}} logo">
+                        <h5>Forgot/Lost authorization Link ?</h5>
+                        <span>Enter your e-mail address below to get new authorization link.</span>
+                    </div>
+                    <div class="body">
+                        <div class="form-group">
+                            <label for=""class="float-left">Email address</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="text-light zmdi zmdi-email"></i></span>
+                                </div>
+                                <input type="text" name="email" class="form-control {% if form.email.errors %} is-invalid {% else %}''{% endif %}" placeholder="Enter Email">
+                            </div>
+                            <div class="feedback float-left mb-4" style="margin-top:-10px;"></div>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-primary btn-block waves-effect waves-light auth-btn">
+                                <span></span>
+                                <span>SUBMIT</span>
+                            </button>
+                        </div>
+                        <div class="signin_with mt-3">
+                            <a href="javascript:void(0);" class="link" style="color:#fff">Need Help?</a>
+                        </div>
+                    </div>
+                </form>
+                <div class="copyright text-center">
+                    <span>&copy; <script>document.write(new Date().getFullYear())</script>,</span>
+                    <span><a class="page-refresher" href="{% url 'home' %}">{{site_name}}</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

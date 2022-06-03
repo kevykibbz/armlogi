@@ -48,7 +48,7 @@
                         <div class="body">
                             <form action="{% url 'tabulate order' id=form_id %}" method="post" class="spreadsheetForm">
                                 {% csrf_token %}
-                                <div id="wizard_horizontal">
+                                 <div id="wizard_horizontal">
                                     <h2>First Step</h2>
                                     <section>
                                        <div class="row">
@@ -75,14 +75,14 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">MBL</label>
+                                                    <label for="">MBL#</label>
                                                     {{form.mbl}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">HBL</label>
+                                                    <label for="">HBL#</label>
                                                     {{form.hbl}}
                                                     <div class="feedback"></div>
                                                 </div>
@@ -91,7 +91,6 @@
                                                 <div class="form-group">
                                                     <label for="">Customer</label>
                                                     {{form.customer}}
-                                                    <datalist id="customerlist">
                                                     {% if customerlist %}
                                                         <datalist id="customerlist">
                                                         {% for item in customerlist %}
@@ -104,7 +103,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Container</label>
+                                                    <label for="">Container#</label>
                                                     {{form.container}}
                                                     <div class="feedback"></div>
                                                 </div>
@@ -116,6 +115,20 @@
                                        <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
+                                                    <label for="">Type</label>
+                                                    {{form.type}}
+                                                    <div class="feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">Seal#</label>
+                                                    {{form.seal}}
+                                                    <div class="feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
                                                     <label for="">Drop city</label>
                                                     {{form.drop_city}}
                                                     <div class="feedback"></div>
@@ -123,14 +136,14 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Discharge port</label>
+                                                    <label for="">Discharge Port</label>
                                                     {{form.discharge_port}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Port eta</label>
+                                                    <label for="">Port ETA</label>
                                                     {{form.port_eta}}
                                                     <div class="feedback"></div>
                                                 </div>
@@ -151,12 +164,17 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">East deliver</label>
+                                                    <label for="">EST.deliver</label>
                                                     {{form.east_deliver}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
+                                       </div>
+                                    </section>
+                                    <h2>Third Step</h2>
+                                    <section>
+                                       <div class="row">
+                                         <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">Appointment</label>
                                                     {{form.appointment}}
@@ -170,14 +188,23 @@
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
-                                       </div>
-                                    </section>
-                                    <h2>Third Step</h2>
-                                    <section>
-                                       <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Empty chassis</label>
+                                                    <label for="">Driver</label>
+                                                    {{form.driver}}
+                                                    <div class="feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">Empty Return</label>
+                                                    {{form.empty_return}}
+                                                    <div class="feedback"></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="">Chassis</label>
                                                     {{form.chasis}}
                                                     <div class="feedback"></div>
                                                 </div>
@@ -191,18 +218,23 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Invoice sent</label>
+                                                    <label for="">Invoice Sent</label>
                                                     {{form.invoice_sent}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Invoice</label>
+                                                    <label for="">Invoice#</label>
                                                     {{form.invoice}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
+                                       </div>
+                                    </section>
+                                    <h2>Fourth Step</h2>
+                                    <section>
+                                       <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">Invoice $</label>
@@ -226,16 +258,11 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Customer email</label>
+                                                    <label for="">Customer Email</label>
                                                     {{form.customer_email}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
-                                       </div>
-                                    </section>
-                                    <h2>Fourth Step</h2>
-                                    <section>
-                                       <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="">Notify</label>
@@ -245,40 +272,17 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="form-group">
-                                                    <label for="">Acct email</label>
+                                                    <label for="">ACCT Email</label>
                                                     {{form.acct_email}}
                                                     <div class="feedback"></div>
                                                 </div>
                                             </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Driver</label>
-                                                    {{form.driver}}
-                                                    <div class="feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Empty return</label>
-                                                    {{form.empty_return}}
-                                                    <div class="feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Type</label>
-                                                    {{form.type}}
-                                                    <div class="feedback"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="form-group">
-                                                    <label for="">Seal</label>
-                                                    {{form.seal}}
-                                                    <div class="feedback"></div>
-                                                </div>
-                                            </div>
                                             <div class="col-12 form-group">
+                                                <label for="">Add comment</label>
+                                                {{form.comment}}
+                                                <div class="feedback"></div>
+                                           </div>
+                                           <div class="col-12 form-group">
                                                 <label for="">File</label>
                                                 <div class="custom-file">
                                                     {{form.media}}

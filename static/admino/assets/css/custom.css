@@ -6,6 +6,41 @@
 {
     color: #fff !important;   
 }
+#leftsidebar
+{
+    background-image: url('../images/bg.jpg');
+    background-repeat:no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: #fff;
+}
+a[type='button']
+{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.wizard > .content
+{
+    background: #eee;
+    display: block;
+    margin: 0.5em;
+    min-height:48em;
+    overflow: hidden;
+    position: relative;
+    width: auto;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+}
+#id_pickup_contact_phone_1,
+#id_quote_phone_1,
+#id_shipping_contact_phone_1,
+#id_phone_1
+{
+    width:68%;
+    float:right;
+}
 .sidebar .menu .list a i
 {
     -moz-transform: rotate(0deg);
@@ -395,7 +430,7 @@ padding-top: 100%;
     stroke: #ffa700;
   }
 }
-      .file-drop-area {
+  .file-drop-area {
   position: relative;
   display: flex;
   align-items: center;

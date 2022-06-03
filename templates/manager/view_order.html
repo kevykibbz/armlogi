@@ -39,11 +39,7 @@
                                 <div class="buttons col-5 float-right"  style="display:none">
                                     {% if data.extendedauthuser.role != 'Tertiary' %}
                                     <a  data-toggle="modal" data-target="#editModal" type="button" href="{% url 'edit main order' id=order.ordername_id %}" class="btn btn-success btn-icon editorderbtn" type="button"><i class="zmdi zmdi-edit"></i></a>
-                                    {% if data.is_superuser %}
                                     <a  data-host="{% url 'view orders'%}" href="{% url 'delete order' id=order.ordername_id %}" class="del-data btn btn-danger btn-icon " type="button"><i class="zmdi zmdi-delete"></i></a>
-                                    {% else %}
-                                     <a href="javascript:void(0)" class="btn btn-danger btn-icon " type="button"><i class="zmdi zmdi-delete"></i></a>
-                                    {% endif %}
                                     {% endif %}
                                 </div>
                             </div>

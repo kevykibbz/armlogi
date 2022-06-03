@@ -109,7 +109,20 @@ def create_order_id(sender, instance, created, **kwargs):
 
 def save_order_id(sender, instance, *args,**kwargs):
     instance.orderfields.save()
-       
+ 
+
+
+class LoggerData(models.Model):
+    action=models.CharField(null=True,blank=True,max_length=200)
+    user=models.CharField(null=True,blank=True,max_length=200)
+    role=models.CharField(null=True,blank=True,max_length=200)
+    created_at=models.DateTimeField(default=now)
+    class Meta:
+        db_table='logger_data'
+        verbose_name_plural='logger_data'
+
+    def __str__(self):
+        return f'{self.user} logged data'
 
 options=[
             ("Cancelled pickup","Cancelled pickup"),
@@ -152,7 +165,11 @@ class OrderFields(models.Model):
     notify=models.CharField(max_length=100,null=True,blank=True)
     prefix=models.CharField(max_length=100,null=True,blank=True)
     acct_email=models.CharField(max_length=100,null=True)
+    customer_link=models.CharField(max_length=100,null=True,default=generate_serial)
+    comment=models.TextField(null=True,blank=True)
     media=models.FileField(upload_to='uploads/',null=True,blank=True)
+    file_size=models.CharField(max_length=100,null=True)
+    file_type=models.CharField(max_length=100,null=True)
     date=models.DateField(null=True)
     modified_at=models.DateTimeField(default=now)
     created_at=models.DateTimeField(default=now)
@@ -170,6 +187,13 @@ class OrderFields(models.Model):
     @property
     def get_prefix(self):
         return 'A21'+str(self.id).zfill(5)
+
+@receiver(post_save, sender=OrderFields)
+def create_user_logging_data(sender, instance, created, **kwargs):
+    if created:
+        op=str(instance.ordername_id).zfill(5)
+        prefix='21A'+op
+        OrderFields.objects.create(order_id=instance.ordername_id,prefix=prefix)
 
 
 
@@ -191,3 +215,50 @@ class UserFileUploads(models.Model):
         if self.media:
             self.media.storage.delete(self.media.name)
         super().delete()
+
+
+#customer quote
+class CustomerFields(models.Model):
+    quote_contact=models.CharField(max_length=200,null=True,blank=True)
+    quote_phone=PhoneNumberField(null=True,blank=True,verbose_name='phone',max_length=13)
+    quote_email=models.CharField(max_length=100,null=True,blank=True)
+    quote_wechat=models.CharField(max_length=200,null=True,blank=True)
+    pickup_select=models.CharField(max_length=100,null=True,blank=True)
+    pickup_address=models.CharField(max_length=100,null=True,blank=True)
+    zipcode=models.CharField(max_length=100,null=True,blank=True)
+    internal_order_number=models.CharField(max_length=200,null=True,blank=True)
+    pickup_contact_phone=PhoneNumberField(null=True,blank=True,verbose_name='phone',max_length=13)
+    pickup_contact=models.CharField(max_length=100,null=True,blank=True)
+    pickup_contact_email=models.CharField(max_length=100,null=True,blank=True)
+    shipping_select=models.CharField(max_length=100,null=True,blank=True)
+    shipping_address=models.CharField(max_length=100,null=True,blank=True)
+    shipping_zipcode=models.CharField(max_length=100,null=True,blank=True)
+    shipping_order_number=models.CharField(max_length=100,null=True,blank=True)
+    shipping_contact=models.CharField(max_length=100,null=True,blank=True)
+    shipping_contact_phone=PhoneNumberField(null=True,blank=True,verbose_name='phone',max_length=13)
+    shipping_contact_email=models.CharField(max_length=100,null=True,blank=True)
+    item_name=models.CharField(max_length=100,null=True,blank=True)
+    prefix=models.CharField(max_length=100,null=True,blank=True)
+    packaging_board=models.CharField(max_length=100,null=True,blank=True)
+    dimensions=models.CharField(max_length=100,null=True,blank=True)
+    weight=models.CharField(max_length=100,null=True,blank=True)
+    payer=models.CharField(max_length=100,null=True,blank=True)
+    media=models.FileField(upload_to='customer/',null=True,blank=True)
+    modified_at=models.DateTimeField(default=now)
+    created_at=models.DateTimeField(default=now)
+    class Meta:
+        db_table='customerfields'
+        verbose_name_plural='customerfields'
+        ordering=('created_at',)
+    def __str__(self)->str:
+        return self.quote_contact
+
+    def delete(self, using=None,keep_parents=False):
+        if self.media:
+            self.media.storage.delete(self.media.name)
+        super().delete()
+
+    @property
+    def get_pref(self):
+        return 'QA'+str(self.id).zfill(5)
+

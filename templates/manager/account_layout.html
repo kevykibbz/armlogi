@@ -51,13 +51,12 @@
     <link rel="stylesheet" href="{% static 'admino/assets/plugins/jquery-steps/jquery.steps.css' %}">
     <link rel="stylesheet" href="{% static 'admino/assets/plugins/fullcalendar/fullcalendar.min.css' %}">
     <style>
-        #leftsidebar
+        .bootstrap-select.form-control:not([class*="col-"])
         {
-            background-image: url('{% static "admino/assets/images/Group 62.png" %}');
-            background-repeat:no-repeat;
-            background-position: center;
-            background-size: cover;
-            color: #fff;
+            width:28%;
+            text-align: left !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -84,8 +83,8 @@
     <!-- Right Icon menu Sidebar -->
     <div class="navbar-right">
         <ul class="navbar-nav">
-<!--             <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
- -->            <li class="dropdown">
+           <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
+           <li class="dropdown">
                 <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i class="zmdi zmdi-apps"></i></a>
                 <ul class="dropdown-menu slideUp2">
                     <li class="header">App Shortcut</li>
@@ -123,8 +122,20 @@
                             </li>
                             <li>
                                 <a href="{% url 'user file uploads' %}">
-                                    <div class="icon-circle mb-2 bg-blue"><i class="zmdi zmdi-attachment-alt"></i></div>
+                                    <div class="icon-circle mb-2 bg-yellow"><i class="zmdi zmdi-attachment-alt"></i></div>
                                     <p class="mb-0">Uploads</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'do incomings' %}">
+                                    <div class="icon-circle mb-2 bg-blue"><i class="zmdi zmdi-traffic"></i></div>
+                                    <p class="mb-0">Do Incomings</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'view logs' %}">
+                                    <div class="icon-circle mb-2 bg-green"><i class="zmdi zmdi-rotate-cw"></i></div>
+                                    <p class="mb-0">Logs</p>
                                 </a>
                             </li>
                         </ul>
@@ -151,7 +162,7 @@
                     <div class="user-info">
                         <a class="image" href="{% url 'user profile' username=user.username %}"><img  style="width:45px;height:45px;object-fit:cover;border-radius:50%;overflow:hidden;" class="img-fluid" src="{% static 'admino/assets/images/loader.gif' %}" data-src="{% if user.extendedauthuser.profile_pic.url %}/media{{user.extendedauthuser.profile_pic.url}}{% else %}{% static 'profiles/placeholder.jpg' %}{% endif %}" alt="User"></a>
                         <div class="detail fw-bolder">
-                            <h4>{{data.username}}</h4>
+                            <h4>{{data.first_name}}</h4>
                             {% if data.extendedauthuser.role == 'Admin' %}
                                 <small><div class="badge badge-success p-2">{{data.extendedauthuser.role}}</div></small> 
                             {% elif data.extendedauthuser.role == 'Secondary' %}
@@ -182,6 +193,10 @@
                 {% if data.extendedauthuser.role == 'Admin' %}
                     <li class=""><a href="{% url 'user file uploads' %}"><i class="zmdi zmdi-attachment-alt"></i><span>Uploads</span></a></li>
                 {% endif %}
+                {% if data.is_superuser %}
+                    <li class=""><a href="{% url 'view logs' %}"><i class="zmdi zmdi-rotate-cw"></i><span>Logs</span></a></li>
+                {% endif %}
+                <li class=""><a href="{% url 'do incomings' %}"><i class="zmdi zmdi-traffic"></i><span>Do Incomings</span></a></li>
                 <li class="d-md-none d-block"><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i class="zmdi zmdi-settings "></i><span>Settings</span></a></li>
                 <li class="d-md-none">
                     <a href="{% url 'user profile' username=user.username %}">
@@ -189,6 +204,7 @@
                         <span>Account profile</span>
                     </a>
                 </li>
+                <li class="d-md-none d-block"><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
                 <li class=""><a href="{% url 'logout' %}"><i class="zmdi zmdi-power"></i><span>Logout</span></a></li>
                 <div class="progress-container progress-primary d-md-block d-none user-pallate" style="margin-top:28%">
                     <h4>{% now "l" %}</h4>
@@ -323,29 +339,5 @@
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
     <script src="{% static 'admino/assets/js/pages/tables/jquery-datatable.js' %}"></script>
-    <script>
-        $(document).ready(function()
-        {
-            var b=$('body').attr('class').split(' '),
-            c=$(b).get(-1);
-            if(c == 'ls-closed')
-            {
-                $('.user-pallate').addClass('user-area');
-            }
-            $(document).on('click','.ls-toggle-btn',function()
-            {
-                var b=$('body').attr('class').split(' '),
-                c=$(b).get(-1);
-                if(c !== 'ls-toggle-menu')
-                {
-                    $('.user-pallate').removeClass('user-area');
-                }
-                else
-                {
-                    $('.user-pallate').addClass('user-area');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

@@ -35,37 +35,38 @@
                                     <tr>                                       
                                         <th>#</th>
                                         <th>Action</th>
-                                        <th>Load</th>
+                                        <th>Load #</th>
                                         <th>Status</th>
                                         <th>Date</th>                                        
                                         <th>Pierpass</th>
-                                        <th>MBL</th>
-                                        <th>HBL</th>
-                                        <th>Customer</th>
+                                        <th>MBL#</th>
+                                        <th>HBL#</th>
+                                        <th>Customer#</th>
                                         <th>Container</th>
                                         <th>Type</th>
-                                        <th>Seal</th>
-                                        <th>Drop city</th>
-                                        <th>Discharge port</th>
+                                        <th>Seal#</th>
+                                        <th>Drop City</th>
+                                        <th>Discharge Port</th>
                                         <th>Port ETA</th>
                                         <th>LFD</th>
                                         <th>Trucking</th>
-                                        <th>East delivery</th>
+                                        <th>Est.Deliver</th>
                                         <th>Appointment</th>
-                                        <th>Actual deliver</th>
+                                        <th>Actual Deliver</th>
                                         <th>Driver</th>
-                                        <th>Empty return </th>
+                                        <th>Empty Return </th>
                                         <th>Chassis</th>
                                         <th>Demurrage</th>
-                                        <th>Invoice sent</th>
-                                        <th>Invoice</th>
+                                        <th>Invoice Sent</th>
+                                        <th>Invoice#</th>
                                         <th>Invoice $</th>
                                         <th>A/R</th>
                                         <th>A/P</th>
-                                        <th>Customer email</th>
+                                        <th>Customer Email</th>
                                         <th>Notify</th>
-                                        <th>Acct email</th>
+                                        <th>Acct Email</th>
                                         <th>File</th>
+                                        <th>Comments</th>
                                         <th>Modified on</th>
                                         <th>Created on</th>
                                     </tr>
@@ -146,6 +147,7 @@
                                                 No file found
                                             {% endif %}
                                         </td>
+                                        <td>{% if item.comment %}{{item.comment}}{% else %} No comment found{% endif %}</td>
                                         <td>{% if item.modified_at %}{{item.modified_at}}{% else %} No data {% endif %}</td>
                                         <td>{% if item.created_at %}{{item.created_at}}{% else %} No data {% endif %}</td>
                                      </tr>

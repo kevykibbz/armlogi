@@ -1,0 +1,29 @@
+{% extends 'manager/login_layout.html' %}
+{% load static %}
+{% block body %}
+<div class="authentication">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-10 mx-auto text-center">
+                  <form  class="card auth_form myForm">
+                    <div class="header" style="color:#fff;">
+                        <img class="logo" src="{% static 'admino/assets/images/loader.gif' %}" data-src="{% static 'admino/assets/images/logos/armlogi-logo-removebg-preview.svg' %}" alt="{{site_name}} logo">
+                        <h5>Authorization link sent!</h5>
+                    </div>
+                    <div class="body">
+                         <p class="text-center">We’ve emailed you instructions for setting your authorization link, <br>if an records exists with the email you entered. You should receive them shortly.
+                    <br>If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.</p>
+                    <div class="mt-3">
+                        <a href="{% url 'customer quote' %}" class="btn btn-primary">Place new quote Now </a>
+                    </div>
+                    </div>
+                </form>
+                <div class="copyright text-center">
+                    <span> &copy; <script>document.write(new Date().getFullYear())</script>,</span>
+                    <span><a class="page-refresher" href="{% url 'home' %}">{{site_name}}</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
