@@ -4,7 +4,8 @@ env=environ.Env()
 environ.Env().read_env()
 def export_vars(request):
     data={
-     	    'site_name':env('SITE_NAME'),
+            'site_name':env('SITE_NAME'),
+            'site_url':env('SITE_URL'),
      	    'designer_link':env('SITE_DESIGNER_LINK'),
             'designer_name':env('SITE_DESIGNER_NAME'),
             'designer portfolio':env('SITE_DESIGNER_NAME'),
