@@ -32,7 +32,21 @@
                                <button class="btn btn-secondary">{% if orders.prefix %} {{orders.prefix}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="col-md-4 col-6">
-                               <button class="btn btn-secondary">{% if orders.status %}{{orders.status}}{% else %} None {% endif %}</button>
+                                {% if orders.status == 'Cancelled pickup' %}
+                                    <button class="btn btn-danger">{{orders.status}}</button>
+                                {% elif orders.status == 'On ship' %}
+                                    <button class="btn btn-info">{{orders.status}}</button>
+                                {% elif orders.status == 'Invoice sent' %}
+                                    <button class="btn btn-success">{{orders.status}}</button>
+                                {% elif orders.status == 'closed area' %}
+                                    <button class="btn btn-danger">{{orders.status}}</button>
+                                {% elif orders.status == 'Assigned driver' %}
+                                    <button class="btn btn-info">{{orders.status}}</button>
+                                {% elif orders.status == 'Delivered' %}
+                                    <button class="btn btn-success">{{orders.status}}</button>
+                                {% else %}
+                                    <button class="btn btn-info">{{orders.status}}</button>
+                                {% endif %}
                            </div>
                            <div class="col-md-4 col-6">
                                <button class="btn btn-secondary">{% if orders.date %}{{orders.date}}{% else %} None {% endif %}</button>
