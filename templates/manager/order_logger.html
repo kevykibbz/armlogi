@@ -8,10 +8,10 @@
                 <div class="block-header">
                     <div class="row">
                         <div class="col-lg-7 col-md-6 col-sm-12">
-                            <h2>Logs Summary</h2>
+                            <h2>{{ordername}} | Logs Summary</h2>
                             <ul class="breadcrumb">
                                 <li class="breadcrumb-item"><a  href="{% url 'home' %}"><i class="zmdi zmdi-home"></i> {{site_name}}</a></li>
-                                <li class="breadcrumb-item active">Recent System logs</li>
+                                <li class="breadcrumb-item active">{{ordername}} recent order logs</li>
                             </ul>
                             <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                         </div>
@@ -27,7 +27,7 @@
                         <div class="table-responsive table-results">
                             <h5><strong>|Items</strong> {{count|intcomma}}</h5>
                            <!--  <div class="text-left">
-                                 <a data-host="{% url 'view logs'%}" href="{% url 'delete all logs' %}" data-toggle="tooltip" title="Delete all logs" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                 <a data-host="{% url 'order logs' id=order_id  %}" href="{% url 'delete all order logs' %}" data-toggle="tooltip" title="Delete all logs" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                             </div> -->
                             <table class="table table-bordered table-striped table-hover dataTable js-exportable  c_table theme-color ">
                                 {% if logs %}
@@ -37,9 +37,9 @@
                                         <th> {{item.created_at}}</th>
                                         <td><b class="text-info">Action:</b> {{item.action}}</td>
                                         <td><b class="text-danger">By:</b> {{item.user}} [{% if item.role == 'Admin' %}<span class="text-success">{{item.role}}</span>{% elif item.role == 'Secondary' %}<span class="text-warning">{{item.role}}</span>{% else %}<span class="text-primary">{{item.role}}</span>{% endif %}]</td>
-                                       <!--  <td>
+                                        <!-- <td>
                                             {% if data.is_superuser %}
-                                                <a data-host="{% url 'view logs'%}" href="{% url 'delete single log' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data3 btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                <a data-host="{% url 'order logs' id=order_id %}" href="{% url 'delete single order log' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data3 btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                             {% else %}
                                                 <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                             {% endif %}

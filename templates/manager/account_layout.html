@@ -60,13 +60,18 @@
         }
          #leftsidebar
         {
-            background-image: url("{% static 'admino/assets/images/bg.jpg' %}");
+            background:#000 !important;
+            /*background-image: url("{% static 'admino/assets/images/bg.jpg' %}");
             background-repeat:no-repeat;
             background-position: center;
-            background-size: cover;
+            background-size: cover;*/
             color: #fff;
         }
-
+        .copy-button:hover
+        {
+            color:#222342 !important;
+            cursor:pointer;
+        }
     </style>
 </head>
 <body class="theme-blush">
@@ -342,6 +347,7 @@
     <script src="{% static 'admino/assets/js/pages/forms/advanced-form-elements.js' %}"></script> 
     <script src="{% static 'admino/assets/js/custom.js' %}"></script>
     <script src="{% static 'admino/assets/js/fileuploader.js' %}"></script>
+    <script src="{% static 'admino/assets/js/clipboard.min.js' %}"></script>
     <script src="{% static 'admino/assets/bundles/datatablescripts.bundle.js' %}"></script>
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/dataTables.buttons.min.js' %}"></script>
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.bootstrap4.min.js' %}"></script>
@@ -350,5 +356,8 @@
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.html5.min.js' %}"></script>
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
     <script src="{% static 'admino/assets/js/pages/tables/jquery-datatable.js' %}"></script>
+    <script>
+        new ClipboardJS('.copy-button');
+    </script>
 </body>
 </html>

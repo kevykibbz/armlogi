@@ -99,6 +99,7 @@ class Oders(models.Model):
         verbose_name_plural='orders'
     def __str__(self)->str:
         return self.ordername
+
     
 @receiver(post_save, sender=Oders)
 def create_order_id(sender, instance, created, **kwargs):
@@ -123,6 +124,19 @@ class LoggerData(models.Model):
 
     def __str__(self):
         return f'{self.user} logged data'
+
+class OrderLogs(models.Model):
+    order_id=models.IntegerField(null=True,blank=True)
+    action=models.CharField(null=True,blank=True,max_length=200)
+    user=models.CharField(null=True,blank=True,max_length=200)
+    role=models.CharField(null=True,blank=True,max_length=200)
+    created_at=models.DateTimeField(default=now)
+    class Meta:
+        db_table='order_logs'
+        verbose_name_plural='order_logs'
+
+    def __str__(self):
+        return f'{self.user} order logs'
 
 options=[
             ("Cancelled pickup","Cancelled pickup"),

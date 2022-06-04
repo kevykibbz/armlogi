@@ -641,8 +641,7 @@ $(document).on('submit','.spreadsheetForm',function()
       beforeSend:function()
       {
         el.parents('.card').find('.load-overlay').show();
-        el.find('button:first').html('<i class="spinner-border spinner-border-sm" role="status"></i>');
-        el.find('button:last').text(' Please wait...');
+        el.find('button:last ').text(' Saving...');
         el.find('button').attr('disabled',true);
         el.parents('.card').find('.overlay-close').removeClass('btn-remove');
       },
@@ -650,7 +649,6 @@ $(document).on('submit','.spreadsheetForm',function()
       {
         el.parents('.card').find('.overlay-close').addClass('btn-remove');
         el.parents('.card').find('.load-overlay').hide();
-        el.find('button:first').html('');
         el.find('button:last').text('Save changes');
         el.find('button').attr('disabled',false);
         if(callback.valid)
@@ -671,7 +669,6 @@ $(document).on('submit','.spreadsheetForm',function()
       error:function(err)
       {
         el.parents('.card').find('.overlay-close').addClass('btn-remove');
-        el.find('button:first').html('');
         el.find('button:last').text('Save changes');
         el.find('button').attr('disabled',false);
         el.parents('.card').find('.load-overlay .loader-container').html('<span class="text-danger font-weight-bold"> <i class="zmdi zmdi-alert-triangle"></i> '+err.status+' :'+err.statusText+'</span>.');
@@ -876,4 +873,51 @@ $(document).on('change','#id_stats',function()
 $(document).on('change','input[type=file]',function()
 {
   $(this).removeClass('is-invalid').addClass('is-valid').parent().find('.feedback').removeClass('invalid-feedback').addClass('valid-feedback').html('Filename: '+this.files[0].name);
+});
+
+
+/*send_notification*/
+$(document).on('click','.send_notification',function()
+{
+  var el=$(this),
+  form_data=new FormData();
+  form_data.append('id',el.data('id'));
+    $.ajax(
+    {
+      url:el.data('url'),
+      method:'post',
+      dataType:'json',
+      data:form_data,
+      contentType:false,
+      cache:false,
+      processData:false,
+      beforeSend:function()
+      {
+        el.text('Please wait...');
+        el.attr('disabled',true);
+      },
+      success:function(callback)
+      {
+        el.text('Send notification');
+        el.attr('disabled',false);
+        if(callback.valid)
+        {
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Success');
+            $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Notification sent successfully.</div>');
+            //window.location='/tabulate/order/'+callback.order_id+'/';
+        }
+        else
+        {
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Error');
+            $('.small-model').find('.modal-body').html('<div class="text-danger text-center"><i class="fa fa-exclamation-circle"></i> '+callback.message+'</div>');
+        }
+      },
+      error:function(err)
+      {
+        el.text('Send notification');
+        el.attr('disabled',false);
+      }
+    });
 });

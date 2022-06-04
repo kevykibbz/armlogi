@@ -1,7 +1,7 @@
 from manager.decorators import unauthenticated_user,allowed_users
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Oders,ExtendedAuthUser,OrderFields,UserFileUploads,CustomerFields,LoggerData
+from .models import Oders,ExtendedAuthUser,OrderFields,UserFileUploads,CustomerFields,LoggerData,OrderLogs
 from django.contrib.auth.models import User,Group,Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render,get_object_or_404
@@ -27,6 +27,7 @@ import math
 from django.utils.crypto import get_random_string
 from manager.addons import send_email
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 
 #save logger data
 def save_logger(action,user,role):
@@ -35,6 +36,11 @@ def save_logger(action,user,role):
         y.save()
 
 
+#save order logger data
+def save_order_logger(action,user,role,order_id):
+    if action and user and order_id:
+        z=OrderLogs.objects.create(action=action,user=user,role=role,order_id=order_id)
+        z.save()
 
 @method_decorator(unauthenticated_user,name='dispatch')
 class Dashboard(View):
@@ -327,6 +333,7 @@ class UserNewOrder(View):
             role=request.user.extendedauthuser.role
             save_logger(f'Placed a new order:{order}',request.user.get_full_name(),role)
             order_id=OrderFields.objects.latest('id').id
+            save_order_logger(f'New order:{order} was created.',request.user.get_full_name(),role,order_id)
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -361,6 +368,7 @@ def editMainOrder(request,id):
         order=form.cleaned_data.get('ordername')
         role=request.user.extendedauthuser.role
         save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
+        save_order_logger(f'Order:{order} was edited.',request.user.get_full_name(),role,id)
         return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
     else:
         return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -398,22 +406,10 @@ class EditOrder(View):
             t.customer_link=generate_id()
             t.save()
             order=obj.ordername
+            order_id=obj.ordername_id
             role=request.user.extendedauthuser.role
             save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
-            if data.customer_link and data.customer_email:
-                subject='Authorization link.'
-                domain=settings.BASE_URL
-                email=data.customer_email
-                link=data.customer_link
-                message={
-
-                        'link':link,
-                        'domain':domain,
-                        'site_name':site_data.site_name,
-                        'site_url':site_data.site_url,
-                }
-                template='emails/auth_link.html'
-                send_email(subject,email,message,template)
+            save_order_logger(f'Order:{order} was edited.',request.user.get_full_name(),role,order_id)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -446,6 +442,7 @@ def deleteOrder(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted order:{order}',request.user.get_full_name(),role)
+            save_order_logger(f'Order:{order} was deleted.',request.user.get_full_name(),role,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:
@@ -523,6 +520,7 @@ def deleteSingleItem(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted  order:{order}',request.user.get_full_name(),role)
+            save_order_logger(f'Order:{order} was deleted.',request.user.get_full_name(),role,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order item deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:
@@ -812,9 +810,22 @@ def deleteLog(request,id):
         try:
             obj=LoggerData.objects.get(id=id)
             obj.delete() 
-            return JsonResponse({'valid':False,'message':'Log deleted successfully.','id':id},content_type='application/json')       
+            return JsonResponse({'valid':True,'message':'Log deleted successfully.','id':id},content_type='application/json')       
         except LoggerData.DoesNotExist:
-            return JsonResponse({'valid':True,'message':'Log does not exist'},content_type='application/json')
+            return JsonResponse({'valid':False,'message':'Log does not exist'},content_type='application/json')
+
+#deleteOrderLog
+
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins'])
+def deleteOrderLog(request,id):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            obj=OrderLogs.objects.get(id=id)
+            obj.delete() 
+            return JsonResponse({'valid':True,'message':'Log deleted successfully.','id':id},content_type='application/json')       
+        except OrderLogs.DoesNotExist:
+            return JsonResponse({'valid':False,'message':'Order log does not exist'},content_type='application/json')
 
 #deleteAllLogs
 @login_required(login_url='/')
@@ -824,6 +835,78 @@ def deleteAllLogs(request):
         try:
             obj=LoggerData.objects.all()
             obj.delete() 
-            return JsonResponse({'valid':False,'message':'Logs deleted successfully.','id':id},content_type='application/json')       
+            return JsonResponse({'valid':True,'message':'Logs deleted successfully.','id':id},content_type='application/json')       
         except Exception as e:
-            return JsonResponse({'valid':True,'message':'Error: Something went wrong'},content_type='application/json')
+            return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')
+
+
+#deleteAllOrderLogs
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins'])
+def deleteAllOrderLogs(request):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            obj=OrderLogs.objects.all()
+            obj.delete() 
+            return JsonResponse({'valid':True,'message':'Order ogs deleted successfully.','id':id},content_type='application/json')       
+        except Exception as e:
+            return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')
+
+
+
+#OrderLogs
+
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins'])
+def OrderLogger(request,id):
+    obj=SiteConstants.objects.all()[0]
+    try:
+        data=OrderLogs.objects.filter(order_id=id).order_by('-id')
+        order_data=Oders.objects.get(ordername_id__exact=id)
+        paginator=Paginator(data,30)
+        page_num=request.GET.get('page')
+        results=paginator.get_page(page_num)
+        data={
+                'title':f'{order_data.ordername} recent logs',
+                'obj':obj,
+                'data':request.user,
+                'logs':results,
+                'count':paginator.count,
+                'ordername':order_data.ordername,
+                'order_id':id
+            }
+        return render(request,'manager/order_logger.html',context=data)       
+    except Exception as e:
+        data={
+                'title':'Error | Page Not Found',
+                'obj':obj
+        }
+        return render(request,'manager/404.html',context=data,status=404)
+
+#send_notification
+@csrf_exempt
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins','secondary'])
+def send_notification(request):
+    id=request.POST['id']
+    data=OrderFields.objects.get(id__exact=id)
+    obj=SiteConstants.objects.all()[0]
+    if data.customer_link and data.customer_email:
+        try:
+            subject='Authorization link.'
+            domain=settings.BASE_URL
+            email=data.customer_email
+            link=data.customer_link
+            message={
+
+                    'link':link,
+                    'domain':domain,
+                    'site_name':obj.site_name,
+                    'site_url':obj.site_url,
+            }
+            template='emails/auth_link.html'
+            send_email(subject,email,message,template)
+            return JsonResponse({'valid':True,'message':'Notification sent successfully'},content_type='application/json')
+        except Exception as e:
+            return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')       
+    return JsonResponse({'valid':False,'message':'Error: Update Customer Email First.'},content_type='application/json')       

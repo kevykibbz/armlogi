@@ -17,6 +17,7 @@
                 </div>
                 <div class=" col-lg-5 col-md-6 col-sm-12 ">                
                     <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                    <a  href="{% url 'order logs' id=form_id %}" class="btn btn-success btn-icon float-right " data-toggle="tooltip" title="order history" type="button"><i class="zmdi zmdi-rotate-right"></i></a>
                     <a  href="{% url 'order summary'%}" class="btn btn-info btn-icon float-right " data-toggle="tooltip" title="go back" type="button"><i class="zmdi zmdi-arrow-left"></i></a>
                 </div>
             </div>
@@ -277,7 +278,8 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mt-3 text-center">
-                                        <button class="btn btn-primary">Submit</button>
+                                        <button type="button" data-url="{% url 'send notification' %}" data-id="{{form_id}}" class="btn btn-info send_notification">Send notification</button>
+                                        <button class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
                             </form>
