@@ -149,7 +149,7 @@
                                             {% endif %}
                                         </td>
                                         <td>{% if item.comment %}{{item.comment}}{% else %} No comment found{% endif %}</td>
-                                        <td>{% if item.customer_link %}<i data-toggle="tooltip" data-clipboard-text="{{obj.site_url}}/view/{{item.customer_link}}" title="copy link" class="text-info zmdi zmdi-copy copy-button"></i>{% else %} No link found{% endif %}</td>
+                                        <td>{% if item.customer_link %}<i data-toggle="tooltip" data-clipboard-text="{{obj.site_url}}/view/{{item.customer_link}}/" title="copy link" class="text-info zmdi zmdi-copy copy-button"></i>{% else %} No link found{% endif %}</td>
                                         <td>{% if item.modified_at %}{{item.modified_at}}{% else %} No data {% endif %}</td>
                                         <td>{% if item.created_at %}{{item.created_at}}{% else %} No data {% endif %}</td>
                                      </tr>

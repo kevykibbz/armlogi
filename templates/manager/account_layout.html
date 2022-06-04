@@ -357,7 +357,11 @@
     <script src="{% static 'admino/assets/plugins/jquery-datatable/buttons/buttons.print.min.js' %}"></script>
     <script src="{% static 'admino/assets/js/pages/tables/jquery-datatable.js' %}"></script>
     <script>
-        new ClipboardJS('.copy-button');
+        var copy=new ClipboardJS('.copy-button');
+        copy.on('success',function(e)
+        {
+            alert('link copied.');
+        });
     </script>
 </body>
 </html>

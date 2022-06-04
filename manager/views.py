@@ -713,17 +713,12 @@ def UploadMedia(request,id):
 def customerView(request,authlink):
     obj=SiteConstants.objects.all()[0]
     try:
-        q=OrderFields.objects.get(customer_link=authlink)
-        quotes=OrderFields.objects.filter(id=q.id).order_by('-id')
-        paginator=Paginator(quotes,30)
-        page_num=request.GET.get('page')
-        results=paginator.get_page(page_num)
+        quotes=OrderFields.objects.get(customer_link=authlink)
         data={
                 'title':'Customer status update',
                 'obj':obj,
                 'data':request.user,
-                'orders':results,
-                'count':paginator.count
+                'orders':quotes,
             }
         return render(request,'manager/status.html',context=data)
     except OrderFields.DoesNotExist:

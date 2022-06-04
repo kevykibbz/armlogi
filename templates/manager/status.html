@@ -27,134 +27,105 @@
             <div class="row clearfix">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="card project_list">
-                        <div class="table-responsive table-results">
-                            <h5><strong>|Items</strong> {{count|intcomma}}</h5>
-                            <table class="table table-bordered table-striped table-hover dataTable js-exportable  c_table theme-color ">
-                                <thead>
-                                    <tr>                                       
-                                        <th>#</th>
-                                        <th>Load #</th>
-                                        <th>Status</th>
-                                        <th>Date</th>                                        
-                                        <th>Pierpass</th>
-                                        <th>MBL#</th>
-                                        <th>HBL#</th>
-                                        <th>Customer#</th>
-                                        <th>Container</th>
-                                        <th>Type</th>
-                                        <th>Seal#</th>
-                                        <th>Drop City</th>
-                                        <th>Discharge Port</th>
-                                        <th>Port ETA</th>
-                                        <th>LFD</th>
-                                        <th>Trucking</th>
-                                        <th>Est.Deliver</th>
-                                        <th>Appointment</th>
-                                        <th>Actual Deliver</th>
-                                        <th>Driver</th>
-                                        <th>Empty Return </th>
-                                        <th>Chassis</th>
-                                        <th>Demurrage</th>
-                                        <th>Invoice Sent</th>
-                                        <th>Invoice#</th>
-                                        <th>Invoice $</th>
-                                        <th>A/R</th>
-                                        <th>A/P</th>
-                                        <th>Customer Email</th>
-                                        <th>Notify</th>
-                                        <th>Acct Email</th>
-                                        <th>File</th>
-                                        <th>Comments</th>
-                                        <th>Modified on</th>
-                                        <th>Created on</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% if orders %}
-                                     {% for item in orders %}
-                                     <tr id="id_{{item.id}}">
-                                        <td>{{forloop.counter}}.</td>
-                                        <td>{{item.prefix}}</td>
-                                        <td>
-                                            {% if item.status %}
-                                                {% if item.status == 'cancelled_pickup' %}
-                                                    <div class="p-2 badge badge-danger">{{item.status}}</div>
-                                                {% elif item.status == 'on_ship' %}
-                                                    <div class="p-2 badge badge-info">{{item.status}}</div>
-                                                {% elif item.status == 'invoice_sent' %}
-                                                    <div class="p-2 badge badge-success">{{item.status}}</div>
-                                                {% elif item.status == 'closed_area' %}
-                                                    <div class="p-2 badge badge-danger">{{item.status}}</div>
-                                                {% elif item.status == 'assigned_driver' %}
-                                                    <div class="p-2 badge badge-info">{{item.status}}</div>
-                                                {% elif item.status == 'delivered' %}
-                                                    <div class="p-2 badge badge-success">{{item.status}}</div>
-                                                {% else %}
-                                                    <div class="p-2 badge badge-info">{{item.status}}</div>
-                                                {% endif %}
-                                            {% else %} 
-                                                No data 
-                                            {% endif %}
-                                        </td>
-                                        <td>{% if item.date %}{{item.date}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.pierpass %}{{item.pierpass}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.mbl %}{{item.mbl}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.hbl %}{{item.hbl}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.customer %}{{item.customer}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.container %}{{item.container}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.type %}{{item.type}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.seal %}{{item.seal}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.drop_city %}{{item.drop_city}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.discharge_port %}{{item.discharge_port}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.port_eta %}{{item.port_eta }}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.lfd %}{{item.lfd}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.trucking %}{{item.trucking}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.east_deliver %}{{item.east_deliver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.appointment %}{{item.appointment}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.actual_deliver %}{{item.actual_deliver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.driver %}{{item.driver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.empty_return %}{{item.empty_return}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.chasis %}{{item.chasis}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.demurrage %}{{item.demurrage}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice_sent %}{{item.invoice_sent}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice %}{{item.invoice}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice_dolla %}{{item.invoice_dolla}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.a_rrry %}{{item.a_rrry}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.a_ppy %}{{item.a_ppy}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.customer_email %}{{item.customer_email}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.notify %}{{item.notify }}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.acct_email %}{{item.acct_email}}{% else %} No data {% endif %}</td>
-                                        <td class="text-center">
-                                            {% if item.media %}
-                                                <a href="/media{{item.media.url}}"  target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
-                                                <a  href="/media{{item.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success btn-icon" download><i class="zmdi zmdi-download"></i></a>
-                                            {% else %}
-                                                No file found
-                                            {% endif %}
-                                        </td>
-                                        <td>{% if item.comment %}{{item.comment}}{% else %} No comment found{% endif %}</td>
-                                        <td>{% if item.modified_at %}{{item.modified_at}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.created_at %}{{item.created_at}}{% else %} No data {% endif %}</td>
-                                     </tr>
-                                     {% endfor %}
-                                    {% else %}
-                                    <tr>
-                                        <td colspan="35">
-                                            <p class="text-info"><i class="zmdi zmdi-alert-triangle"></i> No order item(s) found.</p>
-                                        </td>
-                                    </tr>
-                                    {% endif %}
-                                </tbody>
-                            </table>
-                        </div>
-                        <ul class="pagination pagination-primary mt-4">
-                            {% if users.has_previous %}
-                            <li class="page-item active"><a class="page-link" href="{% url 'view users' %}?page={{users.previous_page_number}}"><i class="zmdi zmdi-chevron-left"></i></a></li>
-                            {% endif %}
-                            {% if users.has_next %}
-                            <li class="page-item active"><a class="page-link" href="{% url 'view users' %}?page={{users.next_page_number}}"><i class="zmdi zmdi-chevron-right"></i></a></li>
-                            {% endif %}
-                        </ul>
+                       <div class="row">
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.prefix %} {{orders.prefix}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.status %}{{orders.status}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.date %}{{orders.date}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.pierpass %}{{orders.pierpass}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.mbl %}{{orders.mbl}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.hbl %}{{orders.hbl}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.customer %}{{orders.customer}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.container %}{{orders.container}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.type %}{{orders.type}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.seal %}{{orders.seal}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.drop_city %}{{orders.drop_city}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.discharge_port %}{{orders.discharge_port}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.port_eta %}{{orders.port_eta}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.lfd %}{{orders.lfd}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.trucking %}{{orders.trucking}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.east_deliver %}{{orders.east_deliver}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.appointment %}{{orders.appointment}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.actual_deliver %}{{orders.actual_deliver}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.driver %}{{orders.driver}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.empty_return %}{{orders.empty_return}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.chasis %}{{orders.chasis}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.demurrage %}{{orders.demurrage}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.invoice_sent %}{{orders.invoice_sent}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.invoice %}{{orders.invoice}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.invoice_dolla %}{{orders.invoice_dolla}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.a_rrry %}{{orders.a_rrry}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.a_ppy %}{{orders.a_ppy}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.customer_email %}{{orders.customer_email}}{% else %} None {% endif %}</button>
+                           </div> 
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.notify %}{{orders.notify}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                               <button class="btn btn-secondary">{% if orders.acct_email %}{{orders.acct_email}}{% else %} None {% endif %}</button>
+                           </div>
+                           <div class="col-md-4 col-6">
+                                {% if item.media %}
+                                    <a href="/media{{item.media.url}}" target="_blank" class="btn btn-secondary">View File</a>
+                                {% else %}
+                                    <a href="javascript:void(0)" class="btn btn-secondary">No File</a>
+                                {% endif %}
+                           </div>
+                       </div>
                     </div>
                 </div>
             </div>
