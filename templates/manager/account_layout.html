@@ -190,6 +190,7 @@
                     </div>
                 </li>
                 <li class=""><a href="{% url 'home' %}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
+                <li class="d-md-none d-block"><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i> Search</a></li>
                 {% if  data.extendedauthuser.role == 'Admin' %}
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Users</span></a>
                     <ul class="ml-menu">
@@ -220,7 +221,6 @@
                         <span>Account profile</span>
                     </a>
                 </li>
-                <li class="d-md-none d-block"><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
                 <li class=""><a href="{% url 'logout' %}"><i class="zmdi zmdi-power"></i><span>Logout</span></a></li>
                 <div class="progress-container progress-primary d-md-block d-none user-pallate" style="margin-top:28%">
                     <h4>{% now "l" %}</h4>

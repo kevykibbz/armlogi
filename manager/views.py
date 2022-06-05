@@ -397,6 +397,7 @@ class EditOrder(View):
             'form':form,
             'editor':obj,
             'form_id':id,
+            'link':data.customer_link,
             'customerlist':customers
         }
         return render(request,'manager/tabulate.html',context=data)
