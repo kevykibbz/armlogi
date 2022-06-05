@@ -37,10 +37,15 @@ def save_logger(action,user,role):
 
 
 #save order logger data
-def save_order_logger(action,user,role,order_id):
-    if action and user and order_id:
-        z=OrderLogs.objects.create(action=action,user=user,role=role,order_id=order_id)
-        z.save()
+def save_order_logger(action,request_data,post_data,order_id):
+    if action and order_id:
+        form=OrderFieldsFormLogs(post_data or None)
+        t=form.save(commit=False)
+        t.action=action
+        t.user=request_data.user.get_full_name()
+        t.role=request_data.user.extendedauthuser.role
+        t.order_id=order_id
+        t.save()
 
 @method_decorator(unauthenticated_user,name='dispatch')
 class Dashboard(View):
@@ -333,7 +338,7 @@ class UserNewOrder(View):
             role=request.user.extendedauthuser.role
             save_logger(f'Placed a new order:{order}',request.user.get_full_name(),role)
             order_id=OrderFields.objects.latest('id').id
-            save_order_logger(f'New order:{order} was created.',request.user.get_full_name(),role,order_id)
+            save_order_logger(f'New order:{order} was created.',request,request.POST,order_id)
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -368,7 +373,7 @@ def editMainOrder(request,id):
         order=form.cleaned_data.get('ordername')
         role=request.user.extendedauthuser.role
         save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
-        save_order_logger(f'Order:{order} was edited.',request.user.get_full_name(),role,id)
+        save_order_logger(f'Order:{order} was edited.',request,request.POST,id)
         return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
     else:
         return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -409,7 +414,7 @@ class EditOrder(View):
             order_id=obj.ordername_id
             role=request.user.extendedauthuser.role
             save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was edited.',request.user.get_full_name(),role,order_id)
+            save_order_logger(f'Order:{order} was edited.',request,request.POST,id)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -442,7 +447,7 @@ def deleteOrder(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was deleted.',request.user.get_full_name(),role,id)
+            save_order_logger(f'Order:{order} was deleted.',request,request.POST,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:
@@ -520,7 +525,7 @@ def deleteSingleItem(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted  order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was deleted.',request.user.get_full_name(),role,id)
+            save_order_logger(f'Order:{order} was deleted.',request,request.POST,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order item deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:

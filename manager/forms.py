@@ -308,6 +308,61 @@ class OrderFieldsForm(forms.ModelForm):
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
 
+#OrderLogs
+class OrderFieldsFormLogs(forms.ModelForm):
+    status=forms.ChoiceField(choices=options,widget=forms.Select(attrs={'class':'form-control show-tick ms select2','data-placeholder':'Select'}),required=False)
+    date=forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Date','type':'Date'}),required=False)
+    pierpass=forms.CharField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Pierpass'}),required=False)
+    mbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'MBL'}),required=False)
+    hbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'HBL'}),required=False)
+    customer=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Customer','list':'customerlist'}),required=False)
+    container=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Container#'}),required=False)
+    type=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Type'}),required=False)
+    seal=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Seal#'}),required=False)
+    drop_city=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Drop City'}),required=False)
+    discharge_port=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Discharge port'}),required=False)
+    port_eta=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Port ETA'}),required=False)
+    lfd=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'LFD'}),required=False)
+    trucking=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Trucking'}),required=False)
+    east_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Est.Deliver'}),required=False)
+    appointment=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Appoitment'}),required=False)
+    actual_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Actual Deliver'}),required=False)
+    driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Driver'}),required=False)
+    empty_return=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Empty Return'}),required=False)
+    chasis=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Chassis'}),required=False)
+    demurrage=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Demurrage'}),required=False)
+    invoice_sent=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice Sent'}),required=False)
+    invoice=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice'}),required=False)
+    invoice_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice $'}),required=False)
+    a_rrry=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/R'}),required=False)
+    a_ppy=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/P'}),required=False)
+    customer_email=forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Customer Email'}),required=False)
+    notify=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Notify'}),required=False)
+    acct_email=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'ACCT Email','required':False}),required=False)
+    comment=forms.CharField(widget=forms.Textarea(attrs={'rows':5,'cols':20,'class':'form-control','placeholder':'Comment...','required':False}),required=False)
+    media=forms.FileField(widget=forms.FileInput(attrs={'class':'custom-file-input','id':'customFileInput'}),required=False)
+    class Meta:
+        model=OrderLogs
+        fields=[
+                'media',
+                'status',
+                'date',
+                'pierpass',
+                'hbl',
+                'mbl',
+                'customer',
+                'container',
+                'type',
+                'seal',
+                'drop_city',
+                'discharge_port',
+                'port_eta',
+                'lfd',
+                'trucking',
+                'east_deliver','appointment','actual_deliver','driver','empty_return','chasis','demurrage','invoice_sent','invoice','invoice_dolla',
+                'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
+            ]
+
 #UserFileUploads
 class FormUploads(forms.ModelForm):
     media=forms.FileField(widget=forms.FileInput(attrs={'class':'file-input','hidden':True}),required=False)
