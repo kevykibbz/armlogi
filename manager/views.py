@@ -35,17 +35,49 @@ def save_logger(action,user,role):
         y=LoggerData.objects.create(action=action,user=user,role=role)
         y.save()
 
-
-#save order logger data
-def save_order_logger(action,request_data,post_data,order_id):
-    if action and order_id:
-        form=OrderFieldsFormLogs(post_data or None)
-        t=form.save(commit=False)
-        t.action=action
-        t.user=request_data.user.get_full_name()
-        t.role=request_data.user.extendedauthuser.role
-        t.order_id=order_id
-        t.save()
+#save order logs
+def save_order_logger(post_data,order_id,user,action,role):
+    data=OrderFields.objects.get(id=order_id)
+    form=OrderFieldsFormLogs(post_data , instance=data)
+    if form.is_valid():
+        output=OrderLogs.objects.create(
+                                            user=user,
+                                            action=action,
+                                            order_id=order_id,
+                                            role=role,
+                                            status=form.cleaned_data.get('status'),
+                                            pierpass=form.cleaned_data.get('pierpass'),
+                                            mbl=form.cleaned_data.get('mbl'),
+                                            hbl=form.cleaned_data.get('hbl'),
+                                            customer=form.cleaned_data.get('customer'),
+                                            container=form.cleaned_data.get('container'),
+                                            type=form.cleaned_data.get('type'),
+                                            seal=form.cleaned_data.get('seal'),
+                                            drop_city=form.cleaned_data.get('drop_city'),
+                                            discharge_port=form.cleaned_data.get('discharge_port'),
+                                            port_eta=form.cleaned_data.get('port_eta'),
+                                            lfd=form.cleaned_data.get('lfd'),
+                                            trucking=form.cleaned_data.get('trucking'),
+                                            east_deliver=form.cleaned_data.get('east_deliver'),
+                                            appointment=form.cleaned_data.get('appointment'),
+                                            actual_deliver=form.cleaned_data.get('actual_deliver'),
+                                            driver=form.cleaned_data.get('driver'),
+                                            empty_return=form.cleaned_data.get('empty_return'),
+                                            chasis=form.cleaned_data.get('chasis'),
+                                            demurrage=form.cleaned_data.get('demurrage'),
+                                            invoice_sent=form.cleaned_data.get('invoice_sent'),
+                                            invoice=form.cleaned_data.get('invoice'),
+                                            invoice_dolla=form.cleaned_data.get('invoice_dolla'),
+                                            a_rrry=form.cleaned_data.get('a_rrry'),
+                                            a_ppy=form.cleaned_data.get('a_ppy'),
+                                            customer_email=form.cleaned_data.get('customer_email'),
+                                            notify=form.cleaned_data.get('notify'),
+                                            acct_email=form.cleaned_data.get('acct_email'),
+                                            date=form.cleaned_data.get('date'),
+                                            media=form.cleaned_data.get('media'),
+                                            comment=form.cleaned_data.get('comment')
+        )
+        output.save()
 
 @method_decorator(unauthenticated_user,name='dispatch')
 class Dashboard(View):
@@ -333,12 +365,16 @@ class UserNewOrder(View):
         obj=SiteConstants.objects.all()[0]
         form=NewOderForm(request.POST or None)
         if form.is_valid():
-            form.save()
-            order=form.cleaned_data.get('ordername')
             role=request.user.extendedauthuser.role
-            save_logger(f'Placed a new order:{order}',request.user.get_full_name(),role)
+            order=form.cleaned_data.get('ordername')
+            action=f'Placed a new order:{order}'
+            y=form.save(commit=False)
+            y.user=request.user.get_full_name()
+            y.action=action
+            y.role=role
+            y.save()
+            save_logger(action,request.user.get_full_name(),role)
             order_id=OrderFields.objects.latest('id').id
-            save_order_logger(f'New order:{order} was created.',request,request.POST,order_id)
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -369,11 +405,10 @@ def editMainOrder(request,id):
     data=Oders.objects.get(ordername_id=id)
     form=NewOderForm(request.POST or None,instance=data)
     if form.is_valid():
-        form.save()
         order=form.cleaned_data.get('ordername')
+        form.save()
         role=request.user.extendedauthuser.role
         save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
-        save_order_logger(f'Order:{order} was edited.',request,request.POST,id)
         return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
     else:
         return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -407,16 +442,25 @@ class EditOrder(View):
         site_data=SiteConstants.objects.all()[0]
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=data)
         if form.is_valid():
-            t=form.save(commit=False)
-            t.modified_at=now()
-            t.customer_link=generate_id()
-            t.save()
-            order=obj.ordername
-            order_id=obj.ordername_id
-            role=request.user.extendedauthuser.role
-            save_logger(f'Edited order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was edited.',request,request.POST,id)
-            return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
+            if form.has_changed():
+                order=obj.ordername
+                action=f'Edited order:{order}'
+                user=request.user.get_full_name()
+                role=request.user.extendedauthuser.role
+                t=form.save(commit=False)
+                save_order_logger(request.POST,id,user,action,role)
+                t.modified_at=now()
+                t.customer_link=generate_id()
+                t.user=request.user.get_full_name()
+                t.action=action
+                t.role=request.user.extendedauthuser.role
+                t.save()
+                order_id=obj.ordername_id
+                role=request.user.extendedauthuser.role
+                save_logger(action,request.user.get_full_name(),role)
+                return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
+            else:
+                return JsonResponse({'valid':False,'error':'No changes made'},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
 
@@ -448,7 +492,6 @@ def deleteOrder(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was deleted.',request,request.POST,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:
@@ -526,7 +569,6 @@ def deleteSingleItem(request,id):
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted  order:{order}',request.user.get_full_name(),role)
-            save_order_logger(f'Order:{order} was deleted.',request,request.POST,id)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order item deleted successfully.','id':id},content_type='application/json')       
         except Oders.DoesNotExist:
@@ -859,11 +901,12 @@ def deleteAllOrderLogs(request):
 
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
-def OrderLogger(request,id):
-    obj=SiteConstants.objects.all()[0]
+def OrderLogger(request,id): 
     try:
+        obj=SiteConstants.objects.all()[0]
+        a=OrderFields.objects.get(id=id)
         data=OrderLogs.objects.filter(order_id=id).order_by('-id')
-        order_data=Oders.objects.get(ordername_id__exact=id)
+        order_data=Oders.objects.get(ordername_id__exact=a.order_id)
         paginator=Paginator(data,30)
         page_num=request.GET.get('page')
         results=paginator.get_page(page_num)

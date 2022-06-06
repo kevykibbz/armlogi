@@ -307,7 +307,6 @@ class OrderFieldsForm(forms.ModelForm):
                 'east_deliver','appointment','actual_deliver','driver','empty_return','chasis','demurrage','invoice_sent','invoice','invoice_dolla',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
-
 #OrderLogs
 class OrderFieldsFormLogs(forms.ModelForm):
     status=forms.ChoiceField(choices=options,widget=forms.Select(attrs={'class':'form-control show-tick ms select2','data-placeholder':'Select'}),required=False)
@@ -362,6 +361,156 @@ class OrderFieldsFormLogs(forms.ModelForm):
                 'east_deliver','appointment','actual_deliver','driver','empty_return','chasis','demurrage','invoice_sent','invoice','invoice_dolla',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
+    def clean_status(self):
+        status=self.cleaned_data.get('status')
+        if self.instance.status != status:
+            return status
+    def clean_pierpass(self):
+        pierpass=self.cleaned_data.get('pierpass')
+        if self.instance.pierpass != pierpass:
+            return pierpass
+    def clean_mbl(self):
+        mbl=self.cleaned_data.get('mbl')
+        if self.instance.mbl != mbl:
+            return mbl
+    def clean_hbl(self):
+        hbl=self.cleaned_data.get('hbl')
+        if self.instance.hbl != hbl:
+            return hbl
+    def clean_customer(self):
+        customer=self.cleaned_data.get('customer')
+        if self.instance.customer != customer:
+            return customer
+
+    def clean_container(self):
+        container=self.cleaned_data.get('container')
+        if self.instance.container != container:
+            return container
+
+    def clean_type(self):
+        type=self.cleaned_data.get('type')
+        if self.instance.type != type:
+            return type
+
+    def clean_seal(self):
+        seal=self.cleaned_data.get('seal')
+        if self.instance.seal != seal:
+            return seal
+
+    def clean_drop_city(self):
+        drop_city=self.cleaned_data.get('drop_city')
+        if self.instance.drop_city != drop_city:
+            return drop_city
+
+    def clean_discharge_port(self):
+        discharge_port=self.cleaned_data.get('discharge_port')
+        if self.instance.discharge_port != discharge_port:
+            return discharge_port
+
+    def clean_port_eta(self):
+        port_eta=self.cleaned_data.get('port_eta')
+        if self.instance.port_eta != port_eta:
+            return port_eta
+    def clean_lfd(self):
+        lfd=self.cleaned_data.get('lfd')
+        if self.instance.lfd != lfd:
+            return lfd
+
+    def clean_trucking(self):
+        trucking=self.cleaned_data.get('trucking')
+        if self.instance.trucking != trucking:
+            return trucking
+    def clean_east_deliver(self):
+        east_deliver=self.cleaned_data.get('east_deliver')
+        if self.instance.east_deliver != east_deliver:
+            return east_deliver
+
+    def clean_appointment(self):
+        appointment=self.cleaned_data.get('appointment')
+        if self.instance.appointment != appointment:
+            return appointment
+
+    def clean_driver(self):
+        driver=self.cleaned_data.get('driver')
+        if self.instance.driver != driver:
+            return driver
+
+    def clean_actual_deliver(self):
+        actual_deliver=self.cleaned_data.get('actual_deliver')
+        if self.instance.actual_deliver != actual_deliver:
+            return actual_deliver
+
+    def clean_empty_return(self):
+        empty_return=self.cleaned_data.get('empty_return')
+        if self.instance.empty_return != empty_return:
+            return empty_return
+
+    def clean_chasis(self):
+        chasis=self.cleaned_data.get('chasis')
+        if self.instance.port_eta != chasis:
+            return chasis
+
+    def clean_demurragedemurrage(self):
+        demurrage=self.cleaned_data.get('demurrage')
+        if self.instance.demurrage != demurrage:
+            return demurrage
+
+    def clean_invoice_sent(self):
+        invoice_sent=self.cleaned_data.get('invoice_sent')
+        if self.instance.invoice_sent != invoice_sent:
+            return invoice_sent
+
+    def clean_invoice(self):
+        invoice=self.cleaned_data.get('invoice')
+        if self.instance.invoice != invoice:
+            return invoice
+
+    def clean_invoice_dolla(self):
+        invoice_dolla=self.cleaned_data.get('invoice_dolla')
+        if self.instance.invoice_dolla != invoice_dolla:
+            return invoice_dolla
+    
+    def clean_a_rrry(self):
+        a_rrry=self.cleaned_data.get('a_rrry')
+        if self.instance.a_rrry != a_rrry:
+            return a_rrry
+
+    def clean_a_ppy(self):
+        a_ppy=self.cleaned_data.get('a_ppy')
+        if self.instance.a_ppy != a_ppy:
+            return a_ppy
+
+    def clean_customer_email(self):
+        customer_email=self.cleaned_data.get('customer_email')
+        if self.instance.customer_email != customer_email:
+            return customer_email
+    
+    def clean_notify(self):
+        notify=self.cleaned_data.get('notify')
+        if self.instance.notify != notify:
+            return notify
+
+    def clean_acct_email(self):
+        acct_email=self.cleaned_data.get('acct_email')
+        if self.instance.acct_email != acct_email:
+            return acct_email
+
+    def clean_date(self):
+        date=self.cleaned_data.get('date')
+        if self.instance.date != date:
+            return date
+
+    def clean_media(self):
+        media=self.cleaned_data.get('media')
+        if self.instance.media != media:
+            return media
+
+    def clean_comment(self):
+        comment=self.cleaned_data.get('comment')
+        if self.instance.comment != comment:
+            return comment
+
+
 
 #UserFileUploads
 class FormUploads(forms.ModelForm):

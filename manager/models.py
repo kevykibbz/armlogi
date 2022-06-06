@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.timezone import now
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save,pre_save
 from django.dispatch import receiver
 from manager.addons import send_email
 import random
@@ -91,6 +91,9 @@ def generate_serial():
     
 class Oders(models.Model):
     ordername_id=models.AutoField(primary_key=True)
+    action=models.CharField(null=True,blank=True,max_length=200)
+    user=models.CharField(null=True,blank=True,max_length=200)
+    role=models.CharField(null=True,blank=True,max_length=200)
     ordername_serial=models.CharField(max_length=255,default=generate_serial)
     ordername=models.CharField(max_length=50,verbose_name='ordername',null=True)
     date=models.DateTimeField(auto_now_add=True)
@@ -106,7 +109,7 @@ def create_order_id(sender, instance, created, **kwargs):
     if created:
         op=str(instance.ordername_id).zfill(5)
         prefix='21A'+op
-        OrderFields.objects.create(order_id=instance.ordername_id,prefix=prefix)
+        OrderFields.objects.create(order_id=instance.ordername_id,prefix=prefix,user=instance.user,action=instance.action,role=instance.role)
 
 def save_order_id(sender, instance, *args,**kwargs):
     instance.orderfields.save()
@@ -170,6 +173,7 @@ class OrderLogs(models.Model):
     def __str__(self):
         return f'{self.user} order logs'
 
+
 options=[
             ("Cancelled pickup","Cancelled pickup"),
             ("On ship","On ship"),
@@ -182,6 +186,9 @@ options=[
 class OrderFields(models.Model):
     order=models.ForeignKey(Oders,on_delete=models.CASCADE)
     load=models.CharField(max_length=100,default=generate_id)
+    action=models.CharField(null=True,blank=True,max_length=200)
+    user=models.CharField(null=True,blank=True,max_length=200)
+    role=models.CharField(null=True,blank=True,max_length=200)
     status=models.CharField(max_length=255,null=True,blank=True)
     pierpass=models.CharField(max_length=100,null=True,blank=True)
     mbl=models.CharField(max_length=100,null=True,blank=True)
@@ -216,7 +223,7 @@ class OrderFields(models.Model):
     media=models.FileField(upload_to='uploads/',null=True,blank=True)
     file_size=models.CharField(max_length=100,null=True)
     file_type=models.CharField(max_length=100,null=True)
-    date=models.DateField(null=True)
+    date=models.DateField(null=True,blank=True)
     modified_at=models.DateTimeField(default=now)
     created_at=models.DateTimeField(default=now)
     class Meta:
@@ -233,6 +240,7 @@ class OrderFields(models.Model):
     @property
     def get_prefix(self):
         return 'A21'+str(self.id).zfill(5)
+
 
 
 

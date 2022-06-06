@@ -657,7 +657,7 @@ $(document).on('submit','.spreadsheetForm',function()
             $('.small-model').find('.modal-title').text('Success');
             $('.small-model').find('.modal-body').html('<div class="text-success text-center"><i class="fa fa-check-circle"></i> Data saved successfully.</div>');
            window.location='/order/summary/';
-          }
+        }
         else
         {
             $.each(callback.form_errors,function(key,value)
@@ -665,6 +665,12 @@ $(document).on('submit','.spreadsheetForm',function()
               el.find("input[aria-label='"+key+"']").addClass('is-invalid').parents('.form-group').find('.feedback').addClass('invalid-feedback').html('<i class="fa fa-exclamation-circle"></i> '+value);
             });
         }
+        if(callback.error)
+        {
+            $('.small-model').modal({show:true});
+            $('.small-model').find('.modal-title').text('Info');
+            $('.small-model').find('.modal-body').html('<div class="text-info text-center"><i class="fa fa-exclamation-triangle"></i> No changes made.</div>');
+          }
       },
       error:function(err)
       {
