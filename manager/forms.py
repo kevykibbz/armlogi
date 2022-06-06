@@ -450,7 +450,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
         if self.instance.port_eta != chasis:
             return chasis
 
-    def clean_demurragedemurrage(self):
+    def clean_demurrage(self):
         demurrage=self.cleaned_data.get('demurrage')
         if self.instance.demurrage != demurrage:
             return demurrage
