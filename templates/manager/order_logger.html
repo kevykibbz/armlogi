@@ -39,14 +39,33 @@
                                         <th> {{item.created_at}}</th>
                                         <td><b class="text-info">Action:</b> {{item.action}}</td>
                                         <td><b class="text-info">Changes made:</b>
-                                        {% if item.status %}Status:{{item.status}}{% endif %} {% if item.date %}| Date:{{item.date}}{% endif %} {% if item.pierpass %}| Pierpass:{{item.pierpass}}{% endif %} {% if item.mbl %}| Mbl:{{item.mbl}}{% endif %}
-                                        {% if item.hbl %}| Hbl:{{item.hbl}}{% endif %} {% if item.customer %}| Customer:{{item.customer}}{% endif %} {% if item.container %}| Container:{{item.container}}{% endif %} {% if item.type %}| Type:{{item.type}}{% endif %}
-                                        {% if item.seal %} | Seal:{{item.seal}}{% endif %} {% if item.drop_city %}| Drop City:{{item.drop_city}}{% endif %} {% if item.discharge_port %}| Discharge Port:{{item.discharge_port}}{% endif %} {% if item.port_eta %}| Port ETA:{{item.port_eta}}{% endif %}
-                                        {% if item.lfd %}| LFD:{{item.lfd}}{% endif %} {% if item.trucking %}| Trucking:{{item.trucking}}{% endif %} {% if item.east_deliver %}| Est.Deliver:{{item.east_deliver}}{% endif %} {% if item.appointment %}| Appointment:{{item.appointment}}{% endif %}
-                                        {% if item.actual_deliver %}| Actual deliver:{{item.actual_deliver}}{% endif %} {% if item.driver %}| Driver:{{item.driver}}{% endif %} {% if item.empty_return %}| Empty Return :{{item.empty_return}}{% endif %} {% if item.chasis %}| Chassis:{{item.chasis}}{% endif %}
-                                        {% if item.demurrage %}| Demmurage:{{item.demurrage}}{% endif %} {% if item.invoice_sent %}| Invoice Sent:{{item.invoice_sent}}{% endif %} {% if item.invoice %}| Invoice :{{item.invoice}}{% endif %} {% if item.invoice_dolla %}| Invoice $:{{item.invoice_dolla}}{% endif %}
-                                        {% if item.a_rrry %}| A/R:{{item.a_rrry}}{% endif %} {% if item.a_ppy %}| A/P:{{item.a_ppy}}{% endif %} {% if item.customer_email %}| customer Email :{{item.customer_email}}{% endif %} {% if item.notify %}| Notify $:{{item.notify}}{% endif %}{% if item.acct_email %}| ACCT Email $:{{item.acct_email}}{% endif %}
-                                        {% if item.media %}| File $:{{item.media}}{% endif %}
+                                        {% if item.status %}<b>Status:</b>{{item.status}}{% endif %} 
+                                        {% if item.date %}| <b>Date:</b>{{item.date}}{% endif %} 
+                                        {% if item.pierpass %}| <b>Pierpass:</b>{{item.pierpass}}{% endif %} 
+                                        {% if item.mbl %}| <b>MBL:</b>{{item.mbl}}{% endif %}
+                                        {% if item.hbl %}| <b>Hbl:</b>{{item.hbl}}{% endif %} 
+                                        {% if item.customer %}| <b>Customer:</b>{{item.customer}}{% endif %} 
+                                        {% if item.container %}| <b>Container:</b>{{item.container}}{% endif %} {% if item.type %}| Type:{{item.type}}{% endif %}
+                                        {% if item.seal %} | <b>Seal:</b>{{item.seal}}{% endif %} 
+                                        {% if item.drop_city %}|<b> Drop City:</b>{{item.drop_city}}{% endif %} {% if item.discharge_port %}| <b>Discharge Port:</b>{{item.discharge_port}}{% endif %} 
+                                        {% if item.port_eta %}| <b>Port ETA:</b>{{item.port_eta}}{% endif %}
+                                        {% if item.lfd %}| <b>LFD:</b>{{item.lfd}}{% endif %} 
+                                        {% if item.trucking %}| <b>Trucking:</b>{{item.trucking}}{% endif %} 
+                                        {% if item.east_deliver %}| <b>Est.Deliver:</b>{{item.east_deliver}}{% endif %} 
+                                        {% if item.appointment %}| <b>Appointment:</b>{{item.appointment}}{% endif %}
+                                        {% if item.actual_deliver %}|<b> Actual deliver:</b>{{item.actual_deliver}}{% endif %} 
+                                        {% if item.driver %}| <b>Driver:</b>{{item.driver}}{% endif %} 
+                                        {% if item.empty_return %}| <b>Empty Return :</b>{{item.empty_return}}{% endif %} 
+                                        {% if item.chasis %}| <b>Chassis:</b>{{item.chasis}}{% endif %}
+                                        {% if item.demurrage %}|<b> Demmurage:</b>{{item.demurrage}}{% endif %} {% if item.invoice_sent %}| <b>Invoice Sent:</b>{{item.invoice_sent}}{% endif %} 
+                                        {% if item.invoice %}| <b>Invoice :</b>{{item.invoice}}{% endif %} 
+                                        {% if item.invoice_dolla %}| <b>Invoice $:</b>{{item.invoice_dolla}}{% endif %}
+                                        {% if item.a_rrry %}|<b> A/R:</b>{{item.a_rrry}}{% endif %} 
+                                        {% if item.a_ppy %}| <b>A/P:</b>{{item.a_ppy}}{% endif %} 
+                                        {% if item.customer_email %}| <b>Customer Email:</b>{{item.customer_email}}{% endif %} 
+                                        {% if item.notify %}| <b>Notify:</b>{{item.notify}}{% endif %}
+                                        {% if item.acct_email %}| <b>ACCT Email:</b>{{item.acct_email}}{% endif %}
+                                        {% if item.media %}| <b>File:</b>{{item.media}}{% endif %}
                                         </td>
                                         <td><b class="text-danger">By:</b> {{item.user}} [{% if item.role == 'Admin' %}<span class="text-success">{{item.role}}</span>{% elif item.role == 'Secondary' %}<span class="text-warning">{{item.role}}</span>{% else %}<span class="text-primary">{{item.role}}</span>{% endif %}]</td>
                                         <!-- <td>

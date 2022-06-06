@@ -364,152 +364,248 @@ class OrderFieldsFormLogs(forms.ModelForm):
     def clean_status(self):
         status=self.cleaned_data.get('status')
         if self.instance.status != status:
-            return status
+            if status is not None and len(status) > 0:
+                return status
+            else:
+                return 'None'
+        
     def clean_pierpass(self):
         pierpass=self.cleaned_data.get('pierpass')
         if self.instance.pierpass != pierpass:
-            return pierpass
+            if pierpass is not None and len(pierpass) > 0:
+                return pierpass
+            else:
+                return 'None'
+        
     def clean_mbl(self):
         mbl=self.cleaned_data.get('mbl')
         if self.instance.mbl != mbl:
-            return mbl
+            if mbl is not None and len(mbl) > 0:
+                return mbl
+            else:
+                return 'None'
+
     def clean_hbl(self):
         hbl=self.cleaned_data.get('hbl')
         if self.instance.hbl != hbl:
-            return hbl
+            if hbl is not None and len(hbl) > 0:
+                return hbl
+            else:
+                return 'None'
+
     def clean_customer(self):
         customer=self.cleaned_data.get('customer')
         if self.instance.customer != customer:
-            return customer
+            if customer is not None and len(customer) > 0:
+                return customer
+            else:
+                return 'None'
 
     def clean_container(self):
         container=self.cleaned_data.get('container')
         if self.instance.container != container:
-            return container
+            if container is not None and len(container) > 0:
+                return container
+            else:
+                return 'None'
 
     def clean_type(self):
         type=self.cleaned_data.get('type')
         if self.instance.type != type:
-            return type
+            if type is not None and len(type) > 0:
+                return type
+            else:
+                return 'None'
 
     def clean_seal(self):
         seal=self.cleaned_data.get('seal')
         if self.instance.seal != seal:
-            return seal
+            if seal is not None and len(seal) > 0:
+                return seal
+            else:
+                return 'None'
 
     def clean_drop_city(self):
         drop_city=self.cleaned_data.get('drop_city')
         if self.instance.drop_city != drop_city:
-            return drop_city
+            if drop_city is not None and len(drop_city) > 0:
+                return drop_city
+            else:
+                return 'None'
 
     def clean_discharge_port(self):
         discharge_port=self.cleaned_data.get('discharge_port')
         if self.instance.discharge_port != discharge_port:
-            return discharge_port
+            if discharge_port is not None and len(discharge_port) > 0:
+                return discharge_port
+            else:
+                return 'None'
 
     def clean_port_eta(self):
         port_eta=self.cleaned_data.get('port_eta')
         if self.instance.port_eta != port_eta:
-            return port_eta
+            if port_eta is not None and len(port_eta) > 0:
+                return port_eta
+            else:
+                return 'None'
+
     def clean_lfd(self):
         lfd=self.cleaned_data.get('lfd')
         if self.instance.lfd != lfd:
-            return lfd
+            if lfd is not None and len(lfd) > 0:
+                return lfd
+            else:
+                return 'None'
 
     def clean_trucking(self):
         trucking=self.cleaned_data.get('trucking')
         if self.instance.trucking != trucking:
-            return trucking
+            if trucking is not None and len(trucking) > 0:
+                return trucking
+            else:
+                return 'None'
+
     def clean_east_deliver(self):
         east_deliver=self.cleaned_data.get('east_deliver')
         if self.instance.east_deliver != east_deliver:
-            return east_deliver
+            if east_deliver is not None and len(east_deliver) > 0:
+                return east_deliver
+            else:
+                return 'None'
 
     def clean_appointment(self):
         appointment=self.cleaned_data.get('appointment')
         if self.instance.appointment != appointment:
-            return appointment
+            if appointment is not None and len(appointment) > 0:
+                return appointment
+            else:
+                return 'None'
 
     def clean_driver(self):
         driver=self.cleaned_data.get('driver')
         if self.instance.driver != driver:
-            return driver
+            if driver is not None and len(driver) > 0:
+                return driver
+            else:
+                return 'None'
 
     def clean_actual_deliver(self):
         actual_deliver=self.cleaned_data.get('actual_deliver')
         if self.instance.actual_deliver != actual_deliver:
-            return actual_deliver
+            if actual_deliver is not None and len(actual_deliver) > 0:
+                return actual_deliver
+            else:
+                return 'None'
 
     def clean_empty_return(self):
         empty_return=self.cleaned_data.get('empty_return')
         if self.instance.empty_return != empty_return:
-            return empty_return
+            if empty_return is not None and len(empty_return) > 0:
+                return empty_return
+            else:
+                return 'None'
 
     def clean_chasis(self):
         chasis=self.cleaned_data.get('chasis')
         if self.instance.port_eta != chasis:
-            return chasis
+            if chasis is not None and len(chasis) > 0:
+                return chasis
+            else:
+                return 'None'
 
     def clean_demurrage(self):
         demurrage=self.cleaned_data.get('demurrage')
         if self.instance.demurrage != demurrage:
-            return demurrage
+            if demurrage is not None and len(demurrage) > 0:
+                return demurrage
+            else:
+                return 'None'
 
     def clean_invoice_sent(self):
         invoice_sent=self.cleaned_data.get('invoice_sent')
         if self.instance.invoice_sent != invoice_sent:
-            return invoice_sent
+            if invoice_sent is not None and len(invoice_sent) > 0:
+                return invoice_sent
+            else:
+                return 'None'
 
     def clean_invoice(self):
         invoice=self.cleaned_data.get('invoice')
         if self.instance.invoice != invoice:
-            return invoice
+            if invoice is not None and len(invoice) > 0:
+                return invoice
+            else:
+                return 'None'
 
     def clean_invoice_dolla(self):
         invoice_dolla=self.cleaned_data.get('invoice_dolla')
         if self.instance.invoice_dolla != invoice_dolla:
-            return invoice_dolla
+            if invoice_dolla is not None and len(invoice_dolla) > 0:
+                return invoice_dolla
+            else:
+                return 'None'
     
     def clean_a_rrry(self):
         a_rrry=self.cleaned_data.get('a_rrry')
         if self.instance.a_rrry != a_rrry:
-            return a_rrry
+            if a_rrry is not None and len(a_rrry) > 0:
+                return a_rrry
+            else:
+                return 'None'
 
     def clean_a_ppy(self):
         a_ppy=self.cleaned_data.get('a_ppy')
         if self.instance.a_ppy != a_ppy:
-            return a_ppy
+            if a_ppy is not None and len(a_ppy) > 0:
+                return a_ppy
+            else:
+                return 'None'
 
     def clean_customer_email(self):
         customer_email=self.cleaned_data.get('customer_email')
         if self.instance.customer_email != customer_email:
-            return customer_email
+            if customer_email is not None and len(customer_email) > 0:
+                return customer_email
+            else:
+                return 'None'
     
     def clean_notify(self):
         notify=self.cleaned_data.get('notify')
         if self.instance.notify != notify:
-            return notify
+            if notify is not None and len(notify) > 0:
+                return notify
+            else:
+                return 'None'
 
     def clean_acct_email(self):
         acct_email=self.cleaned_data.get('acct_email')
         if self.instance.acct_email != acct_email:
-            return acct_email
+            if acct_email is not None and len(acct_email) > 0:
+                return acct_email
+            else:
+                return 'None'
 
     def clean_date(self):
         date=self.cleaned_data.get('date')
         if self.instance.date != date:
-            return date
+            if date is not None and len(date) > 0:
+                return date
+            else:
+                return None
 
     def clean_media(self):
         media=self.cleaned_data.get('media')
         if self.instance.media != media:
-            return media
-
+           return media
+       
+       
     def clean_comment(self):
         comment=self.cleaned_data.get('comment')
         if self.instance.comment != comment:
-            return comment
-
+            if comment is not None and len(comment) > 0:
+                return comment
+            else:
+                return 'None'
 
 
 #UserFileUploads

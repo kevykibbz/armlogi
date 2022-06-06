@@ -919,7 +919,7 @@ def OrderLogger(request,id):
                 'ordername':order_data.ordername,
                 'order_id':id
             }
-        return render(request,'manager/order_logger.html',context=data)       
+        return render(request,'manager/order_logger.html',context=data)     
     except Exception as e:
         data={
                 'title':'Error | Page Not Found',

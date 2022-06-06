@@ -220,7 +220,7 @@ class OrderFields(models.Model):
     acct_email=models.CharField(max_length=100,null=True)
     customer_link=models.CharField(max_length=100,null=True,default=generate_serial)
     comment=models.TextField(null=True,blank=True)
-    media=models.FileField(upload_to='uploads/',null=True,blank=True)
+    media=models.FileField(upload_to='uploads/',null=True,blank=True,default='')
     file_size=models.CharField(max_length=100,null=True)
     file_type=models.CharField(max_length=100,null=True)
     date=models.DateField(null=True,blank=True)
