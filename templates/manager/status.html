@@ -25,150 +25,150 @@
                     </div>
             </div>
             <div class="row clearfix">
-                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="col-md-8 col-sm-12 col-xs-12">
                     <div class="card project_list">
                        <div class="row">
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">1</span> Load#</label><br>
-                               <button class="btn btn-secondary">{% if orders.prefix %} {{orders.prefix}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.prefix %} {{orders.prefix}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">2</span> status</label><br>
                                 {% if orders.status == 'Cancelled pickup' %}
-                                    <button class="btn btn-danger">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-danger">{{orders.status}}</button>
                                 {% elif orders.status == 'On ship' %}
-                                    <button class="btn btn-info">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-info">{{orders.status}}</button>
                                 {% elif orders.status == 'Invoice sent' %}
-                                    <button class="btn btn-success">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-success">{{orders.status}}</button>
                                 {% elif orders.status == 'closed area' %}
-                                    <button class="btn btn-danger">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-danger">{{orders.status}}</button>
                                 {% elif orders.status == 'Assigned driver' %}
-                                    <button class="btn btn-info">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-info">{{orders.status}}</button>
                                 {% elif orders.status == 'Delivered' %}
-                                    <button class="btn btn-success">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-success">{{orders.status}}</button>
                                 {% else %}
-                                    <button class="btn btn-info">{{orders.status}}</button>
+                                    <button class="stat-btn btn btn-info">{{orders.status}}</button>
                                 {% endif %}
                            </div>
 
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">3</span> Date</label><br>
-                               <button class="btn btn-secondary">{% if orders.date %}{{orders.date}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.date %}{{orders.date}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">4</span> Pierpass</label><br>
-                               <button class="btn btn-secondary">{% if orders.pierpass %}{{orders.pierpass}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.pierpass %}{{orders.pierpass}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">5</span> MBL</label><br>
-                               <button class="btn btn-secondary">{% if orders.mbl %}{{orders.mbl}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.mbl %}{{orders.mbl}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">6</span> HBL</label><br>
-                               <button class="btn btn-secondary">{% if orders.hbl %}{{orders.hbl}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.hbl %}{{orders.hbl}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">7</span> Customer</label><br>
-                               <button class="btn btn-secondary">{% if orders.customer %}{{orders.customer}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.customer %}{{orders.customer}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">8</span> Container</label><br>
-                               <button class="btn btn-secondary">{% if orders.container %}{{orders.container}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.container %}{{orders.container}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">9</span> Type</label><br>
-                               <button class="btn btn-secondary">{% if orders.type %}{{orders.type}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.type %}{{orders.type}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">10</span> Seal</label><br>
-                               <button class="btn btn-secondary">{% if orders.seal %}{{orders.seal}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.seal %}{{orders.seal}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">11</span> Drop City</label><br>
-                               <button class="btn btn-secondary">{% if orders.drop_city %}{{orders.drop_city}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.drop_city %}{{orders.drop_city}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">12</span> Discharge Port</label><br>
-                               <button class="btn btn-secondary">{% if orders.discharge_port %}{{orders.discharge_port}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.discharge_port %}{{orders.discharge_port}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">13</span> Port ETA</label><br>
-                               <button class="btn btn-secondary">{% if orders.port_eta %}{{orders.port_eta}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.port_eta %}{{orders.port_eta}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">14</span> LFD</label><br>
-                               <button class="btn btn-secondary">{% if orders.lfd %}{{orders.lfd}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.lfd %}{{orders.lfd}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">15</span> Trucking</label><br>
-                               <button class="btn btn-secondary">{% if orders.trucking %}{{orders.trucking}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.trucking %}{{orders.trucking}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">16</span> Est. Delivery</label><br>
-                               <button class="btn btn-secondary">{% if orders.east_deliver %}{{orders.east_deliver}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.east_deliver %}{{orders.east_deliver}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">17</span> Appointment</label><br>
-                               <button class="btn btn-secondary">{% if orders.appointment %}{{orders.appointment}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.appointment %}{{orders.appointment}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">18</span> Actual Delivery</label><br>
-                               <button class="btn btn-secondary">{% if orders.actual_deliver %}{{orders.actual_deliver}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.actual_deliver %}{{orders.actual_deliver}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">19</span> Driver</label><br>
-                               <button class="btn btn-secondary">{% if orders.driver %}{{orders.driver}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.driver %}{{orders.driver}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">20</span> Empty Return</label><br>
-                               <button class="btn btn-secondary">{% if orders.empty_return %}{{orders.empty_return}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.empty_return %}{{orders.empty_return}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                                 <label for=""> <span class="badge badge-primary counter-wrapper">21</span> Chassis </label><br>
-                               <button class="btn btn-secondary">{% if orders.chasis %}{{orders.chasis}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.chasis %}{{orders.chasis}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">22</span> Demurrage</label><br>
-                               <button class="btn btn-secondary">{% if orders.demurrage %}{{orders.demurrage}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.demurrage %}{{orders.demurrage}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">23</span> Invoice Sent</label><br>
-                               <button class="btn btn-secondary">{% if orders.invoice_sent %}{{orders.invoice_sent}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.invoice_sent %}{{orders.invoice_sent}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">24</span> Invoice</label><br>
-                               <button class="btn btn-secondary">{% if orders.invoice %}{{orders.invoice}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.invoice %}{{orders.invoice}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">25</span> Invoice $</label><br>
-                               <button class="btn btn-secondary">{% if orders.invoice_dolla %}{{orders.invoice_dolla}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.invoice_dolla %}{{orders.invoice_dolla}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">26</span> A/R</label><br>
-                               <button class="btn btn-secondary">{% if orders.a_rrry %}{{orders.a_rrry}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.a_rrry %}{{orders.a_rrry}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">27</span> A/P</label><br>
-                               <button class="btn btn-secondary">{% if orders.a_ppy %}{{orders.a_ppy}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.a_ppy %}{{orders.a_ppy}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">28</span> Customer Email</label><br>
-                               <button class="btn btn-secondary">{% if orders.customer_email %}{{orders.customer_email}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.customer_email %}{{orders.customer_email}}{% else %} None {% endif %}</button>
                            </div> 
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">29</span> Notify</label><br>
-                               <button class="btn btn-secondary">{% if orders.notify %}{{orders.notify}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.notify %}{{orders.notify}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">28</span> ACCT Email</label><br>
-                               <button class="btn btn-secondary">{% if orders.acct_email %}{{orders.acct_email}}{% else %} None {% endif %}</button>
+                               <button class="stat-btn btn btn-secondary">{% if orders.acct_email %}{{orders.acct_email}}{% else %} None {% endif %}</button>
                            </div>
                            <div class="mb-3 col-md-4 col-6">
                              <label for=""> <span class="badge badge-primary counter-wrapper">30</span> View File</label><br>
                                 {% if item.media %}
-                                    <a href="/media{{item.media.url}}" target="_blank" class="btn btn-secondary">View File</a>
+                                    <a href="/media{{item.media.url}}" target="_blank" class="stat-btn btn btn-secondary">View File</a>
                                 {% else %}
-                                    <a href="javascript:void(0)" class="btn btn-secondary">No File</a>
+                                    <a href="javascript:void(0)" class="stat-btn btn btn-secondary">No File</a>
                                 {% endif %}
                            </div>
                        </div>
