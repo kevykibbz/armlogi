@@ -367,7 +367,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if status is not None and len(status) > 0:
                 return status
             else:
-                return 'None'
+                return 'Erased'
         
     def clean_pierpass(self):
         pierpass=self.cleaned_data.get('pierpass')
@@ -375,7 +375,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if pierpass is not None and len(pierpass) > 0:
                 return pierpass
             else:
-                return 'None'
+                return 'Erased'
         
     def clean_mbl(self):
         mbl=self.cleaned_data.get('mbl')
@@ -383,7 +383,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if mbl is not None and len(mbl) > 0:
                 return mbl
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_hbl(self):
         hbl=self.cleaned_data.get('hbl')
@@ -391,7 +391,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if hbl is not None and len(hbl) > 0:
                 return hbl
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_customer(self):
         customer=self.cleaned_data.get('customer')
@@ -399,7 +399,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if customer is not None and len(customer) > 0:
                 return customer
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_container(self):
         container=self.cleaned_data.get('container')
@@ -407,7 +407,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if container is not None and len(container) > 0:
                 return container
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_type(self):
         type=self.cleaned_data.get('type')
@@ -415,7 +415,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if type is not None and len(type) > 0:
                 return type
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_seal(self):
         seal=self.cleaned_data.get('seal')
@@ -423,7 +423,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if seal is not None and len(seal) > 0:
                 return seal
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_drop_city(self):
         drop_city=self.cleaned_data.get('drop_city')
@@ -431,7 +431,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if drop_city is not None and len(drop_city) > 0:
                 return drop_city
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_discharge_port(self):
         discharge_port=self.cleaned_data.get('discharge_port')
@@ -439,7 +439,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if discharge_port is not None and len(discharge_port) > 0:
                 return discharge_port
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_port_eta(self):
         port_eta=self.cleaned_data.get('port_eta')
@@ -447,7 +447,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if port_eta is not None and len(port_eta) > 0:
                 return port_eta
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_lfd(self):
         lfd=self.cleaned_data.get('lfd')
@@ -455,7 +455,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if lfd is not None and len(lfd) > 0:
                 return lfd
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_trucking(self):
         trucking=self.cleaned_data.get('trucking')
@@ -463,7 +463,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if trucking is not None and len(trucking) > 0:
                 return trucking
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_east_deliver(self):
         east_deliver=self.cleaned_data.get('east_deliver')
@@ -471,7 +471,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if east_deliver is not None and len(east_deliver) > 0:
                 return east_deliver
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_appointment(self):
         appointment=self.cleaned_data.get('appointment')
@@ -479,7 +479,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if appointment is not None and len(appointment) > 0:
                 return appointment
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_driver(self):
         driver=self.cleaned_data.get('driver')
@@ -487,7 +487,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if driver is not None and len(driver) > 0:
                 return driver
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_actual_deliver(self):
         actual_deliver=self.cleaned_data.get('actual_deliver')
@@ -495,7 +495,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if actual_deliver is not None and len(actual_deliver) > 0:
                 return actual_deliver
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_empty_return(self):
         empty_return=self.cleaned_data.get('empty_return')
@@ -503,7 +503,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if empty_return is not None and len(empty_return) > 0:
                 return empty_return
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_chasis(self):
         chasis=self.cleaned_data.get('chasis')
@@ -511,7 +511,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if chasis is not None and len(chasis) > 0:
                 return chasis
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_demurrage(self):
         demurrage=self.cleaned_data.get('demurrage')
@@ -519,7 +519,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if demurrage is not None and len(demurrage) > 0:
                 return demurrage
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_invoice_sent(self):
         invoice_sent=self.cleaned_data.get('invoice_sent')
@@ -527,7 +527,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if invoice_sent is not None and len(invoice_sent) > 0:
                 return invoice_sent
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_invoice(self):
         invoice=self.cleaned_data.get('invoice')
@@ -535,7 +535,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if invoice is not None and len(invoice) > 0:
                 return invoice
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_invoice_dolla(self):
         invoice_dolla=self.cleaned_data.get('invoice_dolla')
@@ -543,7 +543,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if invoice_dolla is not None and len(invoice_dolla) > 0:
                 return invoice_dolla
             else:
-                return 'None'
+                return 'Erased'
     
     def clean_a_rrry(self):
         a_rrry=self.cleaned_data.get('a_rrry')
@@ -551,7 +551,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if a_rrry is not None and len(a_rrry) > 0:
                 return a_rrry
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_a_ppy(self):
         a_ppy=self.cleaned_data.get('a_ppy')
@@ -559,7 +559,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if a_ppy is not None and len(a_ppy) > 0:
                 return a_ppy
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_customer_email(self):
         customer_email=self.cleaned_data.get('customer_email')
@@ -567,7 +567,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if customer_email is not None and len(customer_email) > 0:
                 return customer_email
             else:
-                return 'None'
+                return 'Erased'
     
     def clean_notify(self):
         notify=self.cleaned_data.get('notify')
@@ -575,7 +575,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if notify is not None and len(notify) > 0:
                 return notify
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_acct_email(self):
         acct_email=self.cleaned_data.get('acct_email')
@@ -583,7 +583,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if acct_email is not None and len(acct_email) > 0:
                 return acct_email
             else:
-                return 'None'
+                return 'Erased'
 
     def clean_date(self):
         date=self.cleaned_data.get('date')
@@ -605,7 +605,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
             if comment is not None and len(comment) > 0:
                 return comment
             else:
-                return 'None'
+                return 'Erased'
 
 
 #UserFileUploads
