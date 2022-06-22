@@ -225,6 +225,14 @@
                                 </tbody>
                             </table>
                         </div>
+                        <ul class="pagination pagination-primary mt-4">
+                            {% if orders.has_previous %}
+                            <li class="page-item active"><a class="page-link" href="{% url 'order summary' %}?page={{orders.previous_page_number}}"><i class="zmdi zmdi-chevron-left"></i></a></li>
+                            {% endif %}
+                            {% if orders.has_next %}
+                            <li class="page-item active"><a class="page-link" href="{% url 'order summary' %}?page={{orders.next_page_number}}"><i class="zmdi zmdi-chevron-right"></i></a></li>
+                            {% endif %}
+                        </ul>
                     </div>
                 </div>
             </div>

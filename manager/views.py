@@ -453,8 +453,8 @@ class EditOrder(View):
             if form.has_changed():
                 order=data.ordername
                 container=data.container if data.container else 'No container data was provided'
-                load=data.load if data.load else 'No load data found'
-                action=f'Edited order:{order},container :{container},load:{load}'
+                load=data.prefix if data.prefix else 'No load data found'
+                action=f'Edited order:{order}||load :{load}||container:{container}'
                 user=request.user.get_full_name()
                 role=request.user.extendedauthuser.role
                 t=form.save(commit=False)
