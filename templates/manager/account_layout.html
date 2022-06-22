@@ -141,8 +141,14 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'do incomings' %}">
+                                <a href="{% url 'do quotations' %}">
                                     <div class="icon-circle mb-2 bg-blue"><i class="zmdi zmdi-traffic"></i></div>
+                                    <p class="mb-0">Do Quotation</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'do incomings' %}">
+                                    <div class="icon-circle mb-2 bg-green"><i class="zmdi zmdi-traffic"></i></div>
                                     <p class="mb-0">Do Incomings</p>
                                 </a>
                             </li>
@@ -213,7 +219,13 @@
                 {% if data.is_superuser %}
                     <li class=""><a href="{% url 'view logs' %}"><i class="zmdi zmdi-rotate-cw"></i><span>Logs</span></a></li>
                 {% endif %}
-                <li class=""><a href="{% url 'do incomings' %}"><i class="zmdi zmdi-traffic"></i><span>Do Incomings</span></a></li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-traffic"></i><span>Do</span></a>
+                    <ul class="ml-menu">
+                        <li><a href="{% url 'do incomings' %}">Do Incomings</a></li>
+                        <li><a href="{% url 'do quotations' %}">Do Quotations</a></li>
+                    </ul>
+                </li>
                 <li class="d-md-none d-block"><a href="javascript:void(0);" class="js-right-sidebar" title="Setting"><i class="zmdi zmdi-settings "></i><span>Settings</span></a></li>
                 <li class="d-md-none">
                     <a href="{% url 'user profile' username=user.username %}">

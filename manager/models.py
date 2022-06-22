@@ -129,12 +129,23 @@ class LoggerData(models.Model):
         return f'{self.user} logged data'
 
 class OrderLogs(models.Model):
+    ordername=models.CharField(max_length=50,verbose_name='ordername',null=True)
     order_id=models.IntegerField(null=True,blank=True)
     action=models.CharField(null=True,blank=True,max_length=200)
     user=models.CharField(null=True,blank=True,max_length=200)
     role=models.CharField(null=True,blank=True,max_length=200)
     status=models.CharField(max_length=255,null=True,blank=True)
     pierpass=models.CharField(max_length=100,null=True,blank=True)
+    pierpass_dolla=models.CharField(max_length=100,null=True,blank=True)
+    exam=models.CharField(max_length=100,null=True,blank=True)
+    ship_to=models.CharField(max_length=100,null=True,blank=True)
+    full_out_driver=models.CharField(max_length=100,null=True,blank=True)
+    empty_in_driver=models.CharField(max_length=100,null=True,blank=True)
+    demurrage_dolla=models.CharField(max_length=100,null=True,blank=True)
+    per_diem=models.CharField(max_length=100,null=True,blank=True)
+    sml=models.CharField(max_length=100,null=True,blank=True)
+    column_33=models.CharField(max_length=100,null=True,blank=True)
+    do_recd=models.CharField(max_length=100,null=True,blank=True)
     mbl=models.CharField(max_length=100,null=True,blank=True)
     hbl=models.CharField(max_length=100,null=True,blank=True)
     customer=models.CharField(max_length=100,null=True,blank=True)
@@ -191,6 +202,16 @@ class OrderFields(models.Model):
     role=models.CharField(null=True,blank=True,max_length=200)
     status=models.CharField(max_length=255,null=True,blank=True)
     pierpass=models.CharField(max_length=100,null=True,blank=True)
+    pierpass_dolla=models.CharField(max_length=100,null=True,blank=True)
+    exam=models.CharField(max_length=100,null=True,blank=True)
+    ship_to=models.CharField(max_length=100,null=True,blank=True)
+    full_out_driver=models.CharField(max_length=100,null=True,blank=True)
+    empty_in_driver=models.CharField(max_length=100,null=True,blank=True)
+    demurrage_dolla=models.CharField(max_length=100,null=True,blank=True)
+    per_diem=models.CharField(max_length=100,null=True,blank=True)
+    sml=models.CharField(max_length=100,null=True,blank=True)
+    column_33=models.CharField(max_length=100,null=True,blank=True)
+    do_recd=models.CharField(max_length=100,null=True,blank=True)
     mbl=models.CharField(max_length=100,null=True,blank=True)
     hbl=models.CharField(max_length=100,null=True,blank=True)
     customer=models.CharField(max_length=100,null=True,blank=True)
@@ -310,3 +331,100 @@ class CustomerFields(models.Model):
     def get_pref(self):
         return 'QA'+str(self.id).zfill(5)
 
+class DoIncomingsModel(models.Model):
+    pdf=models.FileField(upload_to='uploads/',null=True,blank=True)
+    cntr=models.CharField(null=True,blank=True,max_length=200)
+    mbl=models.CharField(null=True,blank=True,max_length=200)
+    seal=models.CharField(null=True,blank=True,max_length=200)
+    ship=models.CharField(max_length=255,null=True,blank=True)
+    size=models.CharField(max_length=100,null=True,blank=True)
+    weight=models.CharField(max_length=100,null=True,blank=True)
+    type=models.CharField(max_length=100,null=True,blank=True)
+    port=models.CharField(max_length=100,null=True,blank=True)
+    eta=models.CharField(max_length=100,null=True,blank=True)
+    drop_city=models.CharField(max_length=100,null=True,blank=True)
+    file_size=models.CharField(max_length=100,null=True)
+    file_type=models.CharField(max_length=100,null=True)
+    modified_at=models.DateTimeField(default=now)
+    created_at=models.DateTimeField(default=now)
+    class Meta:
+        db_table='doincomings'
+        verbose_name_plural='doincomings'
+        ordering=('created_at',)
+    def __str__(self)->str:
+        return f'{self.cntr} do incomings'
+
+    def delete(self, using=None,keep_parents=False):
+        if self.pdf:
+            self.pdf.storage.delete(self.pdf.name)
+        super().delete()
+
+
+class OrderModel(models.Model):
+    ordername_serial=models.CharField(max_length=255,default=generate_serial)
+    ordername=models.CharField(max_length=50,verbose_name='ordername',null=True)
+    load=models.CharField(max_length=100,default=generate_id)
+    action=models.CharField(null=True,blank=True,max_length=200)
+    user=models.CharField(null=True,blank=True,max_length=200)
+    role=models.CharField(null=True,blank=True,max_length=200)
+    status=models.CharField(max_length=255,null=True,blank=True)
+    pierpass=models.CharField(max_length=100,null=True,blank=True)
+    pierpass_dolla=models.CharField(max_length=100,null=True,blank=True)
+    exam=models.CharField(max_length=100,null=True,blank=True)
+    ship_to=models.CharField(max_length=100,null=True,blank=True)
+    full_out_driver=models.CharField(max_length=100,null=True,blank=True)
+    empty_in_driver=models.CharField(max_length=100,null=True,blank=True)
+    demurrage_dolla=models.CharField(max_length=100,null=True,blank=True)
+    per_diem=models.CharField(max_length=100,null=True,blank=True)
+    sml=models.CharField(max_length=100,null=True,blank=True)
+    column_33=models.CharField(max_length=100,null=True,blank=True)
+    do_recd=models.CharField(max_length=100,null=True,blank=True)
+    mbl=models.CharField(max_length=100,null=True,blank=True)
+    hbl=models.CharField(max_length=100,null=True,blank=True)
+    customer=models.CharField(max_length=100,null=True,blank=True)
+    container=models.CharField(max_length=100,null=True,blank=True)
+    type=models.CharField(max_length=100,null=True,blank=True)
+    seal=models.CharField(max_length=100,null=True,blank=True)
+    drop_city=models.CharField(max_length=100,null=True,blank=True)
+    discharge_port=models.CharField(max_length=100,null=True,blank=True)
+    port_eta=models.CharField(max_length=100,null=True,blank=True)
+    lfd=models.CharField(max_length=100,null=True,blank=True)
+    trucking=models.CharField(max_length=100,null=True,blank=True)
+    east_deliver=models.CharField(max_length=100,null=True,blank=True)
+    appointment=models.CharField(max_length=100,null=True,blank=True)
+    actual_deliver=models.CharField(max_length=100,null=True,blank=True)
+    driver=models.CharField(max_length=100,null=True,blank=True)
+    empty_return=models.CharField(max_length=100,null=True,blank=True)
+    chasis=models.CharField(max_length=100,null=True,blank=True)
+    demurrage=models.CharField(max_length=100,null=True,blank=True)
+    invoice_sent=models.CharField(max_length=100,null=True,blank=True)
+    invoice=models.CharField(max_length=100,null=True,blank=True)
+    invoice_dolla=models.CharField(max_length=100,null=True,blank=True)
+    a_rrry=models.CharField(max_length=100,null=True,blank=True)
+    a_ppy=models.CharField(max_length=100,null=True,blank=True)
+    customer_email=models.CharField(max_length=100,null=True,blank=True)
+    notify=models.CharField(max_length=100,null=True,blank=True)
+    prefix=models.CharField(max_length=100,null=True,blank=True)
+    acct_email=models.CharField(max_length=100,null=True)
+    customer_link=models.CharField(max_length=100,null=True,default=generate_serial)
+    comment=models.TextField(null=True,blank=True)
+    media=models.FileField(upload_to='uploads/',null=True,blank=True,default='')
+    file_size=models.CharField(max_length=100,null=True)
+    file_type=models.CharField(max_length=100,null=True)
+    date=models.DateField(null=True,blank=True)
+    modified_at=models.DateTimeField(default=now)
+    created_at=models.DateTimeField(default=now)
+    class Meta:
+        db_table='customer_orders'
+        verbose_name_plural='customer_orders'
+        ordering=('modified_at','prefix')
+    def __str__(self)->str:
+        return self.order.ordername
+
+    def delete(self, using=None,keep_parents=False):
+        if self.media:
+            self.media.storage.delete(self.media.name)
+        super().delete()
+    @property
+    def get_prefix(self):
+        return 'A21'+str(self.id).zfill(5)

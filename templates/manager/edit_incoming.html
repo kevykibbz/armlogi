@@ -1,0 +1,171 @@
+{% extends 'manager/account_layout.html' %}
+{% load static %}
+{% load humanize %}
+{% block body %}
+<section class="content">
+    <div class="">
+        <div class="block-header">
+            <div class="row">
+                <div class="col-lg-7 col-md-6 col-sm-12">
+                    <h2>Tabulate Incoming Form</h2>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"> <a href="{% url 'home' %}">{{site_name}}</a></li>
+                        <li class="breadcrumb-item"> <a href="{% url 'do incomings' %}">Do Incomings</a></li>
+                        <li class="breadcrumb-item active">Edit incoming form</li>
+                    </ul>
+                    <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
+                </div>
+                <div class=" col-lg-5 col-md-6 col-sm-12 ">                
+                    <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
+                     <a  href="{% url 'do incomings'%}" class="btn btn-info btn-icon float-right " data-toggle="tooltip" title="go back" type="button"><i class="zmdi zmdi-arrow-left"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="card position-relative">
+                        <div class="load-overlay users-overlay" style="display:none">
+                            <span class="overlay-close btn-remove" title="close overlay"><i class="fa fa-close"></i></span>
+                            <div class="wrapper-overlay">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="loader-container">
+                                        <div class="innerloader">
+                                            <svg class="circular" viewBox="25 25 50 50">
+                                            <circle class="path" cx="50" cy="50" r="10" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+                                            </svg>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="header">
+                            <h2><strong>|Tabulate</strong> info</h2>
+                        </div>
+                        <div class="body">
+                            <form action="{% url 'edit incoming' id=form_id %}" method="post" class="CustomerIncomingForm" novalidate>
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""> <span class="badge badge-primary counter-wrapper">1</span> PDF File <span class="text-danger">*</span></label>
+                                            <div class="custom-file">
+                                                {{form.pdf}}
+                                                <label for="id_pdf" class="custom-file-label">Browse file to upload</label>
+                                            </div>
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label for=""> <span class="badge badge-primary counter-wrapper">2</span> CNTR#  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.cntr}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">3</span> MBL#  <span class="text-danger">*</span></label>
+                                            {{form.mbl}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">4</span> Seal#</label>
+                                            {{form.seal}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">5</span> Ship  <span class="text-danger">*</span></label>
+                                            {{form.ship}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">6</span> Size  <span class="text-danger">*</span></label>
+                                            {{form.size}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">7</span> Weight  <span class="text-danger">*</span></label>
+                                            {{form.weight}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <label for=""><span class="badge badge-primary counter-wrapper">8</span> Type  <span class="text-danger">*</span></label>
+                                        <div class="form-group">
+                                            {{form.type}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">9</span> Port  <span class="text-danger">*</span></label>
+                                            {{form.port}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class=" col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">10</span> ETA  <span class="text-danger">*</span></label>
+                                            {{form.eta}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">11</span> Drop City  <span class="text-danger">*</span></label>
+                                            {{form.drop_city}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 mt-3 text-center">
+                                        <button class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+ <!-- File Upload Modal -->
+ <div id="file-modal" class="modal fade  bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="mySmallModalLabel">Select item</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+           <div class="wrapper">
+                <header class="upload-header">File Uploader</header>
+                <form  class="upload-form" action="{% url 'upload media' id=form_id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input class="file-input" name="media" type="file" hidden>
+                    <i class="zmdi zmdi-cloud-upload"></i>
+                    <p><i class="zmdi zmdi-attachment-alt"></i> Browse File to Upload</p>
+                </form>
+                <section class="sec progress-area "></section>
+                <section class="sec uploaded-area"></section>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

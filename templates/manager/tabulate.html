@@ -52,42 +52,63 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""> <span class="badge badge-primary counter-wrapper">1</span> Status</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">1</span> CNTR#</label>
+                                            {{form.container}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""> <span class="badge badge-primary counter-wrapper">2</span> Status</label>
                                             {{form.status}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""> <span class="badge badge-primary counter-wrapper">2</span> Date</label>
+                                            <label for=""> <span class="badge badge-primary counter-wrapper">3</span> Date</label>
                                             {{form.date}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">3</span> Pierpass</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">4</span> Pierpass</label>
                                             {{form.pierpass}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">4</span> MBL#</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">5</span> Pierpass $</label>
+                                            {{form.pierpass_dolla}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">6</span> Exam</label>
+                                            {{form.exam}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">7</span> MBL#</label>
                                             {{form.mbl}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">5</span> HBL#</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">8</span> HBL#</label>
                                             {{form.hbl}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">6</span> Customer</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">9</span> Customer</label>
                                             {{form.customer}}
                                             {% if customerlist %}
                                                 <datalist id="customerlist">
@@ -101,175 +122,210 @@
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">7</span> Container#</label>
-                                            {{form.container}}
+                                            <label for=""><span class="badge badge-primary counter-wrapper">10</span> Ship To</label>
+                                            {{form.ship_to}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">8</span> Type</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">11</span> Type</label>
                                             {{form.type}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">9</span> Seal#</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">12</span> Seal#</label>
                                             {{form.seal}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">10</span> Drop city</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">13</span> Drop city</label>
                                             {{form.drop_city}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">11</span> Discharge Port</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">14</span> Discharge Port</label>
                                             {{form.discharge_port}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">12</span> Port ETA</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">15</span> Port ETA</label>
                                             {{form.port_eta}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">13</span> LFD</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">16</span> LFD</label>
                                             {{form.lfd}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">14</span> Trucking</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">17</span> Trucking</label>
                                             {{form.trucking}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">15</span> EST.deliver</label>
-                                            {{form.east_deliver}}
-                                            <div class="feedback"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-12">
-                                        <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">16</span> Appointment</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">18</span> Appointment</label>
                                             {{form.appointment}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
+                                    <!-- <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">15</span> EST.deliver</label>
+                                            {{form.east_deliver}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div> -->
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">17</span> Actual deliver</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">19</span> Actual deliver</label>
                                             {{form.actual_deliver}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">18</span> Driver</label>
-                                            {{form.driver}}
+                                            <label for=""><span class="badge badge-primary counter-wrapper">20</span> Full-Out Driver</label>
+                                            {{form.full_out_driver}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">19</span> Empty Return</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">21</span> Empty Return</label>
                                             {{form.empty_return}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">20</span> Chassis</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">22</span> Empty-In Driver</label>
+                                            {{form.empty_in_driver}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">23</span> Chassis</label>
                                             {{form.chasis}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">21</span> Demurrage</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">24</span> Demurrage</label>
                                             {{form.demurrage}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">22</span> Invoice Sent</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">25</span> Demurrage $</label>
+                                            {{form.demurrage_dolla}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">26</span> DO REC'D Date</label>
+                                            {{form.do_recd}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">27</span> Invoice Sent</label>
                                             {{form.invoice_sent}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">23</span> Invoice#</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">28</span> Invoice#</label>
                                             {{form.invoice}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">24</span> Invoice $</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">29</span> Invoice $</label>
                                             {{form.invoice_dolla}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">25</span> A/R</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">30</span> PER DIEM</label>
+                                            {{form.per_diem}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">31</span> SML</label>
+                                            {{form.sml}}
+                                            <div class="feedback"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-12">
+                                        <div class="form-group">
+                                            <label for=""><span class="badge badge-primary counter-wrapper">32</span> A/R</label>
                                             {{form.a_rrry}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">26</span> A/P</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">33</span> A/P</label>
                                             {{form.a_ppy}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">27</span> Customer Email</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">34</span> Customer Email</label>
                                             {{form.customer_email}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">28</span> Notify</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">35</span> Notify</label>
                                             {{form.notify}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
-                                    <div class="col-12">
+                                    <div class="col-md-6 col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">29</span> ACCT Email</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">36</span> ACCT Email</label>
                                             {{form.acct_email}}
                                             <div class="feedback"></div>
                                         </div>
                                     </div>
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">30</span> Add comment</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">37</span> Add comment</label>
                                             {{form.comment}}
                                             <div class="feedback"></div>
                                         </div>
                                    </div>
                                    <div class="col-12" >
                                         <div class="form-group">
-                                            <label for=""><span class="badge badge-primary counter-wrapper">31</span> Upload Files</label>
+                                            <label for=""><span class="badge badge-primary counter-wrapper">38</span> Upload Files</label>
                                             <div class="wrapper" style="border:1px dotted #222342">
                                                 <div class="text-center">
                                                     <a href="#" class="btn btn-primary" type="button" data-toggle="modal" data-target="#file-modal"><i class="zmdi zmdi-attachment-alt"></i> Browse Files to Upload</a>

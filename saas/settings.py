@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.twitter', #social app
     'allauth.socialaccount.providers.github', #social app
     'django_cleanup.apps.CleanupConfig',
+    'import_export',
 ]
 
 SITE_ID = 2
@@ -120,7 +121,7 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 #         'ENFORCE-SCHEMA':False,
 #     }
 #  }
-#postgres://xdpajrqtvijfka:44def245e34f9569a2a293b8ca0b6c2e8fcb9c0a897c1b9a5c5d137e0b49c4a0@ec2-34-236-94-53.compute-1.amazonaws.com:5432/df2pholl515ae7
+#postgres://nnquulzynetcuj:84dc50528a83b2cf3a4e60cd0949526df73ea48e3bb39b647e8affa986dd2b0e@ec2-44-198-82-71.compute-1.amazonaws.com:5432/dffrujtdmf3b85
 
 DATABASES = {
    'default': {

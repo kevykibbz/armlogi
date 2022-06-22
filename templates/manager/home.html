@@ -83,13 +83,16 @@
                                         <th>#</th>
                                         <th>Action</th>
                                         <th>Load #</th>
+                                        <td>CNTR#</td>
                                         <th>Status</th>
                                         <th>Date</th>                                        
                                         <th>Pierpass</th>
+                                        <th>Pierpass $</th>
+                                        <th>Exam</th>
                                         <th>MBL#</th>
                                         <th>HBL#</th>
                                         <th>Customer#</th>
-                                        <th>Container</th>
+                                        <th>Ship To</th>
                                         <th>Type</th>
                                         <th>Seal#</th>
                                         <th>Drop City</th>
@@ -97,16 +100,20 @@
                                         <th>Port ETA</th>
                                         <th>LFD</th>
                                         <th>Trucking</th>
-                                        <th>Est.Deliver</th>
                                         <th>Appointment</th>
                                         <th>Actual Deliver</th>
-                                        <th>Driver</th>
+                                        <th>Full-Out Driver</th>
                                         <th>Empty Return </th>
+                                        <th>Empty-In Driver </th>
                                         <th>Chassis</th>
                                         <th>Demurrage</th>
+                                        <th>Demurrage $</th>
+                                        <th>DO REC'D Date</th>
                                         <th>Invoice Sent</th>
                                         <th>Invoice#</th>
                                         <th>Invoice $</th>
+                                        <th>PER DIEM</th>
+                                        <th>SML</th>
                                         <th>A/R</th>
                                         <th>A/P</th>
                                         <th>Customer Email</th>
@@ -127,14 +134,18 @@
                                         <td>
                                             {% if data.extendedauthuser.role != 'Tertiary' %}
                                                 <a href="{% url 'edit order' id=item.id %}" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-                                                <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data2 btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                {% if data.is_superuser %}
+                                                <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                {% else %}
+                                                    <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                {% endif %}
                                             {% else %}
                                                 <a href="javascript:void(0)" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-
-                                                <a href="javascript:void(0)" data-toggle="tooltip" title="Delete order item"class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                <a href="javascript:void(0)" data-toggle="tooltip" title="Delete order item"  class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                             {% endif %}
                                         </td>
                                         <td>{{item.prefix}}</td>
+                                        <td>{{item.container|default:'No data'}}</td>
                                         <td>
                                             {% if item.status %}
                                                 {% if item.status == 'cancelled_pickup' %}
@@ -156,46 +167,52 @@
                                                 No data 
                                             {% endif %}
                                         </td>
-                                        <td>{% if item.date %}{{item.date}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.pierpass %}{{item.pierpass}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.mbl %}{{item.mbl}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.hbl %}{{item.hbl}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.customer %}{{item.customer}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.container %}{{item.container}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.type %}{{item.type}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.seal %}{{item.seal}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.drop_city %}{{item.drop_city}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.discharge_port %}{{item.discharge_port}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.port_eta %}{{item.port_eta }}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.lfd %}{{item.lfd}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.trucking %}{{item.trucking}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.east_deliver %}{{item.east_deliver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.appointment %}{{item.appointment}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.actual_deliver %}{{item.actual_deliver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.driver %}{{item.driver}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.empty_return %}{{item.empty_return}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.chasis %}{{item.chasis}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.demurrage %}{{item.demurrage}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice_sent %}{{item.invoice_sent}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice %}{{item.invoice}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.invoice_dolla %}{{item.invoice_dolla}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.a_rrry %}{{item.a_rrry}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.a_ppy %}{{item.a_ppy}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.customer_email %}{{item.customer_email}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.notify %}{{item.notify }}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.acct_email %}{{item.acct_email}}{% else %} No data {% endif %}</td>
-                                        <td>
+                                        <td>{{item.date|default:'No data'}}</td>
+                                        <td>{{item.pierpass|default:'No data'}}</td>
+                                        <td>{{item.pierpass_dolla|default:'No data'}}</td>
+                                        <td>{{item.exam|default:'No data'}}</td>
+                                        <td>{{item.mbl|default:'No data'}}</td>
+                                        <td>{{item.hbl|default:'No data'}}</td>
+                                        <td>{{item.customer|default:'No data'}}</td>
+                                        <td>{{item.ship_to|default:'No data'}}</td>
+                                        <td>{{item.type|default:'No data'}}</td>
+                                        <td>{{item.seal|default:'No data'}}</td>
+                                        <td>{{item.drop_city|default:'No data'}}</td>
+                                        <td>{{item.discharge_port|default:'No data'}}</td>
+                                        <td>{{item.port_eta|default:'No data'}}</td>
+                                        <td>{{item.lfd|default:'No data'}}</td>
+                                        <td>{{item.trucking|default:'No data'}}</td>
+                                        <td>{{item.appointment|default:'No data'}}</td>
+                                        <td>{{item.actual_deliver|default:'No data'}}</td>
+                                        <td>{{item.full_out_driver|default:'No data'}}</td>
+                                        <td>{{item.empty_return|default:'No data'}}</td>
+                                        <td>{{item.empty_in_driver|default:'No data'}}</td>
+                                        <td>{{item.chasis|default:'No data'}}</td>
+                                        <td>{{item.demurrage|default:'No data'}}</td>
+                                        <td>{{item.demurrage_dolla|default:'No data'}}</td>
+                                        <td>{{item.do_recd|default:'No data'}}</td>
+                                        <td>{{item.invoice_sent|default:'No data'}}</td>
+                                        <td>{{item.invoice|default:'No data'}}</td>
+                                        <td>{{item.invoice_dolla|default:'No data'}}</td>
+                                        <td>{{item.per_diem|default:'No data'}}</td>
+                                        <td>{{item.sml|default:'No data'}}</td>
+                                        <td>{{item.a_rrry|default:'No data'}}</td>
+                                        <td>{{item.a_ppy|default:'No data'}}</td>
+                                        <td>{{item.customer_email|default:'No data'}}</td>
+                                        <td>{{item.notify|default:'No data'}}</td>
+                                        <td>{{item.acct_email|default:'No data'}}</td>
+                                        <td class="text-center">
                                             {% if item.media %}
-                                                <a href="/media{{item.media.url}}" target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
-                                                <a  href="/media{{item.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success  btn-icon" download><i class="zmdi zmdi-download"></i></a>
+                                                <a href="/media{{item.media.url}}"  target="_blank" data-toggle="tooltip" title="View file" class="btn btn-info btn-icon "><i class="zmdi zmdi-eye"></i></a> |
+                                                <a  href="/media{{item.media.url}}" data-toggle="tooltip" title="Download file" class="btn btn-outline-success btn-icon" download><i class="zmdi zmdi-download"></i></a>
                                             {% else %}
                                                 No file found
                                             {% endif %}
                                         </td>
-                                        <td>{% if item.comment %}{{item.comment}}{% else %} No comment found{% endif %}</td>
+                                        <td>{{item.comment|default:'No data'}}</td>
                                         <td>{% if item.customer_link %}<i data-toggle="tooltip" data-clipboard-text="{{site_url}}/view/{{item.customer_link}}/" title="copy link" class="text-info zmdi zmdi-copy copy-button"></i>{% else %} No link found{% endif %}</td>
-                                        <td>{% if item.modified_at %}{{item.modified_at}}{% else %} No data {% endif %}</td>
-                                        <td>{% if item.created_at %}{{item.created_at}}{% else %} No data {% endif %}</td>
+                                        <td>{{item.modified_at|default:'No data'}}</td>
+                                        <td>{{item.created_at|default:'No data'}}</td>
                                      </tr>
                                      {% endfor %}
                                     {% else %}

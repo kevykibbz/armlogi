@@ -240,7 +240,7 @@ class UserPasswordChangeForm(UserCreationForm):
 class NewOderForm(forms.ModelForm):
     ordername=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Order name','aria-label':'neworder','list':'orderlist'}),error_messages={'required':'Order name is required'})
     class Meta:
-        model=Oders
+        model=OrderModel
         fields=['ordername']
         
 
@@ -257,10 +257,13 @@ options=[
 class OrderFieldsForm(forms.ModelForm):
     status=forms.ChoiceField(choices=options,widget=forms.Select(attrs={'class':'form-control show-tick ms select2','data-placeholder':'Select'}),required=False)
     date=forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Date','type':'Date'}),required=False)
-    pierpass=forms.CharField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Pierpass'}),required=False)
+    pierpass=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Pierpass'}),required=False)
+    pierpass_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Pierpass $'}),required=False)
+    exam=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Exam'}),required=False)
     mbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'MBL'}),required=False)
     hbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'HBL'}),required=False)
     customer=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Customer','list':'customerlist'}),required=False)
+    ship_to=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ship To'}),required=False)
     container=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Container#'}),required=False)
     type=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Type'}),required=False)
     seal=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Seal#'}),required=False)
@@ -272,13 +275,18 @@ class OrderFieldsForm(forms.ModelForm):
     east_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Est.Deliver'}),required=False)
     appointment=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Appoitment'}),required=False)
     actual_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Actual Deliver'}),required=False)
-    driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Driver'}),required=False)
+    full_out_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Full-Out Driver'}),required=False)
     empty_return=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Empty Return'}),required=False)
+    empty_in_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Empty-In Driver'}),required=False)
     chasis=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Chassis'}),required=False)
     demurrage=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Demurrage'}),required=False)
+    demurrage_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Demurrage $'}),required=False)
+    do_recd=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DO RECD Date'}),required=False)
     invoice_sent=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice Sent'}),required=False)
     invoice=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice'}),required=False)
     invoice_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice $'}),required=False)
+    per_diem=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'PER DIEM'}),required=False)
+    sml=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'SML'}),required=False)
     a_rrry=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/R'}),required=False)
     a_ppy=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/P'}),required=False)
     customer_email=forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Customer Email'}),required=False)
@@ -287,15 +295,15 @@ class OrderFieldsForm(forms.ModelForm):
     comment=forms.CharField(widget=forms.Textarea(attrs={'rows':5,'cols':20,'class':'form-control','placeholder':'Comment...','required':False}),required=False)
     media=forms.FileField(widget=forms.FileInput(attrs={'class':'custom-file-input','id':'customFileInput'}),required=False)
     class Meta:
-        model=OrderFields
+        model=OrderModel
         fields=[
                 'media',
                 'status',
                 'date',
-                'pierpass',
+                'pierpass','pierpass_dolla','exam',
                 'hbl',
                 'mbl',
-                'customer',
+                'customer','ship_to',
                 'container',
                 'type',
                 'seal',
@@ -304,17 +312,20 @@ class OrderFieldsForm(forms.ModelForm):
                 'port_eta',
                 'lfd',
                 'trucking',
-                'east_deliver','appointment','actual_deliver','driver','empty_return','chasis','demurrage','invoice_sent','invoice','invoice_dolla',
+                'east_deliver','appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
 #OrderLogs
 class OrderFieldsFormLogs(forms.ModelForm):
     status=forms.ChoiceField(choices=options,widget=forms.Select(attrs={'class':'form-control show-tick ms select2','data-placeholder':'Select'}),required=False)
     date=forms.DateField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Date','type':'Date'}),required=False)
-    pierpass=forms.CharField(widget=forms.DateInput(attrs={'class':'form-control','placeholder':'Pierpass'}),required=False)
+    pierpass=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Pierpass'}),required=False)
+    pierpass_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Pierpass $'}),required=False)
+    exam=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Exam'}),required=False)
     mbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'MBL'}),required=False)
     hbl=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'HBL'}),required=False)
     customer=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Customer','list':'customerlist'}),required=False)
+    ship_to=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Ship To'}),required=False)
     container=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Container#'}),required=False)
     type=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Type'}),required=False)
     seal=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Seal#'}),required=False)
@@ -326,13 +337,18 @@ class OrderFieldsFormLogs(forms.ModelForm):
     east_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Est.Deliver'}),required=False)
     appointment=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Appoitment'}),required=False)
     actual_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Actual Deliver'}),required=False)
-    driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Driver'}),required=False)
+    full_out_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Full-Out Driver'}),required=False)
     empty_return=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Empty Return'}),required=False)
+    empty_in_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Empty-In Driver'}),required=False)
     chasis=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Chassis'}),required=False)
     demurrage=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Demurrage'}),required=False)
+    demurrage_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Demurrage $'}),required=False)
+    do_recd=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'DO RECD Date'}),required=False)
     invoice_sent=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice Sent'}),required=False)
     invoice=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice'}),required=False)
     invoice_dolla=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Invoice $'}),required=False)
+    per_diem=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'PER DIEM'}),required=False)
+    sml=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'SML'}),required=False)
     a_rrry=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/R'}),required=False)
     a_ppy=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'A/P'}),required=False)
     customer_email=forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control','placeholder':'Customer Email'}),required=False)
@@ -346,10 +362,10 @@ class OrderFieldsFormLogs(forms.ModelForm):
                 'media',
                 'status',
                 'date',
-                'pierpass',
+                'pierpass','pierpass_dolla','exam',
                 'hbl',
                 'mbl',
-                'customer',
+                'customer','ship_to',
                 'container',
                 'type',
                 'seal',
@@ -358,7 +374,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
                 'port_eta',
                 'lfd',
                 'trucking',
-                'east_deliver','appointment','actual_deliver','driver','empty_return','chasis','demurrage','invoice_sent','invoice','invoice_dolla',
+                'east_deliver','appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
     def clean_status(self):
@@ -374,6 +390,22 @@ class OrderFieldsFormLogs(forms.ModelForm):
         if self.instance.pierpass != pierpass:
             if pierpass is not None and len(pierpass) > 0:
                 return pierpass
+            else:
+                return 'Erased'
+
+    def clean_pierpass_dolla(self):
+        pierpass_dolla=self.cleaned_data.get('pierpass_dolla')
+        if self.instance.pierpass_dolla != pierpass_dolla:
+            if pierpass_dolla is not None and len(pierpass_dolla) > 0:
+                return pierpass_dolla
+            else:
+                return 'Erased'
+
+    def clean_exam(self):
+        exam=self.cleaned_data.get('exam')
+        if self.instance.exam != exam:
+            if exam is not None and len(exam) > 0:
+                return exam
             else:
                 return 'Erased'
         
@@ -398,6 +430,14 @@ class OrderFieldsFormLogs(forms.ModelForm):
         if self.instance.customer != customer:
             if customer is not None and len(customer) > 0:
                 return customer
+            else:
+                return 'Erased'
+
+    def clean_ship_to(self):
+        ship_to=self.cleaned_data.get('ship_to')
+        if self.instance.ship_to != ship_to:
+            if ship_to is not None and len(ship_to) > 0:
+                return ship_to
             else:
                 return 'Erased'
 
@@ -481,11 +521,11 @@ class OrderFieldsFormLogs(forms.ModelForm):
             else:
                 return 'Erased'
 
-    def clean_driver(self):
-        driver=self.cleaned_data.get('driver')
-        if self.instance.driver != driver:
-            if driver is not None and len(driver) > 0:
-                return driver
+    def clean_full_out_driver(self):
+        full_out_driver=self.cleaned_data.get('full_out_driver')
+        if self.instance.driver != full_out_driver:
+            if full_out_driver is not None and len(full_out_driver) > 0:
+                return full_out_driver
             else:
                 return 'Erased'
 
@@ -504,6 +544,14 @@ class OrderFieldsFormLogs(forms.ModelForm):
                 return empty_return
             else:
                 return 'Erased'
+    
+    def clean_empty_in_driver(self):
+        empty_in_driver=self.cleaned_data.get('empty_in_driver')
+        if self.instance.pierpass != empty_in_driver:
+            if empty_in_driver is not None and len(empty_in_driver) > 0:
+                return empty_in_driver
+            else:
+                return 'Erased'
 
     def clean_chasis(self):
         chasis=self.cleaned_data.get('chasis')
@@ -518,6 +566,22 @@ class OrderFieldsFormLogs(forms.ModelForm):
         if self.instance.demurrage != demurrage:
             if demurrage is not None and len(demurrage) > 0:
                 return demurrage
+            else:
+                return 'Erased'
+
+    def clean_demurrage_dolla(self):
+        demurrage_dolla=self.cleaned_data.get('demurrage_dolla')
+        if self.instance.demurrage != demurrage_dolla:
+            if demurrage_dolla is not None and len(demurrage_dolla) > 0:
+                return demurrage_dolla
+            else:
+                return 'Erased'
+    
+    def clean_do_recd(self):
+        do_recd=self.cleaned_data.get('do_recd')
+        if self.instance.do_recd != do_recd:
+            if do_recd is not None and len(do_recd) > 0:
+                return do_recd
             else:
                 return 'Erased'
 
@@ -542,6 +606,22 @@ class OrderFieldsFormLogs(forms.ModelForm):
         if self.instance.invoice_dolla != invoice_dolla:
             if invoice_dolla is not None and len(invoice_dolla) > 0:
                 return invoice_dolla
+            else:
+                return 'Erased'
+
+    def clean_per_diem(self):
+        per_diem=self.cleaned_data.get('per_diem')
+        if self.instance.per_diem != per_diem:
+            if per_diem is not None and len(per_diem) > 0:
+                return per_diem
+            else:
+                return 'Erased'
+    
+    def clean_sml(self):
+        sml=self.cleaned_data.get('sml')
+        if self.instance.sml != sml:
+            if sml is not None and len(sml) > 0:
+                return sml
             else:
                 return 'Erased'
     
@@ -613,7 +693,7 @@ class FormUploads(forms.ModelForm):
     media=forms.FileField(widget=forms.FileInput(attrs={'class':'file-input','hidden':True}),required=False)
     
     class Meta:
-        model=OrderFields
+        model=OrderModel
         fields=['media']
 
 #CustomerFileUploads
@@ -681,15 +761,32 @@ class CustomerForm(forms.ModelForm):
 class AuthForm(forms.ModelForm):
     email=forms.EmailField(widget=forms.EmailInput(attrs={'style':'text-transform:lowercase;','class':'form-control','aria-label':'email'}),error_messages={'required':'Email address is required'})
     class Meta:
-        model=OrderFields
+        model=OrderModel
         fields=['customer_email']
 
     def clean_email(self):
         email=self.cleaned_data['email']
-        if  not OrderFields.objects.filter(customer_email=email).exists():
+        if  not OrderModel.objects.filter(customer_email=email).exists():
             raise forms.ValidationError('Email address does not exist')
         try:
             validate_email(email)
         except ValidationError:
             raise forms.ValidationError('Invalid email address')
         return email
+
+class DoIncomingsForm(forms.ModelForm):
+    #pdf=forms.FileField(widget=forms.FileInput(attrs={'aria-label':'pdf','class':'custom-file-input','id':'customFileInput'}),required=False)
+    pdf=forms.FileField(widget=forms.FileInput(attrs={'aria-label':'pdf','class':'custom-file-input','id':'customFileInput'}),error_messages={'required':'Excel or PDF file is required'},validators=[FileExtensionValidator(['pdf','xlsx',],message="Invalid file extension.Allowed file extensions are .pdf,.xlsx",code="invalid_extension")])
+    cntr=forms.CharField(widget=forms.DateInput(attrs={'aria-label':'cntr','class':'form-control','placeholder':'CNTR#'}),error_messages={'required':'CNTR is required'})
+    mbl=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'mbl','class':'form-control','placeholder':'MBL'}),error_messages={'required':'MBL is required'})
+    seal=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'seal','class':'form-control','placeholder':'Seal#'}),error_messages={'required':'Seal is required'})
+    ship=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'ship','class':'form-control','placeholder':'Ship'}),error_messages={'required':'Ship is required'})
+    size=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'size','class':'form-control','placeholder':'Size'}),error_messages={'required':'Size is required'})
+    weight=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'weight','class':'form-control','placeholder':'Weight'}),error_messages={'required':'Weight is required'})
+    type=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'type','class':'form-control','placeholder':'Type'}),error_messages={'required':'Type is required'})
+    port=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'port','class':'form-control','placeholder':'Port'}),error_messages={'required':'Port is required'})
+    eta=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'eta','class':'form-control','placeholder':'ETA'}),error_messages={'required':'ETA is required'})
+    drop_city=forms.CharField(widget=forms.TextInput(attrs={'aria-label':'drop_city','class':'form-control','placeholder':'Drop City'}),error_messages={'required':'Drop City is required'})
+    class Meta:
+        model=DoIncomingsModel
+        fields=['pdf','cntr','mbl','seal','ship','size','weight','type','port','eta','drop_city',]

@@ -20,3 +20,4 @@ psycopg2==2.9.3
 djongo
 requests
 django-cleanup
+django-import-export

@@ -1,7 +1,7 @@
 from manager.decorators import unauthenticated_user,allowed_users
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import Oders,ExtendedAuthUser,OrderFields,UserFileUploads,CustomerFields,LoggerData,OrderLogs
+from .models import ExtendedAuthUser,OrderModel,UserFileUploads,CustomerFields,LoggerData,OrderLogs
 from django.contrib.auth.models import User,Group,Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render,get_object_or_404
@@ -28,7 +28,8 @@ from django.utils.crypto import get_random_string
 from manager.addons import send_email
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-
+import csv
+from django.templatetags.static import static
 #save logger data
 def save_logger(action,user,role):
     if action and user:
@@ -37,7 +38,7 @@ def save_logger(action,user,role):
 
 #save order logs
 def save_order_logger(post_data,order_id,user,action,role):
-    data=OrderFields.objects.get(id=order_id)
+    data=OrderModel.objects.get(id=order_id)
     form=OrderFieldsFormLogs(post_data , instance=data)
     if form.is_valid():
         output=OrderLogs.objects.create(
@@ -47,9 +48,12 @@ def save_order_logger(post_data,order_id,user,action,role):
                                             role=role,
                                             status=form.cleaned_data.get('status'),
                                             pierpass=form.cleaned_data.get('pierpass'),
+                                            pierpass_dolla=form.cleaned_data.get('pierpass_dolla'),
+                                            exam=form.cleaned_data.get('exam'),
                                             mbl=form.cleaned_data.get('mbl'),
                                             hbl=form.cleaned_data.get('hbl'),
                                             customer=form.cleaned_data.get('customer'),
+                                            ship_to=form.cleaned_data.get('ship_to'),
                                             container=form.cleaned_data.get('container'),
                                             type=form.cleaned_data.get('type'),
                                             seal=form.cleaned_data.get('seal'),
@@ -61,13 +65,18 @@ def save_order_logger(post_data,order_id,user,action,role):
                                             east_deliver=form.cleaned_data.get('east_deliver'),
                                             appointment=form.cleaned_data.get('appointment'),
                                             actual_deliver=form.cleaned_data.get('actual_deliver'),
-                                            driver=form.cleaned_data.get('driver'),
+                                            full_out_driver=form.cleaned_data.get('full_out_driver'),
                                             empty_return=form.cleaned_data.get('empty_return'),
+                                            empty_in_driver=form.cleaned_data.get('empty_in_driver'),
                                             chasis=form.cleaned_data.get('chasis'),
-                                            demurrage=form.cleaned_data.get('demurrage'),
+                                            demurrage=form.cleaned_data.get('demurrage'), 
+                                            demurrage_dolla=form.cleaned_data.get('demurrage_dolla'),
+                                            do_recd=form.cleaned_data.get('do_recd'),
                                             invoice_sent=form.cleaned_data.get('invoice_sent'),
                                             invoice=form.cleaned_data.get('invoice'),
                                             invoice_dolla=form.cleaned_data.get('invoice_dolla'),
+                                            per_diem=form.cleaned_data.get('per_diem'),
+                                            sml=form.cleaned_data.get('sml'),
                                             a_rrry=form.cleaned_data.get('a_rrry'),
                                             a_ppy=form.cleaned_data.get('a_ppy'),
                                             customer_email=form.cleaned_data.get('customer_email'),
@@ -134,10 +143,10 @@ class Dashboard(View):
 def home(request):
     obj=SiteConstants.objects.all()[0]
     users_count=User.objects.count()
-    orders_count=Oders.objects.count()
-    completed_orders=OrderFields.objects.filter(status__icontains='delivered').count()
-    cancelled_orders=OrderFields.objects.filter(status__icontains='cancelled').count()
-    orders=OrderFields.objects.all().order_by('-modified_at')[:12]
+    orders_count=OrderModel.objects.count()
+    completed_orders=OrderModel.objects.filter(status__icontains='delivered').count()
+    cancelled_orders=OrderModel.objects.filter(status__icontains='cancelled').count()
+    orders=OrderModel.objects.all().order_by('-modified_at')[:12]
     data={
         'title':'home',
         'obj':obj,
@@ -351,7 +360,7 @@ def passwordChange(request):
 class UserNewOrder(View):
     def get(self,request):
         obj=SiteConstants.objects.all()[0]
-        orders=Oders.objects.all()
+        orders=OrderModel.objects.all()
         form=NewOderForm()
         data={
                 'title':'Create new order',
@@ -374,7 +383,7 @@ class UserNewOrder(View):
             y.role=role
             y.save()
             save_logger(action,request.user.get_full_name(),role)
-            order_id=OrderFields.objects.latest('id').id
+            order_id=OrderModel.objects.latest('id').id
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -385,10 +394,11 @@ class UserNewOrder(View):
 @login_required(login_url='/')
 def viewOrders(request):
     obj=SiteConstants.objects.all()[0]
-    data=Oders.objects.all().order_by('-ordername_id')
+    data=OrderModel.objects.all().order_by('-id')
     paginator=Paginator(data,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
+    print(orders)
     data={
         'title':'View orders',
         'obj':obj,
@@ -402,7 +412,7 @@ def viewOrders(request):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
 def editMainOrder(request,id):
-    data=Oders.objects.get(ordername_id=id)
+    data=OrderModel.objects.get(id__exact=id)
     form=NewOderForm(request.POST or None,instance=data)
     if form.is_valid():
         order=form.cleaned_data.get('ordername')
@@ -421,41 +431,41 @@ def editMainOrder(request,id):
 class EditOrder(View):
     def get(self,request,id):
         obj=SiteConstants.objects.all()[0]
-        data=OrderFields.objects.get(id=id)
-        obj=Oders.objects.get(ordername_id=data.order_id)
+        data=OrderModel.objects.get(id=id)
         form=OrderFieldsForm(instance=data)
-        customers=OrderFields.objects.values('customer').distinct()
+        customers=OrderModel.objects.values('customer').distinct()
         data={
-            'title':f'Edit oreder | {obj.ordername}',
+            'title':f'Edit order | {data.ordername}',
             'obj':obj,
             'data':request.user,
             'form':form,
-            'editor':obj,
+            'editor':data,
             'form_id':id,
             'link':data.customer_link,
             'customerlist':customers
         }
         return render(request,'manager/tabulate.html',context=data)
     def post(self,request,id):
-        data=OrderFields.objects.get(id=id)
-        obj=Oders.objects.get(ordername_id=data.order_id)
+        data=OrderModel.objects.get(id=id)
         site_data=SiteConstants.objects.all()[0]
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=data)
         if form.is_valid():
             if form.has_changed():
-                order=obj.ordername
-                action=f'Edited order:{order}'
+                order=data.ordername
+                container=data.container if data.container else 'No container data was provided'
+                load=data.load if data.load else 'No load data found'
+                action=f'Edited order:{order},container :{container},load:{load}'
                 user=request.user.get_full_name()
                 role=request.user.extendedauthuser.role
                 t=form.save(commit=False)
                 save_order_logger(request.POST,id,user,action,role)
                 t.modified_at=now()
                 t.customer_link=generate_id()
+                t.prefix='21A'+str(id).zfill(5)
                 t.user=request.user.get_full_name()
                 t.action=action
                 t.role=request.user.extendedauthuser.role
                 t.save()
-                order_id=obj.ordername_id
                 role=request.user.extendedauthuser.role
                 save_logger(action,request.user.get_full_name(),role)
                 return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
@@ -468,7 +478,7 @@ class EditOrder(View):
 @login_required(login_url='/')
 def viewOrder(request,id):
     obj=SiteConstants.objects.all()[0]
-    data=Oders.objects.all().order_by('-id')
+    data=OrderModel.objects.all().order_by('-id')
     paginator=Paginator(data,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -488,13 +498,13 @@ def viewOrder(request,id):
 def deleteOrder(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=Oders.objects.get(orderfields__order_id__exact=id)
+            obj=OrderModel.objects.get(id__exact=id)
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted order:{order}',request.user.get_full_name(),role)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order deleted successfully.','id':id},content_type='application/json')       
-        except Oders.DoesNotExist:
+        except OrderModel.DoesNotExist:
             return JsonResponse({'valid':True,'message':'Order does not exist'},content_type='application/json')
 
 #tabulateOrder
@@ -504,15 +514,14 @@ class TabulateOrder(View):
     def get(self,request,id):
         try:
             obj=SiteConstants.objects.all()[0]
-            order=OrderFields.objects.get(id__exact=id)
-            orders=Oders.objects.get(ordername_id__exact=order.order_id)
+            order=OrderModel.objects.get(id__exact=id)
             form=OrderFieldsForm()
-            customers=OrderFields.objects.all()
+            customers=OrderModel.objects.all()
             data={
-                'title':f'Edit order | {orders.ordername}',
+                'title':f'Edit order | {order.ordername}',
                 'obj':obj,
                 'data':request.user,
-                'editor':orders,
+                'editor':order,
                 'form':form,
                 'form_id':id,
                 'customers':customers
@@ -522,12 +531,11 @@ class TabulateOrder(View):
             return render(request,'manager/404.html',{'title':'Error | Bad Request'},status=400)
     
     def post(self,request,id):
-        order=OrderFields.objects.get(id__exact=id)
-        orders=Oders.objects.get(ordername_id__exact=order.order_id)
+        order=OrderModel.objects.get(id__exact=id)
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=order)
         if form.is_valid():
             form.save()
-            order=orders.ordername
+            order=order.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Tabulated order:{order}',request.user.get_full_name(),role)
             return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
@@ -544,7 +552,7 @@ def sort_file_type(item):
 def orderSummary(request):
     obj=SiteConstants.objects.all()[0]
     now=datetime.datetime.now()
-    orders=OrderFields.objects.all().order_by('prefix')
+    orders=OrderModel.objects.all().order_by('prefix')
     paginator=Paginator(orders,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -565,13 +573,13 @@ def orderSummary(request):
 def deleteSingleItem(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=Oders.objects.get(orderfields__id=id)
+            obj=OrderModel.objects.get(id__exact=id)
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted  order:{order}',request.user.get_full_name(),role)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Order item deleted successfully.','id':id},content_type='application/json')       
-        except Oders.DoesNotExist:
+        except OrderModel.DoesNotExist:
             return JsonResponse({'valid':True,'message':'User does not exist'},content_type='application/json')
 
 #create file size
@@ -589,7 +597,7 @@ def convert_file_size(size_bytes):
 @login_required(login_url='/')
 def handleUpload(request,id):
     if request.method == 'POST':
-        ob=OrderFields.objects.get(id__exact=id)
+        ob=OrderModel.objects.get(id__exact=id)
         form=FormUploads(request.POST,request.FILES or None,instance=ob)
         if form.is_valid():
             t=form.save(commit=False)
@@ -617,7 +625,7 @@ def handleUpload(request,id):
 @allowed_users(allowed_roles=['admins'])
 def UserUploads(request):
     obj=SiteConstants.objects.all()[0]
-    orders=OrderFields.objects.filter(media__isnull=False).all().order_by('-id')
+    orders=OrderModel.objects.filter(media__isnull=False).all().order_by('-id')
     paginator=Paginator(orders,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -636,13 +644,13 @@ def UserUploads(request):
 def UserUploadsDelete(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderFields.objects.get(id=id)
+            obj=OrderModel.objects.get(id=id)
             file=obj.media.name
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted uploaded file:{file}',request.user.get_full_name(),role)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'File deleted successfully.','id':id},content_type='application/json')       
-        except UserFileUploads.DoesNotExist:
+        except OrderModel.DoesNotExist:
             return JsonResponse({'valid':True,'message':'File does not exist'},content_type='application/json')
 
 
@@ -669,12 +677,53 @@ class CustomerQuote(View):
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
 
+#CustomerIncoming
+@method_decorator(login_required(login_url='/'),name='dispatch')
+@method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
+class CustomerIncoming(View):
+    def get(self,request):
+        obj=SiteConstants.objects.all()[0]
+        form=DoIncomingsForm()
+        data={
+            'title':'Customer Incoming',
+            'obj':obj,
+            'data':request.user,
+            'form':form,
+        }
+        return render(request,'manager/customer_incoming.html',context=data)
+    def post(self,request):
+        form=DoIncomingsForm(request.POST,request.FILES or None)
+        if form.is_valid():
+            form.save()
+            role=request.user.extendedauthuser.role
+            save_logger('Placed a new incoming form data.',request.user.get_full_name(),role)
+            return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
+        else:
+            return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
+
+#quotations
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins','secondary','tertiary'])
+def quotations(request):
+    obj=SiteConstants.objects.all()[0]
+    quotes=CustomerFields.objects.all().order_by('-id')
+    paginator=Paginator(quotes,30)
+    page_num=request.GET.get('page')
+    total_quotes=paginator.get_page(page_num)
+    data={
+        'title':'Customers Quotations',
+        'obj':obj,
+        'data':request.user,
+        'orders':total_quotes
+    }
+    return render(request,'manager/quotations.html',context=data)
+
 #incomings
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins','secondary','tertiary'])
 def incomings(request):
     obj=SiteConstants.objects.all()[0]
-    quotes=CustomerFields.objects.all().order_by('-id')
+    quotes=DoIncomingsModel.objects.all().order_by('-id')
     paginator=Paginator(quotes,30)
     page_num=request.GET.get('page')
     total_quotes=paginator.get_page(page_num)
@@ -682,10 +731,9 @@ def incomings(request):
         'title':'Customers Incomings',
         'obj':obj,
         'data':request.user,
-        'orders':total_quotes
+        'incomings':total_quotes
     }
     return render(request,'manager/incomings.html',context=data)
-
 
 
 
@@ -719,6 +767,34 @@ class QuoteEditView(View):
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
 
+#IncomingEditView
+@method_decorator(login_required(login_url='/'),name='dispatch')
+@method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
+class IncomingEditView(View):
+    def get(self,request,id):
+        obj=SiteConstants.objects.all()[0]
+        data=DoIncomingsModel.objects.get(id__exact=id)
+        form=DoIncomingsForm(instance=data)
+        data={
+            'title':'Edit Incoming',
+            'obj':obj,
+            'data':request.user,
+            'form':form,
+            'form_id':id,
+        }
+        return render(request,'manager/edit_incoming.html',context=data)
+    def post(self,request,id):
+        data=DoIncomingsModel.objects.get(id__exact=id)
+        form=DoIncomingsForm(request.POST,request.FILES or None,instance=data)
+        if form.is_valid():
+            t=form.save(commit=False)
+            t.modified_at=now()
+            t.save()
+            role=request.user.extendedauthuser.role
+            save_logger('Edited customer incoming form data.',request.user.get_full_name(),role)
+            return JsonResponse({'valid':True,'message':'data saved'},content_type='application/json')
+        else:
+            return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
 
 #deleteQuote
 @login_required(login_url='/')
@@ -732,8 +808,21 @@ def deleteQuote(request,id):
             save_logger(f'Deleted customer of quote email:{email}',request.user.get_full_name(),role)
             obj.delete() 
             return JsonResponse({'valid':False,'message':'Quote deleted successfully.','id':id},content_type='application/json')       
-        except Oders.DoesNotExist:
+        except CustomerFields.DoesNotExist:
             return JsonResponse({'valid':True,'message':'Quote does not exist'},content_type='application/json')
+#deleteIncoming
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins',])
+def deleteIncoming(request,id):
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        try:
+            obj=DoIncomingsModel.objects.get(id__exact=id)
+            role=request.user.extendedauthuser.role
+            save_logger('Deleted incoming form data.',request.user.get_full_name(),role)
+            obj.delete() 
+            return JsonResponse({'valid':False,'message':'Incoming form deleted successfully.','id':id},content_type='application/json')       
+        except DoIncomingsModel.DoesNotExist:
+            return JsonResponse({'valid':True,'message':'Incoming form data does not exist'},content_type='application/json')
 
 #handleUpload
 @login_required(login_url='/')
@@ -761,7 +850,7 @@ def UploadMedia(request,id):
 def customerView(request,authlink):
     obj=SiteConstants.objects.all()[0]
     try:
-        quotes=OrderFields.objects.get(customer_link=authlink)
+        quotes=OrderModel.objects.get(customer_link=authlink)
         data={
                 'title':'Customer status update',
                 'obj':obj,
@@ -769,7 +858,7 @@ def customerView(request,authlink):
                 'orders':quotes,
             }
         return render(request,'manager/status.html',context=data)
-    except OrderFields.DoesNotExist:
+    except OrderModel.DoesNotExist:
         data={
                 'title':'Error | Page Not Found',
                 'obj':obj
@@ -815,7 +904,7 @@ class AuthLink(View):
         obj=SiteConstants.objects.all()[0]
         form=AuthForm(request.POST or None)
         if form.is_valid():
-            dg=OrderFields.objects.get(customer_email=form.cleaned_data.get('email'))
+            dg=OrderModel.objects.get(customer_email=form.cleaned_data.get('email'))
             dg.customer_link=generate_id
             dg.save()
             subject='Authorization link.'
@@ -904,19 +993,18 @@ def deleteAllOrderLogs(request):
 def OrderLogger(request,id): 
     try:
         obj=SiteConstants.objects.all()[0]
-        a=OrderFields.objects.get(id=id)
+        a=OrderModel.objects.get(id=id)
         data=OrderLogs.objects.filter(order_id=id).order_by('-id')
-        order_data=Oders.objects.get(ordername_id__exact=a.order_id)
         paginator=Paginator(data,30)
         page_num=request.GET.get('page')
         results=paginator.get_page(page_num)
         data={
-                'title':f'{order_data.ordername} recent logs',
+                'title':f'{a.ordername} recent logs',
                 'obj':obj,
                 'data':request.user,
                 'logs':results,
                 'count':paginator.count,
-                'ordername':order_data.ordername,
+                'ordername':a.ordername,
                 'order_id':id
             }
         return render(request,'manager/order_logger.html',context=data)     
@@ -933,7 +1021,7 @@ def OrderLogger(request,id):
 @allowed_users(allowed_roles=['admins','secondary'])
 def send_notification(request):
     id=request.POST['id']
-    data=OrderFields.objects.get(id__exact=id)
+    data=OrderModel.objects.get(id__exact=id)
     obj=SiteConstants.objects.all()[0]
     if data.customer_link and data.customer_email:
         try:
@@ -954,3 +1042,17 @@ def send_notification(request):
         except Exception as e:
             return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')       
     return JsonResponse({'valid':False,'message':'Error: Update Customer Email First.'},content_type='application/json')       
+
+
+#insertView
+def insertView(request):
+    file=open(static('data.csv'))
+    csvreader=csv.reader(file)
+    rows=[]
+    d=dict()
+    for row in csvreader:
+        rows.append(row)
+    for r in rows:
+        d.update({r[0]:r[1]})
+        print(r[0])
+    file.close()

@@ -9,14 +9,15 @@
                 <div class="col-lg-7 col-md-6 col-sm-12">
                     <h2>Tabulate Quote Form</h2>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item"> <a href="{% url 'customer quote' %}">{{site_name}}</a></li>
+                        <li class="breadcrumb-item"> <a href="{% url 'home' %}">{{site_name}}</a></li>
+                        <li class="breadcrumb-item"> <a href="{% url 'do quotations' %}">Do Quotations</a></li>
                         <li class="breadcrumb-item active">Tabulate quote form</li>
                     </ul>
                     <button class="btn btn-primary btn-icon mobile_menu" type="button"><i class="zmdi zmdi-sort-amount-desc"></i></button>
                 </div>
                 <div class=" col-lg-5 col-md-6 col-sm-12 ">                
                     <button class="btn btn-primary btn-icon float-right right_icon_toggle_btn" type="button"><i class="zmdi zmdi-arrow-right"></i></button>
-                     <a  href="{% url 'do incomings'%}" class="btn btn-info btn-icon float-right " data-toggle="tooltip" title="go back" type="button"><i class="zmdi zmdi-arrow-left"></i></a>
+                     <a  href="{% url 'do quotations' %}" class="btn btn-info btn-icon float-right " data-toggle="tooltip" title="go back" type="button"><i class="zmdi zmdi-arrow-left"></i></a>
                 </div>
             </div>
         </div>
