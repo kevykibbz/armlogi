@@ -418,14 +418,12 @@ class OrderModel(models.Model):
         db_table='customer_orders'
         verbose_name_plural='customer_orders'
         ordering=('modified_at','prefix')
-    def __str__(self)->str:
-        return self.ordername
 
     def delete(self, using=None,keep_parents=False):
         if self.media:
             self.media.storage.delete(self.media.name)
         super().delete()
-        
+
     @property
     def get_prefix(self):
         return 'A21'+str(self.id).zfill(5)
