@@ -357,7 +357,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
     comment=forms.CharField(widget=forms.Textarea(attrs={'rows':5,'cols':20,'class':'form-control','placeholder':'Comment...','required':False}),required=False)
     media=forms.FileField(widget=forms.FileInput(attrs={'class':'custom-file-input','id':'customFileInput'}),required=False)
     class Meta:
-        model=OrderLogs
+        model=OrderLogData
         fields=[
                 'media',
                 'status',

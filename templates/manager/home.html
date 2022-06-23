@@ -127,9 +127,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                     {% if orders %}
-                                     {% for item in orders %}
-                                     <tr id="id_{{item.id}}">
+                                    {% if orders %}
+                                    {% for item in orders %}
+                                    {% if item.id  %}
+                                    <tr id="id_{{item.id}}">
                                         <td>{{forloop.counter}}.</td>
                                         <td>
                                             {% if data.extendedauthuser.role != 'Tertiary' %}
@@ -214,6 +215,7 @@
                                         <td>{{item.modified_at|default:'No data'}}</td>
                                         <td>{{item.created_at|default:'No data'}}</td>
                                      </tr>
+                                     {% endif %}
                                      {% endfor %}
                                     {% else %}
                                     <tr>

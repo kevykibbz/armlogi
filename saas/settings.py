@@ -93,19 +93,19 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "djongo",
-#         "NAME":env('MONGO_DB_NAME'),
-#         "ENFORCE-SCHEMA":False,
-#         "CLIENT": {
-#             "host":env('MONGO_DB_HOST'),
-#             "port": 27017,
-#             "username":env('MONGO_DB_USERNAME'),
-#             "password":env('MONGO_DB_PASSWORD'),
-#         },
-#     },
-# }
+DATABASES = {
+    "default": {
+        "ENGINE": "djongo",
+        "NAME":env('MONGO_DB_NAME'),
+        "ENFORCE-SCHEMA":False,
+        "CLIENT": {
+            "host":env('MONGO_DB_HOST'),
+            "port": 27017,
+            "username":env('MONGO_DB_USERNAME'),
+            "password":env('MONGO_DB_PASSWORD'),
+        },
+    },
+}
 
 # DATABASES = {
 #     'default': {
@@ -114,13 +114,13 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 #     }
 #  }
 #mongodb://admin:KLQkZk@UbpYO@52.9.36.213:27017/armtkdb
-DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME':'admino',
-        'ENFORCE-SCHEMA':False,
-    }
- }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME':'armlogidb',
+#         'ENFORCE-SCHEMA':False,
+#     }
+#  }
 #postgres://nnquulzynetcuj:84dc50528a83b2cf3a4e60cd0949526df73ea48e3bb39b647e8affa986dd2b0e@ec2-44-198-82-71.compute-1.amazonaws.com:5432/dffrujtdmf3b85
 
 # DATABASES = {

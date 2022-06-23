@@ -1,7 +1,7 @@
 from manager.decorators import unauthenticated_user,allowed_users
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from .models import ExtendedAuthUser,OrderModel,UserFileUploads,CustomerFields,LoggerData,OrderLogs
+from .models import ExtendedAuthUser,OrderModel,UserFileUploads,CustomerFields,Logger,OrderLogData
 from django.contrib.auth.models import User,Group,Permission
 from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render,get_object_or_404
@@ -34,7 +34,7 @@ from . search import searchOrderItems
 #save logger data
 def save_logger(action,user,role):
     if action and user:
-        y=LoggerData.objects.create(action=action,user=user,role=role)
+        y=Logger.objects.create(action=action,user=user,role=role)
         y.save()
 
 #save order logs
@@ -42,7 +42,7 @@ def save_order_logger(post_data,order_id,user,action,role):
     data=OrderModel.objects.get(id=order_id)
     form=OrderFieldsFormLogs(post_data , instance=data)
     if form.is_valid():
-        output=OrderLogs.objects.create(
+        output=OrderLogData.objects.create(
                                             user=user,
                                             action=action,
                                             order_id=order_id,
@@ -128,7 +128,7 @@ class Dashboard(View):
                            request.session.set_expiry(0) 
                         login(request,user)
                         role=request.user.extendedauthuser.role
-                        save_logger(f'User with role of :{role} logged into the system.',request.user.get_full_name(),role)
+                        #save_logger(f'User with role of :{role} logged into the system.',request.user.get_full_name(),role)
                         return JsonResponse({'valid':True,'feedback':'success:login successfully.'},content_type="application/json")
                     form_errors={"password": ["Password is incorrect or inactive account."]}
                     return JsonResponse({'valid':False,'form_errors':form_errors},content_type="application/json")
@@ -897,7 +897,7 @@ def customerView(request,authlink):
 @allowed_users(allowed_roles=['admins'])
 def logs(request):
     obj=SiteConstants.objects.all()[0]
-    data=LoggerData.objects.all().order_by('-id')
+    data=Logger.objects.all().order_by('-log_id')
     paginator=Paginator(data,30)
     page_num=request.GET.get('page')
     results=paginator.get_page(page_num)
@@ -966,10 +966,10 @@ def authLinkSent(request):
 def deleteLog(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=LoggerData.objects.get(id=id)
+            obj=Logger.objects.get(log_id=id)
             obj.delete() 
             return JsonResponse({'valid':True,'message':'Log deleted successfully.','id':id},content_type='application/json')       
-        except LoggerData.DoesNotExist:
+        except Logger.DoesNotExist:
             return JsonResponse({'valid':False,'message':'Log does not exist'},content_type='application/json')
 
 #deleteOrderLog
@@ -979,10 +979,10 @@ def deleteLog(request,id):
 def deleteOrderLog(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderLogs.objects.get(id=id)
+            obj=OrderLogData.objects.get(log_id=id)
             obj.delete() 
             return JsonResponse({'valid':True,'message':'Log deleted successfully.','id':id},content_type='application/json')       
-        except OrderLogs.DoesNotExist:
+        except OrderLogData.DoesNotExist:
             return JsonResponse({'valid':False,'message':'Order log does not exist'},content_type='application/json')
 
 #deleteAllLogs
@@ -991,9 +991,9 @@ def deleteOrderLog(request,id):
 def deleteAllLogs(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=LoggerData.objects.all()
+            obj=Logger.objects.all()
             obj.delete() 
-            return JsonResponse({'valid':True,'message':'Logs deleted successfully.','id':id},content_type='application/json')       
+            return JsonResponse({'valid':True,'message':'Logs deleted successfully.'},content_type='application/json')       
         except Exception as e:
             return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')
 
@@ -1004,9 +1004,9 @@ def deleteAllLogs(request):
 def deleteAllOrderLogs(request):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderLogs.objects.all()
+            obj=OrderLogData.objects.all()
             obj.delete() 
-            return JsonResponse({'valid':True,'message':'Order ogs deleted successfully.','id':id},content_type='application/json')       
+            return JsonResponse({'valid':True,'message':'Order ogs deleted successfully.'},content_type='application/json')       
         except Exception as e:
             return JsonResponse({'valid':False,'message':'Error: Something went wrong'},content_type='application/json')
 
@@ -1020,7 +1020,7 @@ def OrderLogger(request,id):
     try:
         obj=SiteConstants.objects.all()[0]
         a=OrderModel.objects.get(id=id)
-        data=OrderLogs.objects.filter(order_id=id).order_by('-id')
+        data=OrderLogData.objects.filter(order_id=id).order_by('-log_id')
         paginator=Paginator(data,30)
         page_num=request.GET.get('page')
         results=paginator.get_page(page_num)
@@ -1033,7 +1033,7 @@ def OrderLogger(request,id):
                 'ordername':a.ordername,
                 'order_id':id
             }
-        return render(request,'manager/order_logger.html',context=data)     
+        return render(request,'manager/order_logger.html',context=data)    
     except Exception as e:
         data={
                 'title':'Error | Page Not Found',

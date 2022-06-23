@@ -70,7 +70,7 @@
                                         <td><b class="text-danger">By:</b> {{item.user}} [{% if item.role == 'Admin' %}<span class="text-success">{{item.role}}</span>{% elif item.role == 'Secondary' %}<span class="text-warning">{{item.role}}</span>{% else %}<span class="text-primary">{{item.role}}</span>{% endif %}]</td>
                                         <!-- <td>
                                             {% if data.is_superuser %}
-                                                <a data-host="{% url 'order logs' id=order_id %}" href="{% url 'delete single order log' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data3 btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                <a data-host="{% url 'order logs' id=order_id %}" href="{% url 'delete single order log' id=item.log_id %}" data-toggle="tooltip" title="Delete order item" class="del-data3 btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                             {% else %}
                                                 <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                             {% endif %}
