@@ -71,7 +71,7 @@
                                             <td>
                                                 {% if data.extendedauthuser.role != 'Tertiary' %}
                                                     <a href="{% url 'edit quote' id=item.id %}" data-toggle="tooltip" title="Edit quote item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-                                                    <a data-host="{% url 'do quotations %}" href="{% url 'delete quote' id=item.id %}" data-toggle="tooltip" title="Delete quote item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                    <a data-host="{% url 'do quotations' %}" href="{% url 'delete quote' id=item.id %}" data-toggle="tooltip" title="Delete quote item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                                 {% else %}
                                                     <a href="javascript:void(0)" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
                                                     <a href="javascript:void(0)" data-toggle="tooltip" title="Delete order item"  class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>

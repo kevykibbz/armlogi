@@ -30,6 +30,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.templatetags.static import static
+from . search import searchOrderItems
 #save logger data
 def save_logger(action,user,role):
     if action and user:
@@ -454,7 +455,7 @@ class EditOrder(View):
                 order=data.ordername
                 container=data.container if data.container else 'No container data was provided'
                 load=data.prefix if data.prefix else 'No load data found'
-                action=f'Edited order:{order}||load :{load}||container:{container}'
+                action=f'Edited order:{order} || Load :{load} || Container:{container}'
                 user=request.user.get_full_name()
                 role=request.user.extendedauthuser.role
                 t=form.save(commit=False)
@@ -552,20 +553,45 @@ def sort_file_type(item):
 def orderSummary(request):
     obj=SiteConstants.objects.all()[0]
     now=datetime.datetime.now()
-    orders=OrderModel.objects.all().order_by('prefix')
-    paginator=Paginator(orders,30)
-    page_num=request.GET.get('page')
-    orders=paginator.get_page(page_num)
-    form=FormUploads()
-    data={
-        'title':'All orders summary',
-        'obj':obj,
-        'data':request.user,
-        'orders':orders,
-        'count':paginator.count,
-        'form':form
-    }
-    return render(request,'manager/order_summary.html',context=data)
+    search=request.GET.get('search')
+    if search:
+        results=searchOrderItems(search)
+        if results:
+            paginator=Paginator(results,30)
+            page_num=request.GET.get('page')
+            orders=paginator.get_page(page_num)
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':orders,
+                'count':paginator.count,
+            }
+            return render(request,'manager/order_summary.html',context=data)
+        else:
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':'',
+            }
+            return render(request,'manager/order_summary.html',context=data)
+
+    else:
+        orders=OrderModel.objects.all().order_by('prefix')
+        paginator=Paginator(orders,30)
+        page_num=request.GET.get('page')
+        orders=paginator.get_page(page_num)
+        form=FormUploads()
+        data={
+            'title':'All orders summary',
+            'obj':obj,
+            'data':request.user,
+            'orders':orders,
+            'count':paginator.count,
+            'form':form
+        }
+        return render(request,'manager/order_summary.html',context=data)
 
 #deleteSingleItem
 @login_required(login_url='/')
@@ -1056,3 +1082,65 @@ def insertView(request):
         d.update({r[0]:r[1]})
         print(r[0])
     file.close()
+
+#search
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins','secondary'])
+def searchOrder(request):
+    if request.method == 'POST':
+        obj=SiteConstants.objects.all()[0]
+        search=request.POST['search']
+        results=searchOrderItems(search)
+        if results:
+            paginator=Paginator(results,30)
+            page_num=request.GET.get('page')
+            orders=paginator.get_page(page_num)
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':orders,
+                'count':paginator.count,
+            }
+            return render(request,'manager/order_summary.html',context=data)
+        else:
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':'',
+            }
+            return render(request,'manager/order_summary.html',context=data)
+    else:
+        return redirect('/order/summary/')
+
+#searchOrderHome
+@login_required(login_url='/')
+@allowed_users(allowed_roles=['admins','secondary'])
+def searchOrderHome(request):
+    if request.method == 'POST':
+        obj=SiteConstants.objects.all()[0]
+        search=request.POST['search']
+        results=searchOrderItems(search)
+        if results:
+            paginator=Paginator(results,30)
+            page_num=request.GET.get('page')
+            orders=paginator.get_page(page_num)
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':orders,
+                'count':paginator.count,
+            }
+            return render(request,'manager/order_summary.html',context=data)
+        else:
+            data={
+                'title':'All orders summary',
+                'obj':obj,
+                'data':request.user,
+                'orders':'',
+            }
+            return render(request,'manager/order_summary.html',context=data) 
+    else:
+        return redirect('/dashboard/') 

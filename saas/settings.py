@@ -14,7 +14,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY =env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 #ALLOWED_HOSTS = ['192.168.43.253']
 ALLOWED_HOSTS = ['armlogi.herokuapp.com','127.0.0.1','localhost']
@@ -113,25 +113,25 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 #         'NAME':'admino',
 #     }
 #  }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'djongo',
-#         'NAME':'admino',
-#         'ENFORCE-SCHEMA':False,
-#     }
-#  }
+#mongodb://admin:KLQkZk@UbpYO@52.9.36.213:27017/armtkdb
+DATABASES = {
+    'default': {
+        'ENGINE': 'djongo',
+        'NAME':'admino',
+        'ENFORCE-SCHEMA':False,
+    }
+ }
 #postgres://nnquulzynetcuj:84dc50528a83b2cf3a4e60cd0949526df73ea48e3bb39b647e8affa986dd2b0e@ec2-44-198-82-71.compute-1.amazonaws.com:5432/dffrujtdmf3b85
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME':env('DATABASE_NAME'),
-       'HOST':env('DATABASE_HOST'),
-       'USER':env('DATABASE_USER'),
-       'PASSWORD':env('DATABASE_PASSWORD'),
-   }
-}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME':env('DATABASE_NAME'),
+#        'HOST':env('DATABASE_HOST'),
+#        'USER':env('DATABASE_USER'),
+#        'PASSWORD':env('DATABASE_PASSWORD'),
+#    }
+# }
 
 # DATABASES = {
 #    'default': 

@@ -11,8 +11,9 @@ urlpatterns = [
     re_path(r'^static/(?P<path>.*)$',serve,{'document_root':settings.STATIC_ROOT}),
 ]
 
-#urlpatterns +=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
-#urlpatterns +=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
+
+urlpatterns +=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns +=static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
 
 handler400 ='errors.views.error_400'
 handler403 ='errors.views.error_403'
