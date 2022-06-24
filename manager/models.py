@@ -218,8 +218,9 @@ options=[
             ("Do recd","Do Recd"),
         ]
 class OrderModel(models.Model):
+    order_id=models.BigAutoField(primary_key=True)
     ordername_serial=models.CharField(max_length=255,default=generate_serial)
-    ordername=models.CharField(max_length=50,verbose_name='ordername',null=True)
+    ordername=models.CharField(max_length=100,blank=True,null=True)
     load=models.CharField(max_length=100,default=generate_id)
     action=models.CharField(null=True,blank=True,max_length=200)
     user=models.CharField(null=True,blank=True,max_length=200)

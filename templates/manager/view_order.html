@@ -38,8 +38,8 @@
                                 </div>
                                 <div class="buttons col-5 float-right"  style="display:none">
                                     {% if data.extendedauthuser.role != 'Tertiary' %}
-                                    <a  data-toggle="modal" data-target="#editModal" type="button" href="{% url 'edit main order' id=order.id %}" class="btn btn-success btn-icon editorderbtn" type="button"><i class="zmdi zmdi-edit"></i></a>
-                                    <a  data-host="{% url 'view orders'%}" href="{% url 'delete order' id=order.id %}" class="del-data btn btn-danger btn-icon " type="button"><i class="zmdi zmdi-delete"></i></a>
+                                    <a  data-toggle="modal" data-target="#editModal" type="button" href="{% url 'edit main order' id=order.order_id %}" class="btn btn-success btn-icon editorderbtn" type="button"><i class="zmdi zmdi-edit"></i></a>
+                                    <a  data-host="{% url 'view orders'%}" href="{% url 'delete order' id=order.order_id %}" class="del-data btn btn-danger btn-icon " type="button"><i class="zmdi zmdi-delete"></i></a>
                                     {% endif %}
                                 </div>
                             </div>

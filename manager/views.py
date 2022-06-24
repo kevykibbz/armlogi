@@ -39,7 +39,7 @@ def save_logger(action,user,role):
 
 #save order logs
 def save_order_logger(post_data,order_id,user,action,role):
-    data=OrderModel.objects.get(id=order_id)
+    data=OrderModel.objects.get(order_id=order_id)
     form=OrderFieldsFormLogs(post_data , instance=data)
     if form.is_valid():
         output=OrderLogData.objects.create(
@@ -384,7 +384,7 @@ class UserNewOrder(View):
             y.role=role
             y.save()
             save_logger(action,request.user.get_full_name(),role)
-            order_id=OrderModel.objects.latest('id').id
+            order_id=OrderModel.objects.latest('order_id').order_id
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -395,7 +395,7 @@ class UserNewOrder(View):
 @login_required(login_url='/')
 def viewOrders(request):
     obj=SiteConstants.objects.all()[0]
-    data=OrderModel.objects.all().order_by('-id')
+    data=OrderModel.objects.all().order_by('-order_id')
     paginator=Paginator(data,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -413,7 +413,7 @@ def viewOrders(request):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
 def editMainOrder(request,id):
-    data=OrderModel.objects.get(id__exact=id)
+    data=OrderModel.objects.get(order_id__exact=id)
     form=NewOderForm(request.POST or None,instance=data)
     if form.is_valid():
         order=form.cleaned_data.get('ordername')
@@ -432,7 +432,7 @@ def editMainOrder(request,id):
 class EditOrder(View):
     def get(self,request,id):
         obj=SiteConstants.objects.all()[0]
-        data=OrderModel.objects.get(id=id)
+        data=OrderModel.objects.get(order_id=id)
         form=OrderFieldsForm(instance=data)
         customers=OrderModel.objects.values('customer').distinct()
         data={
@@ -447,7 +447,7 @@ class EditOrder(View):
         }
         return render(request,'manager/tabulate.html',context=data)
     def post(self,request,id):
-        data=OrderModel.objects.get(id=id)
+        data=OrderModel.objects.get(order_id=id)
         site_data=SiteConstants.objects.all()[0]
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=data)
         if form.is_valid():
@@ -479,7 +479,7 @@ class EditOrder(View):
 @login_required(login_url='/')
 def viewOrder(request,id):
     obj=SiteConstants.objects.all()[0]
-    data=OrderModel.objects.all().order_by('-id')
+    data=OrderModel.objects.all().order_by('-order_id')
     paginator=Paginator(data,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -499,7 +499,7 @@ def viewOrder(request,id):
 def deleteOrder(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderModel.objects.get(id__exact=id)
+            obj=OrderModel.objects.get(order_id__exact=id)
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted order:{order}',request.user.get_full_name(),role)
@@ -515,7 +515,7 @@ class TabulateOrder(View):
     def get(self,request,id):
         try:
             obj=SiteConstants.objects.all()[0]
-            order=OrderModel.objects.get(id__exact=id)
+            order=OrderModel.objects.get(order_id__exact=id)
             form=OrderFieldsForm()
             customers=OrderModel.objects.all()
             data={
@@ -532,7 +532,7 @@ class TabulateOrder(View):
             return render(request,'manager/404.html',{'title':'Error | Bad Request'},status=400)
     
     def post(self,request,id):
-        order=OrderModel.objects.get(id__exact=id)
+        order=OrderModel.objects.get(order_id_exact=id)
         form=OrderFieldsForm(request.POST,request.FILES or None,instance=order)
         if form.is_valid():
             form.save()
@@ -599,7 +599,7 @@ def orderSummary(request):
 def deleteSingleItem(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderModel.objects.get(id__exact=id)
+            obj=OrderModel.objects.get(order_id__exact=id)
             order=obj.ordername
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted  order:{order}',request.user.get_full_name(),role)
@@ -623,7 +623,7 @@ def convert_file_size(size_bytes):
 @login_required(login_url='/')
 def handleUpload(request,id):
     if request.method == 'POST':
-        ob=OrderModel.objects.get(id__exact=id)
+        ob=OrderModel.objects.get(order_id__exact=id)
         form=FormUploads(request.POST,request.FILES or None,instance=ob)
         if form.is_valid():
             t=form.save(commit=False)
@@ -651,7 +651,7 @@ def handleUpload(request,id):
 @allowed_users(allowed_roles=['admins'])
 def UserUploads(request):
     obj=SiteConstants.objects.all()[0]
-    orders=OrderModel.objects.filter(media__isnull=False).all().order_by('-id')
+    orders=OrderModel.objects.filter(media__isnull=False).all().order_by('-order_id')
     paginator=Paginator(orders,30)
     page_num=request.GET.get('page')
     orders=paginator.get_page(page_num)
@@ -670,7 +670,7 @@ def UserUploads(request):
 def UserUploadsDelete(request,id):
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         try:
-            obj=OrderModel.objects.get(id=id)
+            obj=OrderModel.objects.get(order_id=id)
             file=obj.media.name
             role=request.user.extendedauthuser.role
             save_logger(f'Deleted uploaded file:{file}',request.user.get_full_name(),role)
@@ -1019,7 +1019,7 @@ def deleteAllOrderLogs(request):
 def OrderLogger(request,id): 
     try:
         obj=SiteConstants.objects.all()[0]
-        a=OrderModel.objects.get(id=id)
+        a=OrderModel.objects.get(order_id=id)
         data=OrderLogData.objects.filter(order_id=id).order_by('-log_id')
         paginator=Paginator(data,30)
         page_num=request.GET.get('page')
@@ -1047,7 +1047,7 @@ def OrderLogger(request,id):
 @allowed_users(allowed_roles=['admins','secondary'])
 def send_notification(request):
     id=request.POST['id']
-    data=OrderModel.objects.get(id__exact=id)
+    data=OrderModel.objects.get(order_id__exact=id)
     obj=SiteConstants.objects.all()[0]
     if data.customer_link and data.customer_email:
         try:

@@ -129,14 +129,14 @@
                                 <tbody>
                                     {% if orders %}
                                     {% for item in orders %}
-                                    {% if item.id  %}
-                                    <tr id="id_{{item.id}}">
+                                    {% if item.order_id %}
+                                    <tr id="id_{{item.order_id}}">
                                         <td>{{forloop.counter}}.</td>
                                         <td>
                                             {% if data.extendedauthuser.role != 'Tertiary' %}
-                                                <a href="{% url 'edit order' id=item.id %}" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
+                                                <a href="{% url 'edit order' id=item.order_id %}" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
                                                 {% if data.is_superuser %}
-                                                <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.id %}" data-toggle="tooltip" title="Delete order item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
+                                                <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.order_id %}" data-toggle="tooltip" title="Delete order item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                                 {% else %}
                                                     <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                                 {% endif %}

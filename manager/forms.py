@@ -241,7 +241,7 @@ class NewOderForm(forms.ModelForm):
     ordername=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Order name','aria-label':'neworder','list':'orderlist'}),error_messages={'required':'Order name is required'})
     class Meta:
         model=OrderModel
-        fields=['ordername']
+        fields=['ordername',]
         
 
 options=[
