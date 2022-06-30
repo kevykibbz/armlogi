@@ -272,7 +272,6 @@ class OrderFieldsForm(forms.ModelForm):
     port_eta=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Port ETA'}),required=False)
     lfd=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'LFD'}),required=False)
     trucking=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Trucking'}),required=False)
-    east_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Est.Deliver'}),required=False)
     appointment=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Appoitment'}),required=False)
     actual_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Actual Deliver'}),required=False)
     full_out_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Full-Out Driver'}),required=False)
@@ -312,7 +311,7 @@ class OrderFieldsForm(forms.ModelForm):
                 'port_eta',
                 'lfd',
                 'trucking',
-                'east_deliver','appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
+                'appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
 #OrderLogs
@@ -334,7 +333,6 @@ class OrderFieldsFormLogs(forms.ModelForm):
     port_eta=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Port ETA'}),required=False)
     lfd=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'LFD'}),required=False)
     trucking=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Trucking'}),required=False)
-    east_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Est.Deliver'}),required=False)
     appointment=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Appoitment'}),required=False)
     actual_deliver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Actual Deliver'}),required=False)
     full_out_driver=forms.CharField(widget=forms.TextInput(attrs={'class':'form-control','placeholder':'Full-Out Driver'}),required=False)
@@ -374,7 +372,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
                 'port_eta',
                 'lfd',
                 'trucking',
-                'east_deliver','appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
+                'appointment','actual_deliver','full_out_driver','empty_in_driver','empty_return','chasis','demurrage','demurrage_dolla','do_recd','invoice_sent','invoice','invoice_dolla','per_diem','sml',
                 'a_rrry','a_ppy','customer_email','notify','acct_email','comment',
             ]
     def clean_status(self):
@@ -505,13 +503,6 @@ class OrderFieldsFormLogs(forms.ModelForm):
             else:
                 return 'Erased'
 
-    def clean_east_deliver(self):
-        east_deliver=self.cleaned_data.get('east_deliver')
-        if self.instance.east_deliver != east_deliver:
-            if east_deliver is not None and len(east_deliver) > 0:
-                return east_deliver
-            else:
-                return 'Erased'
 
     def clean_appointment(self):
         appointment=self.cleaned_data.get('appointment')
@@ -523,7 +514,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
 
     def clean_full_out_driver(self):
         full_out_driver=self.cleaned_data.get('full_out_driver')
-        if self.instance.driver != full_out_driver:
+        if self.instance.full_out_driver != full_out_driver:
             if full_out_driver is not None and len(full_out_driver) > 0:
                 return full_out_driver
             else:
@@ -668,7 +659,7 @@ class OrderFieldsFormLogs(forms.ModelForm):
     def clean_date(self):
         date=self.cleaned_data.get('date')
         if self.instance.date != date:
-            if date is not None and len(date) > 0:
+            if date is not None:
                 return date
             else:
                 return None

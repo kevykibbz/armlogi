@@ -72,6 +72,11 @@
             color:#222342 !important;
             cursor:pointer;
         }
+        #id_phone_1
+        {
+            width:70%;
+            float:right;
+        }
     </style>
 </head>
 <body class="theme-blush">
@@ -88,17 +93,16 @@
     <!-- Main Search -->
     <div id="search">
         <button id="close" type="button" class="close btn btn-primary btn-icon btn-icon-mini btn-round">x</button>
-        <form>
-        <input type="search" value="" placeholder="Search..." />
-        <button type="submit" class="btn btn-primary">Search</button>
+        <form action="{% url 'order summary' %}" class="form-inline searchForm">
+            <input type="search" name="search" placeholder="Search all records..." required>
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
 
     <!-- Right Icon menu Sidebar -->
     <div class="navbar-right">
         <ul class="navbar-nav">
-           <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i></a></li>
-           <li class="dropdown">
+            <li class="dropdown">
                 <a href="javascript:void(0);" class="dropdown-toggle" title="App" data-toggle="dropdown" role="button"><i class="zmdi zmdi-apps"></i></a>
                 <ul class="dropdown-menu slideUp2">
                     <li class="header">App Shortcut</li>
@@ -143,6 +147,12 @@
                             <li>
                                 <a href="{% url 'do quotations' %}">
                                     <div class="icon-circle mb-2 bg-blue"><i class="zmdi zmdi-traffic"></i></div>
+                                    <p class="mb-0">Do Quotation</p>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#search" class="main_search" title="Search...">
+                                    <div class="icon-circle mb-2 bg-purple"><i class="zmdi zmdi-search"></i></div>
                                     <p class="mb-0">Do Quotation</p>
                                 </a>
                             </li>
@@ -196,7 +206,7 @@
                     </div>
                 </li>
                 <li class=""><a href="{% url 'home' %}"><i class="zmdi zmdi-home"></i><span>Dashboard</span></a></li>
-                <li class="d-md-none d-block"><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i> Search</a></li>
+                <li><a href="#search" class="main_search" title="Search..."><i class="zmdi zmdi-search"></i> Search</a></li>
                 {% if  data.extendedauthuser.role == 'Admin' %}
                 <li><a href="javascript:void(0);" class="menu-toggle"><i class="zmdi zmdi-apps"></i><span>Users</span></a>
                     <ul class="ml-menu">
@@ -216,7 +226,7 @@
                 {% if data.extendedauthuser.role == 'Admin' %}
                     <li class=""><a href="{% url 'user file uploads' %}"><i class="zmdi zmdi-attachment-alt"></i><span>Uploads</span></a></li>
                 {% endif %}
-                {% if data.is_superuser %}
+                {% if data.extendedauthuser.role == 'Admin'  %}
                     <li class=""><a href="{% url 'view logs' %}"><i class="zmdi zmdi-rotate-cw"></i><span>Logs</span></a></li>
                 {% endif %}
                 <li>

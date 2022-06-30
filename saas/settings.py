@@ -17,7 +17,7 @@ SECRET_KEY =env('SECRET_KEY')
 DEBUG = True
 
 #ALLOWED_HOSTS = ['192.168.43.253']
-ALLOWED_HOSTS = ['armlogi.herokuapp.com','127.0.0.1','localhost']
+ALLOWED_HOSTS = ['armlogi.herokuapp.com','127.0.0.1','localhost','armtk.com','www.armtk.com']
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -28,6 +28,7 @@ AUTHENTICATION_BACKENDS = [
     #'axes.backends.AxesBackend',
 ]
 
+IMPORT_EXPORT_USE_TRANSACTIONS=False
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,24 +94,24 @@ WSGI_APPLICATION = 'saas.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 
-DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME":env('MONGO_DB_NAME'),
-        "ENFORCE-SCHEMA":False,
-        "CLIENT": {
-            "host":env('MONGO_DB_HOST'),
-            "port": 27017,
-            "username":env('MONGO_DB_USERNAME'),
-            "password":env('MONGO_DB_PASSWORD'),
-        },
-    },
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "djongo",
+#         "NAME":env('MONGO_DB_NAME'),
+#         "ENFORCE-SCHEMA":False,
+#         "CLIENT": {
+#             "host":env('MONGO_DB_HOST'),
+#             "port": 27017,
+#             "username":env('MONGO_DB_USERNAME'),
+#             "password":env('MONGO_DB_PASSWORD'),
+#         },
+#     },
+# }
 
 # DATABASES = {
 #     'default': {
-#          'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME':'admino',
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME':'admino'
 #     }
 #  }
 #mongodb://admin:KLQkZk@UbpYO@52.9.36.213:27017/armtkdb
@@ -133,12 +134,29 @@ DATABASES = {
 #    }
 # }
 
+DATABASES = {
+   'default': 
+            {
+
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME':env('DATABASE_NAME'),
+                'USER':env('DATABASE_USER'),
+                'PASSWORD':env('DATABASE_PASSWORD'),
+                'HOST':env('DATABASE_HOST'),
+                'PORT':3306,
+                'OPTIONS':
+                {
+                    'autocommit':True,
+                },
+            }
+}
+
 # DATABASES = {
 #    'default': 
 #             {
 
 #                 'ENGINE': 'mysql.connector.django',
-#                 'NAME':'admino',
+#                 'NAME':'armlogidb',
 #                 'USER':'root',
 #                 'PASSWORD':'',
 #                 'HOST':'localhost',

@@ -31,6 +31,9 @@ from django.views.decorators.csrf import csrf_exempt
 import csv
 from django.templatetags.static import static
 from . search import searchOrderItems
+from installation.models import SiteConstants
+import os
+
 #save logger data
 def save_logger(action,user,role):
     if action and user:
@@ -63,7 +66,6 @@ def save_order_logger(post_data,order_id,user,action,role):
                                             port_eta=form.cleaned_data.get('port_eta'),
                                             lfd=form.cleaned_data.get('lfd'),
                                             trucking=form.cleaned_data.get('trucking'),
-                                            east_deliver=form.cleaned_data.get('east_deliver'),
                                             appointment=form.cleaned_data.get('appointment'),
                                             actual_deliver=form.cleaned_data.get('actual_deliver'),
                                             full_out_driver=form.cleaned_data.get('full_out_driver'),
@@ -92,6 +94,9 @@ def save_order_logger(post_data,order_id,user,action,role):
 @method_decorator(unauthenticated_user,name='dispatch')
 class Dashboard(View):
     def get(self,request):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         data={
             'title':'Login',
@@ -128,7 +133,7 @@ class Dashboard(View):
                            request.session.set_expiry(0) 
                         login(request,user)
                         role=request.user.extendedauthuser.role
-                        #save_logger(f'User with role of :{role} logged into the system.',request.user.get_full_name(),role)
+                        save_logger(f'A user with username {request.user.username} with role of :{role} logged into the system.',request.user.get_full_name(),role)
                         return JsonResponse({'valid':True,'feedback':'success:login successfully.'},content_type="application/json")
                     form_errors={"password": ["Password is incorrect or inactive account."]}
                     return JsonResponse({'valid':False,'form_errors':form_errors},content_type="application/json")
@@ -142,6 +147,9 @@ class Dashboard(View):
 
 @login_required(login_url='/')
 def home(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+            return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     users_count=User.objects.count()
     orders_count=OrderModel.objects.count()
@@ -174,6 +182,9 @@ def user_logout(request):
 @method_decorator(allowed_users(allowed_roles=['admins']),name='dispatch')
 class newUser(View):
     def get(self,request):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         form=users_registerForm()
         eform=EProfileForm()
@@ -200,7 +211,20 @@ class newUser(View):
                     user=User.objects.get(email__exact=uform.cleaned_data.get('email'))
                     ct=ContentType.objects.get_for_model(ExtendedAuthUser)
                     role=eform.cleaned_data.get('role')
-                    if 'Secondary' in role:
+                    if 'Admin' in role:
+                        if not Group.objects.filter(name='admins').exists():
+                            group=Group.objects.create(name='admins')
+                            group.user_set.add(userme)
+                            p1=Permission.objects.filter(content_type=ct).all()[0]
+                            p3=Permission.objects.filter(content_type=ct).all()[2]
+                            group.permissions.add(p1)
+                            group.permissions.add(p3)
+                            group.save()
+                        else:
+                            group=Group.objects.get(name__icontains='admins')
+                            group.user_set.add(userme)
+                            group.save()
+                    elif 'Secondary' in role:
                         if not Group.objects.filter(name='secondary').exists():
                             group=Group.objects.create(name='secondary')
                             group.user_set.add(userme)
@@ -235,6 +259,9 @@ class newUser(View):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
 def viewUsers(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     data=User.objects.all().order_by('-id')
     paginator=Paginator(data,10)
@@ -254,6 +281,9 @@ def viewUsers(request):
 @method_decorator(allowed_users(allowed_roles=['admins']),name='dispatch')
 class EditUser(View):
     def get(self,request,id):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         user=User.objects.get(extendedauthuser__user_id__exact=id)
         form=UserProfileChangeForm(instance=user)
@@ -301,17 +331,23 @@ def deleteUser(request,id):
 @method_decorator(login_required(login_url='/'),name='dispatch')
 class ProfileView(View):
     def get(self,request,username):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         try:
             user=User.objects.get(username__exact=username)
             form=CurrentUserProfileChangeForm(instance=user)
             passform=UserPasswordChangeForm()
             eform=CurrentExtendedUserProfileChangeForm(instance=user.extendedauthuser)
-            if request.user.is_superuser:
+            if request.user.extendedauthuser.role == 'Admin':
                 eform.fields['role'].choices=[('Admin','View | Edit | Admin'),]
                 eform.fields['role'].initial=[0]
+            elif request.user.extendedauthuser.role == 'Secondary':
+                eform.fields['role'].choices=[('Admin','View | Edit '),]
+                eform.fields['role'].initial=[0]
             else:
-                eform.fields['role'].choices=[('Tertiary','View only'),('Secondary','View | Edit'),('Admin','View | Edit | Admin'),]
+                eform.fields['role'].choices=[('Tertiary','View only'),]
                 eform.fields['role'].initial=[0]
             data={
                 'title':f'Edit profile | {user.first_name}',
@@ -360,6 +396,9 @@ def passwordChange(request):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class UserNewOrder(View):
     def get(self,request):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         orders=OrderModel.objects.all()
         form=NewOderForm()
@@ -385,6 +424,9 @@ class UserNewOrder(View):
             y.save()
             save_logger(action,request.user.get_full_name(),role)
             order_id=OrderModel.objects.latest('order_id').order_id
+            save_obj=OrderModel.objects.get(order_id=order_id)
+            save_obj.prefix='21A'+str(order_id).zfill(5) 
+            save_obj.save()
             return JsonResponse({'valid':True,'message':'data saved','order_id':order_id},content_type='application/json')
         else:
             return JsonResponse({'valid':False,'form_errors':form.errors},content_type='application/json')
@@ -394,6 +436,9 @@ class UserNewOrder(View):
 #view orders
 @login_required(login_url='/')
 def viewOrders(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+         return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     data=OrderModel.objects.all().order_by('-order_id')
     paginator=Paginator(data,30)
@@ -431,6 +476,9 @@ def editMainOrder(request,id):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class EditOrder(View):
     def get(self,request,id):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         data=OrderModel.objects.get(order_id=id)
         form=OrderFieldsForm(instance=data)
@@ -461,9 +509,6 @@ class EditOrder(View):
                 t=form.save(commit=False)
                 save_order_logger(request.POST,id,user,action,role)
                 t.modified_at=now()
-                t.customer_link=generate_id()
-                t.prefix='21A'+str(id).zfill(5)
-                t.user=request.user.get_full_name()
                 t.action=action
                 t.role=request.user.extendedauthuser.role
                 t.save()
@@ -478,6 +523,9 @@ class EditOrder(View):
 
 @login_required(login_url='/')
 def viewOrder(request,id):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     data=OrderModel.objects.all().order_by('-order_id')
     paginator=Paginator(data,30)
@@ -513,6 +561,9 @@ def deleteOrder(request,id):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class TabulateOrder(View):
     def get(self,request,id):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         try:
             obj=SiteConstants.objects.all()[0]
             order=OrderModel.objects.get(order_id__exact=id)
@@ -551,6 +602,9 @@ def sort_file_type(item):
 #orderSummary
 @login_required(login_url='/')
 def orderSummary(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     now=datetime.datetime.now()
     search=request.GET.get('search')
@@ -650,6 +704,9 @@ def handleUpload(request,id):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
 def UserUploads(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+         return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     orders=OrderModel.objects.filter(media__isnull=False).all().order_by('-order_id')
     paginator=Paginator(orders,30)
@@ -683,6 +740,9 @@ def UserUploadsDelete(request,id):
 #CustomerQuote
 class CustomerQuote(View):
     def get(self,request):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         form=CustomerForm()
         data={
@@ -708,6 +768,9 @@ class CustomerQuote(View):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class CustomerIncoming(View):
     def get(self,request):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         form=DoIncomingsForm()
         data={
@@ -731,6 +794,9 @@ class CustomerIncoming(View):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins','secondary','tertiary'])
 def quotations(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     quotes=CustomerFields.objects.all().order_by('-id')
     paginator=Paginator(quotes,30)
@@ -748,6 +814,9 @@ def quotations(request):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins','secondary','tertiary'])
 def incomings(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     quotes=DoIncomingsModel.objects.all().order_by('-id')
     paginator=Paginator(quotes,30)
@@ -768,6 +837,9 @@ def incomings(request):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class QuoteEditView(View):
     def get(self,request,id):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         data=CustomerFields.objects.get(id=id)
         form=CustomerForm(instance=data)
@@ -798,6 +870,9 @@ class QuoteEditView(View):
 @method_decorator(allowed_users(allowed_roles=['admins','secondary']),name='dispatch')
 class IncomingEditView(View):
     def get(self,request,id):
+        obj=SiteConstants.objects.count()
+        if obj == 0:
+            return redirect('/installation/')
         obj=SiteConstants.objects.all()[0]
         data=DoIncomingsModel.objects.get(id__exact=id)
         form=DoIncomingsForm(instance=data)
@@ -874,6 +949,9 @@ def UploadMedia(request,id):
 
 #customerView
 def customerView(request,authlink):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     try:
         quotes=OrderModel.objects.get(customer_link=authlink)
@@ -896,6 +974,9 @@ def customerView(request,authlink):
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
 def logs(request):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/')
     obj=SiteConstants.objects.all()[0]
     data=Logger.objects.all().order_by('-log_id')
     paginator=Paginator(data,30)
@@ -1016,7 +1097,10 @@ def deleteAllOrderLogs(request):
 
 @login_required(login_url='/')
 @allowed_users(allowed_roles=['admins'])
-def OrderLogger(request,id): 
+def OrderLogger(request,id):
+    obj=SiteConstants.objects.count()
+    if obj == 0:
+        return redirect('/installation/') 
     try:
         obj=SiteConstants.objects.all()[0]
         a=OrderModel.objects.get(order_id=id)
@@ -1070,77 +1154,12 @@ def send_notification(request):
     return JsonResponse({'valid':False,'message':'Error: Update Customer Email First.'},content_type='application/json')       
 
 
-#insertView
-def insertView(request):
-    file=open(static('data.csv'))
-    csvreader=csv.reader(file)
-    rows=[]
-    d=dict()
-    for row in csvreader:
-        rows.append(row)
-    for r in rows:
-        d.update({r[0]:r[1]})
-        print(r[0])
+#insertJson
+def insertJson(request):
+    file=open(os.path.join(settings.BASE_DIR,'testing.json'))
+    data=json.load(file)
+    for i in data:
+        print(i)
+    else:
+        return HttpResponse('data saved successfully')
     file.close()
-
-#search
-@login_required(login_url='/')
-@allowed_users(allowed_roles=['admins','secondary'])
-def searchOrder(request):
-    if request.method == 'POST':
-        obj=SiteConstants.objects.all()[0]
-        search=request.POST['search']
-        results=searchOrderItems(search)
-        if results:
-            paginator=Paginator(results,30)
-            page_num=request.GET.get('page')
-            orders=paginator.get_page(page_num)
-            data={
-                'title':'All orders summary',
-                'obj':obj,
-                'data':request.user,
-                'orders':orders,
-                'count':paginator.count,
-            }
-            return render(request,'manager/order_summary.html',context=data)
-        else:
-            data={
-                'title':'All orders summary',
-                'obj':obj,
-                'data':request.user,
-                'orders':'',
-            }
-            return render(request,'manager/order_summary.html',context=data)
-    else:
-        return redirect('/order/summary/')
-
-#searchOrderHome
-@login_required(login_url='/')
-@allowed_users(allowed_roles=['admins','secondary'])
-def searchOrderHome(request):
-    if request.method == 'POST':
-        obj=SiteConstants.objects.all()[0]
-        search=request.POST['search']
-        results=searchOrderItems(search)
-        if results:
-            paginator=Paginator(results,30)
-            page_num=request.GET.get('page')
-            orders=paginator.get_page(page_num)
-            data={
-                'title':'All orders summary',
-                'obj':obj,
-                'data':request.user,
-                'orders':orders,
-                'count':paginator.count,
-            }
-            return render(request,'manager/order_summary.html',context=data)
-        else:
-            data={
-                'title':'All orders summary',
-                'obj':obj,
-                'data':request.user,
-                'orders':'',
-            }
-            return render(request,'manager/order_summary.html',context=data) 
-    else:
-        return redirect('/dashboard/') 

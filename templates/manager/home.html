@@ -135,7 +135,7 @@
                                         <td>
                                             {% if data.extendedauthuser.role != 'Tertiary' %}
                                                 <a href="{% url 'edit order' id=item.order_id %}" data-toggle="tooltip" title="Edit order item" class="btn btn-primary btn-icon " type="button"><i class="zmdi zmdi-edit"></i></a>
-                                                {% if data.is_superuser %}
+                                                {% if data.extendedauthuser.role =='Admin' %}
                                                 <a data-host="{% url 'order summary' %}" href="{% url 'delete single order item' id=item.order_id %}" data-toggle="tooltip" title="Delete order item" class="del-data btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>
                                                 {% else %}
                                                     <a href="javascript:void(0)"data-toggle="tooltip" title="Delete order item" class="btn btn-danger btn-icon" type="button"><i class="zmdi zmdi-delete"></i></a>

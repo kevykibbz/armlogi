@@ -9,8 +9,8 @@ def searchOrderItems(search):
         if OrderModel.objects.filter(container__icontains=search).exists():
             results=OrderModel.objects.filter(container__icontains=search)
             return results
-        elif OrderModel.objects.filter(load__icontains=search).exists():
-            results=OrderModel.objects.filter(load__icontains=search)
+        elif OrderModel.objects.filter(prefix__icontains=search).exists():
+            results=OrderModel.objects.filter(prefix__icontains=search)
             return results
         elif OrderModel.objects.filter(ordername__icontains=search).exists():
             results=OrderModel.objects.filter(ordername__icontains=search)
